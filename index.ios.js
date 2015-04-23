@@ -75,7 +75,7 @@ var MathFacts = React.createClass({
     }, () => {
       ReactNativeStore.table("quizzes").then((quizzes) => {
         var id = quizzes.add({
-          quizzesData: quizzesData
+          quizData: quizzesData
         });
       });
     });
@@ -118,7 +118,6 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-
 
   button: {
     flex: 1,
