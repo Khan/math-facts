@@ -38,7 +38,7 @@ var MathFacts = React.createClass({
   getInitialState: function() {
     return {
       playing: false,
-      showStats: true,
+      showStats: false,
       quizzesData: {}
     };
   },
