@@ -49,11 +49,17 @@ var MathFacts = React.createClass({
       showStats: true
     });
   },
+  showMenu: function() {
+    this.setState({
+      playing: false,
+      showStats: false,
+    });
+  },
   render: function() {
     return (
       <View style={styles.appWrapper}>
-        {this.state.playing && <Quizzer/>}
-        {this.state.showStats && <Stats/>}
+        {this.state.playing && <Quizzer back={this.showMenu}/>}
+        {this.state.showStats && <Stats back={this.showMenu}/>}
         {!this.state.playing && !this.state.showStats &&
           <View style={styles.container}>
             <Button text="Play" onPress={this.startGame} />
@@ -69,6 +75,7 @@ var styles = StyleSheet.create({
   appWrapper: {
     flex: 1,
     backgroundColor: '#fafafa',
+    paddingTop: 20
   },
   container: {
     flex: 1,

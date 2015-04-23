@@ -93,6 +93,9 @@ var Quizzer = React.createClass({
 
     return (
       <View style={styles.container}>
+        <TouchableHighlight onPress={this.props.back}>
+          <Text>Back</Text>
+        </TouchableHighlight>
         <View style={styles.questionContainer}>
           <Text style={styles.question}>
             {leftNumber.toString() + ' + ' + rightNumber.toString()}

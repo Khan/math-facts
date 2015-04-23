@@ -85,6 +85,9 @@ var Stats = React.createClass({
 
     return (
       <View style={styles.container}>
+        <TouchableHighlight onPress={this.props.back}>
+          <Text>Back</Text>
+        </TouchableHighlight>
         <View style={styles.grid}>
           <View style={styles.gridRow}>
             {gridCell("+", styles.gridCell)}
