@@ -14,6 +14,8 @@ var {
   View,
 } = React;
 
+var ReactNativeStore = require('react-native-store');
+
 var Quizzer = require('./Quizzer.ios');
 var Stats = require('./Stats.ios');
 
@@ -36,7 +38,8 @@ var MathFacts = React.createClass({
   getInitialState: function() {
     return {
       playing: false,
-      showStats: false
+      showStats: true,
+      quizzesData: {}
     };
   },
   startGame: function() {
@@ -45,6 +48,7 @@ var MathFacts = React.createClass({
     });
   },
   showStats: function() {
+    this.updatequizzesData();
     this.setState({
       showStats: true
     });
@@ -55,11 +59,44 @@ var MathFacts = React.createClass({
       showStats: false,
     });
   },
+  updatequizzesData: function() {
+    var quizzesData = {};
+    ReactNativeStore.table("quizzes").then((quizzes) => {
+      return quizzes.databaseData["quizzes"].rows;
+    }).then((quizzesData) => {
+      this.setState({
+        quizzesData: quizzesData
+      });
+    });
+  },
+  finish: function(quizzesData) {
+    this.setState({
+      playing: false
+    }, () => {
+      ReactNativeStore.table("quizzes").then((quizzes) => {
+        var id = quizzes.add({
+          quizzesData: quizzesData
+        });
+      });
+    });
+  },
+  componentDidMount: function() {
+    this.updatequizzesData();
+  },
   render: function() {
     return (
       <View style={styles.appWrapper}>
-        {this.state.playing && <Quizzer back={this.showMenu}/>}
-        {this.state.showStats && <Stats back={this.showMenu}/>}
+        {this.state.playing &&
+          <Quizzer
+            back={this.showMenu}
+            finish={this.finish}
+            count={2}/>
+        }
+        {this.state.showStats &&
+          <Stats
+            back={this.showMenu}
+            quizzesData={this.state.quizzesData}/>
+        }
         {!this.state.playing && !this.state.showStats &&
           <View style={styles.container}>
             <Button text="Play" onPress={this.startGame} />

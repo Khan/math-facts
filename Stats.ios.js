@@ -56,14 +56,42 @@ function hslToRgb(h, s, l){
 }
 
 var Stats = React.createClass({
+  propTypes: {
+
+  },
+  getInitialState: function() {
+    return {
+      quizzesData: this.getInitialQuizzesData()
+    };
+  },
+  getInitialQuizzesData: function() {
+    // Size must be larger than the max size of the values that are added
+    return _.map(_.range(0, 12), () => {
+      return _.map(_.range(0, 12), () => { return 0 });
+    });
+  },
+  componentWillReceiveProps: function(newProps) {
+    var quizzesData = this.getInitialQuizzesData();
+    _.each(newProps.quizzesData, (obj, index) => {
+      var id = obj._id;
+      var quizData = obj.quizData;
+      _.each(quizData, (data) => {
+        quizzesData[data.left][data.right]++;
+      });
+    });
+
+    this.setState({
+      quizzesData: quizzesData
+    });
+  },
   render: function() {
 
-    var colorHue = 0;
-    var gridCell = (content, style) => {
-      var rgb = hslToRgb(colorHue += 0.1, 0.7, 0.7);
-      var rgbString = "rgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")";
+    var gridCell = (content, color, key) => {
+      color = color.length ? color : '#ddd';
       return (
-        <View style={[style, {backgroundColor: rgbString}]}>
+        <View
+            key={key}
+            style={[styles.gridCell, {backgroundColor: color}]}>
           <Text>
             {content}
           </Text>
@@ -71,33 +99,40 @@ var Stats = React.createClass({
       );
     };
 
-    var grid = [
-    <View style={styles.gridRow}>
-      {gridCell("+", styles.gridCell)}
-      {_.map(_.range(1, 11), (col) => {
-            return (gridCell(col, styles.gridCell));
-          })}
-    </View>,
-    _.map(_.range(1, 11), (row) => {
-      return (
-        <View style={styles.gridRow}>
-          {gridCell(row, styles.gridCell)}
-          {_.map(_.range(1, 11), (col) => {
-            return (gridCell(row + col, styles.gridCell));
+    var grid = (
+      <View style={styles.grid}>
+        <View
+            style={styles.gridRow}
+            key={'header-row'}>
+          {gridCell('+', '#ccc', 'cell-sign')}
+          {_.map(_.range(0, 10), (col) => {
+            return (gridCell(col + 1, '#ddd', 'cell-col-header-' + col));
           })}
         </View>
-      );
-    })];
+        {_.map(_.range(0, 10), (row) => {
+          return (
+              <View style={styles.gridRow} key={'row-' + row}>
+                {gridCell(row + 1, '#eee', 'cell-row-header-' + row)}
+                {_.map(_.range(0, 10), (col) => {
+                  var numTries = this.state.quizzesData[row][col];;
+                  var rgb = hslToRgb(0.25, 0.7, 1 - Math.min(numTries/10, 0.8));
+                  return (gridCell(row + 1 + col + 1,
+                    'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')',
+                    'cell-' + row + '-' + col));
+                })}
+              </View>
+          );
+        })}
+      </View>
+    );
 
     return (
       <View style={styles.container}>
         <TouchableHighlight onPress={this.props.back}>
           <Text>Back</Text>
         </TouchableHighlight>
-        <View style={styles.grid}>
 
-          {grid}
-        </View>
+        {grid}
       </View>
     );
   }
@@ -111,21 +146,21 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   },
   grid: {
-    backgroundColor: "#eee",
+    backgroundColor: '#eee',
     flex: 0
   },
   gridRow: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   gridCell: {
     flex: 1,
     height: 25,
     width: 25,
-    backgroundColor: "#face01",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
+    backgroundColor: '#face01',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   gridCellText: {
 

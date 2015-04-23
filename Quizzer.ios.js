@@ -18,8 +18,13 @@ var randomIntBetween = function(min, max) {
 var Quizzer = React.createClass({
   getInitialState: function() {
     return {
+      type: "add",
+      count: 0,
       leftNumber: randomIntBetween(1, 10),
       rightNumber: randomIntBetween(1, 10),
+      hintUsed: false,
+      time: 0,
+      data: [],
       response: ''
     };
   },
@@ -36,11 +41,33 @@ var Quizzer = React.createClass({
   check: function() {
     var answer = this.state.leftNumber + this.state.rightNumber;
     if (this.state.response === answer.toString()) {
-      this.setState({
-        leftNumber: randomIntBetween(1, 10),
-        rightNumber: randomIntBetween(1, 10),
-        response: ''
+      var data = _.clone(this.state.data);
+      data.push({
+        left: this.state.leftNumber,
+        right: this.state.rightNumber,
+        type: this.state.type,
+        time: this.state.time, // time taken in ms
+        hintUsed: this.state.hintUsed
       });
+
+      if (this.state.count >= this.props.count - 1) {
+        // Finished the quiz
+        this.setState({
+          data: data
+        }, () => {
+          this.props.finish(this.state.data);
+        });
+
+      } else {
+        // Load a new question
+        this.setState({
+          leftNumber: randomIntBetween(1, 10),
+          rightNumber: randomIntBetween(1, 10),
+          response: '',
+          count: this.state.count + 1,
+          data: data
+        });
+      }
     }
   },
 
@@ -49,6 +76,7 @@ var Quizzer = React.createClass({
     var button = (onPress, content) => {
       return (
         <TouchableHighlight
+            key={"numpad-"+content}
             style={styles.button}
             onPress={onPress}
             underlayColor='transparent'
@@ -66,7 +94,7 @@ var Quizzer = React.createClass({
 
     buttons.push(button(this.backspace, '<-'));
     buttons.push(button(() => {this.addDigit(0)}, '0'));
-    buttons.push(button(this.backspace, '<-'));
+    buttons.push(button(this.backspace, '?'));
 
     return (
       <View style={styles.buttons}>
