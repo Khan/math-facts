@@ -72,6 +72,12 @@ var Stats = React.createClass({
     };
 
     var grid = [
+    <View style={styles.gridRow}>
+      {gridCell("+", styles.gridCell)}
+      {_.map(_.range(1, 11), (col) => {
+            return (gridCell(col, styles.gridCell));
+          })}
+    </View>,
     _.map(_.range(1, 11), (row) => {
       return (
         <View style={styles.gridRow}>
@@ -89,12 +95,7 @@ var Stats = React.createClass({
           <Text>Back</Text>
         </TouchableHighlight>
         <View style={styles.grid}>
-          <View style={styles.gridRow}>
-            {gridCell("+", styles.gridCell)}
-            {_.map(_.range(1, 11), (col) => {
-                  return (gridCell(col, styles.gridCell));
-                })}
-          </View>
+
           {grid}
         </View>
       </View>
