@@ -61,6 +61,17 @@ var Quizzer = React.createClass({
       hintUsed: true
     });
   },
+  componentDidMount: function() {
+    this.interval = setInterval(this.tick, 50);
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.interval);
+  },
+  tick: function() {
+    this.setState({
+      time: this.state.time + 50
+    });
+  },
   check: function() {
     var answer = this.state.leftNumber + this.state.rightNumber;
     if (this.state.response === answer.toString()) {
