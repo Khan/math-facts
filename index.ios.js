@@ -90,7 +90,7 @@ var MathFacts = React.createClass({
           <Quizzer
             back={this.showMenu}
             finish={this.finish}
-            count={2}/>
+            count={10}/>
         }
         {this.state.showStats &&
           <Stats

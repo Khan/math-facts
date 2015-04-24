@@ -11,9 +11,8 @@ var {
   View,
 } = React;
 
-var randomIntBetween = function(min, max) {
-  return Math.floor(Math.random()*(max - min + 1)) + min;
-};
+var randomIntBetween = require('./Helpers.ios').randomIntBetween;
+var hslToRgb = require('./Helpers.ios').hslToRgb;
 
 var Circle = React.createClass({
   render: function() {
@@ -43,7 +42,8 @@ var Quizzer = React.createClass({
       hintUsed: false,
       time: 0,
       data: [],
-      response: ''
+      response: '',
+      colorHue: randomIntBetween(0, 360)
     };
   },
   addDigit: function(value) {
@@ -91,6 +91,7 @@ var Quizzer = React.createClass({
           time: 0,
           data: data,
           response: '',
+          colorHue: this.state.colorHue + 20
         });
       }
     }
@@ -144,9 +145,14 @@ var Quizzer = React.createClass({
     var right = this.state.rightNumber;
     var total = left + right;
 
+    var rgb = hslToRgb(this.state.colorHue/360, 0.5, 0.4);
+    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+
     var num = 1;
     var hint = _.map(_.range(0, 2), (hint10) => {
-      var backgroundColor = hint10 % 10 ? '#ddd' : '#ccc';
+      var backgroundColor = hint10 % 10 ?
+            'rgba(255, 255, 255, 0.5)' :
+            'rgba(255, 255, 255, 0.3)';
       return (
         <View
             style={[styles.hint10, {backgroundColor: backgroundColor}]}
@@ -162,9 +168,9 @@ var Quizzer = React.createClass({
               var showLeft = num - offset <= round((left - hint10 * 10)/2);
               var showRight = num - offset <= round((total - hint10 * 10)/2);
 
-              var color = showLeft ? '#eb73a6' :
-                          showRight ? '#878da7' :
-                          '#eee';
+              var color = showLeft ? '#fff' :
+                          showRight ? 'rgba(0, 0, 0, 0.65)' :
+                          'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+', 0.4)';
               num++;
               return (
                 <Circle
@@ -181,7 +187,7 @@ var Quizzer = React.createClass({
     });
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: mainColor}]}>
         <TouchableHighlight onPress={this.props.back}>
           <Text>Back</Text>
         </TouchableHighlight>
@@ -218,13 +224,14 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   question: {
-    fontSize: 40,
+    fontSize: 60,
     margin: 10,
+    color: '#fff'
   },
   response: {
-    fontSize: 60,
-    height: 60,
-    color: '#333333',
+    fontSize: 80,
+    height: 80,
+    color: '#fff',
     marginBottom: 5,
   },
 
@@ -253,22 +260,25 @@ var styles = StyleSheet.create({
   buttons: {
     flex: 0,
     alignSelf: 'stretch',
-    backgroundColor: '#eee',
+    margin: 2
   },
   buttonRow: {
     flexDirection: 'row',
     flex: 1,
   },
   button: {
-    backgroundColor: '#ddd',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     flexDirection: 'column',
     height: 60,
     flex: 1,
     justifyContent: 'center',
+    margin: 2
   },
   buttonText: {
-    fontSize: 25,
+    fontSize: 30,
+    fontWeight: 'bold',
     textAlign: 'center',
+    color: '#fff'
   }
 });
 
