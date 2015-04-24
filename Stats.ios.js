@@ -73,8 +73,9 @@ var Stats = React.createClass({
               <View style={styles.gridRow} key={'row-' + row}>
                 {gridCell(row + 1, '#eee', 'cell-row-header-' + row)}
                 {_.map(_.range(0, 10), (col) => {
-                  var numTries = this.state.quizzesData[row + 1][col + 1];;
-                  var rgb = hslToRgb(0.25, 0.7, 1 - Math.min(numTries/10, 0.8));
+                  var numTries = this.state.quizzesData[row + 1][col + 1];
+                  var lightness = 1 - Math.min(numTries/10 * 2, 0.6);
+                  var rgb = hslToRgb(0.85, 0.7, lightness);
                   return (gridCell(row + 1 + col + 1,
                     'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')',
                     'cell-' + row + '-' + col));
@@ -87,8 +88,10 @@ var Stats = React.createClass({
 
     return (
       <View style={styles.container}>
-        <TouchableHighlight onPress={this.props.back}>
-          <Text>Back</Text>
+        <TouchableHighlight
+            onPress={this.props.back}
+            style={styles.backButton}>
+          <Text style={styles.backButtonText}>{'< Back'}</Text>
         </TouchableHighlight>
 
         {grid}
@@ -102,8 +105,16 @@ var styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#fafafa',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   },
+
+  backButton: {
+    alignSelf: 'flex-start',
+    padding: 15
+  },
+  backButtonText: {
+  },
+
   grid: {
     backgroundColor: '#eee',
     flex: 0
