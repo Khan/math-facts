@@ -205,8 +205,8 @@ var Quizzer = React.createClass({
 
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>
-        <TouchableHighlight onPress={this.props.back}>
-          <Text>Back</Text>
+        <TouchableHighlight onPress={this.props.back} style={styles.backButton}>
+          <Text style={styles.backButtonText}>{'< Back'}</Text>
         </TouchableHighlight>
         <View style={styles.questionContainer}>
           <Text style={styles.question}>
@@ -233,6 +233,14 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fafafa',
     justifyContent: 'space-between'
+  },
+
+  backButton: {
+    alignSelf: 'flex-start',
+    padding: 15
+  },
+  backButtonText: {
+    color: '#fff',
   },
 
   questionContainer: {
