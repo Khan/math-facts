@@ -43,7 +43,7 @@ var Quizzer = React.createClass({
       time: 0,
       data: [],
       response: '',
-      colorHue: randomIntBetween(0, 360)
+      colorHue: 0
     };
   },
   addDigit: function(value) {
@@ -106,7 +106,7 @@ var Quizzer = React.createClass({
             style={styles.button}
             onPress={onPress}
             underlayColor='transparent'
-            activeOpacity={0.5}>
+            activeOpacity={0.2}>
           <Text style={styles.buttonText}>
             {content}
           </Text>
@@ -118,7 +118,7 @@ var Quizzer = React.createClass({
       return button(() => {this.addDigit(value)}, value);
     });
 
-    buttons.push(button(this.backspace, '<-'));
+    buttons.push(button(this.backspace, '<x'));
     buttons.push(button(() => {this.addDigit(0)}, '0'));
     buttons.push(button(this.hint, '?'));
 
@@ -140,12 +140,27 @@ var Quizzer = React.createClass({
     );
   },
 
+  getColor: function() {
+    var colors = [
+      hslToRgb(0, 0.7, 0.6),
+      hslToRgb(0.06, 0.7, 0.6),
+      hslToRgb(0.1, 0.75, 0.58),
+      hslToRgb(0.2, 0.5, 0.5),
+      hslToRgb(0.35, 0.4, 0.55),
+      hslToRgb(0.45, 0.6, 0.5),
+      hslToRgb(0.55, 0.5, 0.5),
+      hslToRgb(0.7, 0.6, 0.65),
+      hslToRgb(0.8, 0.6, 0.65),
+      hslToRgb(0.9, 0.6, 0.65),
+    ];
+    return colors[this.state.colorHue];
+  },
   render: function() {
     var left = this.state.leftNumber;
     var right = this.state.rightNumber;
     var total = left + right;
 
-    var rgb = hslToRgb(this.state.colorHue/360, 0.5, 0.4);
+    var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 
     var num = 1;
@@ -169,7 +184,7 @@ var Quizzer = React.createClass({
               var showRight = num - offset <= round((total - hint10 * 10)/2);
 
               var color = showLeft ? '#fff' :
-                          showRight ? 'rgba(0, 0, 0, 0.65)' :
+                          showRight ? 'rgba(0, 0, 0, 0.6)' :
                           'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+', 0.4)';
               num++;
               return (
