@@ -64,36 +64,38 @@ var Quizzer = React.createClass({
   check: function() {
     var answer = this.state.leftNumber + this.state.rightNumber;
     if (this.state.response === answer.toString()) {
-      var data = _.clone(this.state.data);
-      data.push({
-        left: this.state.leftNumber,
-        right: this.state.rightNumber,
-        type: this.state.type,
-        time: this.state.time, // time taken in ms
-        hintUsed: this.state.hintUsed
-      });
-
-      if (this.state.count >= this.props.count - 1) {
-        // Finished the quiz
-        this.setState({
-          data: data
-        }, () => {
-          this.props.finish(this.state.data);
+      setTimeout(() => {
+        var data = _.clone(this.state.data);
+        data.push({
+          left: this.state.leftNumber,
+          right: this.state.rightNumber,
+          type: this.state.type,
+          time: this.state.time, // time taken in ms
+          hintUsed: this.state.hintUsed
         });
 
-      } else {
-        // Load a new question
-        this.setState({
-          count: this.state.count + 1,
-          leftNumber: randomIntBetween(1, 10),
-          rightNumber: randomIntBetween(1, 10),
-          hintUsed: false,
-          time: 0,
-          data: data,
-          response: '',
-          colorHue: this.state.colorHue + 20
-        });
-      }
+        if (this.state.count >= this.props.count - 1) {
+          // Finished the quiz
+          this.setState({
+            data: data
+          }, () => {
+            this.props.finish(this.state.data);
+          });
+
+        } else {
+          // Load a new question
+          this.setState({
+            count: this.state.count + 1,
+            leftNumber: randomIntBetween(1, 10),
+            rightNumber: randomIntBetween(1, 10),
+            hintUsed: false,
+            time: 0,
+            data: data,
+            response: '',
+            colorHue: this.state.colorHue + 1
+          });
+        }
+      }, 150);
     }
   },
 
