@@ -155,16 +155,16 @@ var Quizzer = React.createClass({
 
   getColor: function() {
     var colors = [
-      hslToRgb(0, 0.7, 0.6),
-      hslToRgb(0.06, 0.7, 0.6),
-      hslToRgb(0.1, 0.75, 0.58),
-      hslToRgb(0.2, 0.5, 0.5),
-      hslToRgb(0.35, 0.4, 0.55),
-      hslToRgb(0.45, 0.6, 0.5),
-      hslToRgb(0.55, 0.5, 0.5),
-      hslToRgb(0.7, 0.6, 0.65),
-      hslToRgb(0.8, 0.6, 0.65),
-      hslToRgb(0.9, 0.6, 0.65),
+      hslToRgb(0, 0.7, 0.6), // red
+      hslToRgb(0.06, 0.7, 0.6), // orange
+      hslToRgb(0.1, 0.75, 0.58), // yellow
+      hslToRgb(0.2, 0.5, 0.5), // light green
+      hslToRgb(0.35, 0.4, 0.55), // green
+      hslToRgb(0.45, 0.6, 0.5), // teal
+      hslToRgb(0.55, 0.5, 0.5), // blue
+      hslToRgb(0.7, 0.6, 0.65), // purple
+      hslToRgb(0.8, 0.6, 0.65), // purple-pink
+      hslToRgb(0.9, 0.6, 0.65), // pink
     ];
     return colors[this.state.colorHue];
   },

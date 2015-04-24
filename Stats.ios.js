@@ -97,8 +97,26 @@ var Stats = React.createClass({
                 {gridCell(row + 1, '#eee', 'cell-row-header-' + row)}
                 {_.map(_.range(0, 10), (col) => {
                   var numTries = this.state.attemptData[row + 1][col + 1];
-                  var lightness = 1 - Math.min(numTries/10 * 2, 0.6);
-                  var rgb = hslToRgb(170/360, 0.7, lightness);
+                  var colors = [
+                    hslToRgb(0, 0.7, 0.6), // red
+                    hslToRgb(0.06, 0.7, 0.6), // orange
+                    hslToRgb(0.1, 0.75, 0.58), // yellow
+                    hslToRgb(0.2, 0.5, 0.5), // light green
+                    hslToRgb(0.35, 0.4, 0.55), // green
+                    hslToRgb(0.45, 0.6, 0.5), // teal
+                    hslToRgb(0.55, 0.5, 0.5), // blue
+                    hslToRgb(0.7, 0.6, 0.65), // purple
+                    hslToRgb(0.8, 0.6, 0.65), // purple-pink
+                    hslToRgb(0.9, 0.6, 0.65), // pink
+                  ];
+                  // TODO: Make this calculation take into account time and
+                  // recent stuff and stuff.
+                  var index = numTries > 5 ? 4 :
+                              numTries > 2 ? 3 :
+                              numTries > 1 ? 2 :
+                              numTries > 0 ? 1 : 0;
+
+                  var rgb = colors[index];
 
                   return (gridCell(row + 1 + col + 1,
                     'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')',
