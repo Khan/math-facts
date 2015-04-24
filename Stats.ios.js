@@ -19,7 +19,9 @@ var Stats = React.createClass({
   },
   getInitialState: function() {
     return {
-      quizzesData: this.getInitialQuizzesData()
+      attemptData: this.getInitialQuizzesData(),
+      timeData: this.getInitialQuizzesData(),
+      active: [1, 2]
     };
   },
   getInitialQuizzesData: function() {
@@ -29,33 +31,54 @@ var Stats = React.createClass({
     });
   },
   componentWillReceiveProps: function(newProps) {
-    var quizzesData = this.getInitialQuizzesData();
+    var attemptData = this.getInitialQuizzesData();
+    var timeData = this.getInitialQuizzesData();
 
     _.each(newProps.quizzesData, (obj, index) => {
       var id = obj._id;
       var quizData = obj.quizData;
       _.each(quizData, (data) => {
-        quizzesData[data.left][data.right]++;
+        attemptData[data.left][data.right]++;
+
+        var time = timeData[data.left][data.right];
+        timeData[data.left][data.right] = time > 0 ?
+          Math.min(time, data.time) : data.time;
       });
     });
 
     this.setState({
-      quizzesData: quizzesData
+      attemptData: attemptData,
+      timeData: timeData
     });
   },
   render: function() {
 
-    var gridCell = (content, color, key) => {
+    var gridCell = (content, color, key, onPress) => {
+      onPress = onPress || null;
       color = color.length ? color : '#ddd';
-      return (
-        <View
-            key={key}
-            style={[styles.gridCell, {backgroundColor: color}]}>
-          <Text>
-            {content}
-          </Text>
-        </View>
-      );
+      if (onPress) {
+        return (
+          <TouchableHighlight
+              key={key}
+              style={[styles.gridCell, {backgroundColor: color}]}
+              underlayColor="transparent"
+              onPress={onPress}>
+            <Text>
+              {content}
+            </Text>
+          </TouchableHighlight>
+        );
+      } else {
+        return (
+          <View
+              key={key}
+              style={[styles.gridCell, {backgroundColor: color}]}>
+            <Text>
+              {content}
+            </Text>
+          </View>
+        );
+      }
     };
 
     var grid = (
@@ -73,18 +96,43 @@ var Stats = React.createClass({
               <View style={styles.gridRow} key={'row-' + row}>
                 {gridCell(row + 1, '#eee', 'cell-row-header-' + row)}
                 {_.map(_.range(0, 10), (col) => {
-                  var numTries = this.state.quizzesData[row + 1][col + 1];
+                  var numTries = this.state.attemptData[row + 1][col + 1];
                   var lightness = 1 - Math.min(numTries/10 * 2, 0.6);
                   var rgb = hslToRgb(170/360, 0.7, lightness);
+
                   return (gridCell(row + 1 + col + 1,
                     'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')',
-                    'cell-' + row + '-' + col));
+                    'cell-' + row + '-' + col,
+                    () => {
+                      this.setState({
+                        active: [row + 1, col + 1]
+                      });
+                    }));
                 })}
               </View>
           );
         })}
       </View>
     );
+
+    var activeRow = this.state.active[0];
+    var activeCol = this.state.active[1];
+    var timesAnswered = this.state.attemptData[activeRow][activeCol];
+    var bestTime = this.state.timeData[activeRow][activeCol]/1000;
+
+    var info = (<View style={styles.infoContainer}>
+      <Text style={styles.infoQuestion}>
+        {activeRow + ' + ' + activeCol + ' = ' + (activeRow + activeCol)}
+      </Text>
+      <Text style={styles.infoStat}>
+        {'Times Answered: ' + timesAnswered}
+      </Text>
+      {(timesAnswered && bestTime) ?
+        <Text style={styles.infoStat}>
+          {'Best Time: ' + bestTime + 's'}
+        </Text>
+      : null}
+    </View>);
 
     return (
       <View style={styles.container}>
@@ -93,8 +141,8 @@ var Stats = React.createClass({
             style={styles.backButton}>
           <Text style={styles.backButtonText}>{'< Back'}</Text>
         </TouchableHighlight>
-
         {grid}
+        {info}
       </View>
     );
   }
@@ -115,8 +163,20 @@ var styles = StyleSheet.create({
   backButtonText: {
   },
 
+  infoContainer: {
+    alignItems: 'center',
+    margin: 20
+  },
+  infoQuestion: {
+    fontSize: 40,
+    margin: 10
+  },
+  infoStat: {
+    fontSize: 20,
+    margin: 10
+  },
+
   grid: {
-    backgroundColor: '#eee',
     flex: 0
   },
   gridRow: {
@@ -127,6 +187,7 @@ var styles = StyleSheet.create({
     flex: 1,
     height: 25,
     width: 25,
+    margin: 1,
     backgroundColor: '#face01',
     flexDirection: 'column',
     justifyContent: 'center',
