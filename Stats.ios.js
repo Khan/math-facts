@@ -75,7 +75,7 @@ var Stats = React.createClass({
                 {_.map(_.range(0, 10), (col) => {
                   var numTries = this.state.quizzesData[row + 1][col + 1];
                   var lightness = 1 - Math.min(numTries/10 * 2, 0.6);
-                  var rgb = hslToRgb(0.85, 0.7, lightness);
+                  var rgb = hslToRgb(170/360, 0.7, lightness);
                   return (gridCell(row + 1 + col + 1,
                     'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')',
                     'cell-' + row + '-' + col));
