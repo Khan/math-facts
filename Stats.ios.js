@@ -73,7 +73,7 @@ var Stats = React.createClass({
               <View style={styles.gridRow} key={'row-' + row}>
                 {gridCell(row + 1, '#eee', 'cell-row-header-' + row)}
                 {_.map(_.range(0, 10), (col) => {
-                  var numTries = this.state.quizzesData[row][col];;
+                  var numTries = this.state.quizzesData[row + 1][col + 1];;
                   var rgb = hslToRgb(0.25, 0.7, 1 - Math.min(numTries/10, 0.8));
                   return (gridCell(row + 1 + col + 1,
                     'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')',
