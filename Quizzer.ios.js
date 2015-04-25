@@ -221,6 +221,13 @@ var Quizzer = React.createClass({
             style={styles.backButton}>
           <Text style={styles.backButtonText}>{'< Back'}</Text>
         </TouchableHighlight>
+        <View style={styles.progress}>
+          {_.map(_.range(0, this.props.count), (value) => {
+            var opacity = value < this.state.count ? 1 : 0.2;
+            var color = 'rgba(255, 255, 255, ' + opacity + ')';
+            return (<Circle size={8} color={color}/>);
+          })}
+        </View>
         <View style={styles.questionContainer}>
           <Text style={styles.question}>
             {left.toString() + ' + ' + right.toString()}
@@ -254,6 +261,10 @@ var styles = StyleSheet.create({
   },
   backButtonText: {
     color: '#fff',
+  },
+
+  progress: {
+    flexDirection: 'row'
   },
 
   questionContainer: {
