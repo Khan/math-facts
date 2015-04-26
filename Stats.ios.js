@@ -63,7 +63,7 @@ var Stats = React.createClass({
               style={[styles.gridCell, {backgroundColor: color}]}
               underlayColor="transparent"
               onPress={onPress}>
-            <Text>
+            <Text style={styles.gridCellText}>
               {content}
             </Text>
           </TouchableHighlight>
@@ -73,7 +73,7 @@ var Stats = React.createClass({
           <View
               key={key}
               style={[styles.gridCell, {backgroundColor: color}]}>
-            <Text>
+            <Text style={styles.gridCellText}>
               {content}
             </Text>
           </View>
@@ -86,9 +86,9 @@ var Stats = React.createClass({
         <View
             style={styles.gridRow}
             key={'header-row'}>
-          {gridCell('+', '#ccc', 'cell-sign')}
+          {gridCell('+', '#ddd', 'cell-sign')}
           {_.map(_.range(0, 10), (col) => {
-            return (gridCell(col + 1, '#ddd', 'cell-col-header-' + col));
+            return (gridCell(col + 1, '#eee', 'cell-col-header-' + col));
           })}
         </View>
         {_.map(_.range(0, 10), (row) => {
@@ -187,11 +187,12 @@ var styles = StyleSheet.create({
   },
   infoQuestion: {
     fontSize: 40,
+    fontWeight: 'bold',
     margin: 10
   },
   infoStat: {
     fontSize: 20,
-    margin: 10
+    margin: 5
   },
 
   grid: {
@@ -203,8 +204,8 @@ var styles = StyleSheet.create({
   },
   gridCell: {
     flex: 1,
-    height: 25,
-    width: 25,
+    height: 32,
+    width: 32,
     margin: 1,
     backgroundColor: '#face01',
     flexDirection: 'column',
@@ -212,6 +213,8 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   gridCellText: {
+    fontSize: 16,
+    fontWeight: '400'
 
   }
 });
