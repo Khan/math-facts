@@ -85,6 +85,12 @@ var MathFacts = React.createClass({
   componentDidMount: function() {
     this.updatequizzesData();
   },
+  setAdditionMode: function() {
+    this.setState({mode: 'addition'});
+  },
+  setMultiplicationMode: function() {
+    this.setState({mode: 'multiplication'});
+  },
   render: function() {
     var mode = this.state.mode;
     return (
@@ -109,16 +115,12 @@ var MathFacts = React.createClass({
             <View style={styles.toggleButtons}>
               <Button
                 text="Addition"
-                color={mode == 'addition' ? "#666" : "#ccc"}
-                onPress={() => {
-                  this.setState({ mode: "addition" })}
-                }/>
+                color={mode === 'addition' ? "#666" : "#ccc"}
+                onPress={this.setAdditionMode}/>
               <Button
                 text="Multiplication"
-                color={mode == 'multiplication' ? "#666" : "#ccc"}
-                onPress={() => {
-                  this.setState({ mode: "multiplication" })}
-                }/>
+                color={mode === 'multiplication' ? "#666" : "#ccc"}
+                onPress={this.setMultiplicationMode}/>
             </View>
           </View>
         }

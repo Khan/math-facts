@@ -83,7 +83,7 @@ var Stats = React.createClass({
       }
     };
 
-    var sign = this.state.mode === 'addition' ? '+' : 'x';
+    var sign = this.props.mode === 'addition' ? '+' : 'x';
 
     var grid = (
       <View style={styles.grid}>
@@ -122,7 +122,7 @@ var Stats = React.createClass({
 
                   var rgb = colors[index];
 
-                  var answer = this.state.mode === 'addition' ?
+                  var answer = this.props.mode === 'addition' ?
                                 (row + 1) + (col + 1) :
                                 (row + 1) * (col + 1);
                   return (gridCell(answer,
@@ -145,7 +145,7 @@ var Stats = React.createClass({
     var timesAnswered = this.state.attemptData[activeRow][activeCol];
     var bestTime = this.state.timeData[activeRow][activeCol]/1000;
 
-    var answer = this.state.mode === 'addition' ?
+    var answer = this.props.mode === 'addition' ?
                   (activeRow) + (activeCol) :
                   (activeRow) * (activeCol);
     var info = (<View style={styles.infoContainer}>
