@@ -21,12 +21,13 @@ var Stats = require('./Stats.ios');
 
 var Button = React.createClass({
   render: function() {
+    var color = this.props.color ? this.props.color : '#89dacc';
     return (
       <TouchableHighlight
         onPress={this.props.onPress}
         underlayColor="transparent"
         activeOpacity={0.5}>
-        <View style={styles.button}>
+        <View style={[styles.button, {backgroundColor: color}]}>
           <Text style={styles.buttonText}>{this.props.text}</Text>
         </View>
       </TouchableHighlight>
@@ -39,7 +40,8 @@ var MathFacts = React.createClass({
     return {
       playing: false,
       showStats: false,
-      quizzesData: {}
+      quizzesData: {},
+      mode: 'multiplication'
     };
   },
   startGame: function() {
@@ -84,16 +86,19 @@ var MathFacts = React.createClass({
     this.updatequizzesData();
   },
   render: function() {
+    var mode = this.state.mode;
     return (
       <View style={styles.appWrapper}>
         {this.state.playing &&
           <Quizzer
+            mode={mode}
             back={this.showMenu}
             finish={this.finish}
             count={10}/>
         }
         {this.state.showStats &&
           <Stats
+            mode={mode}
             back={this.showMenu}
             quizzesData={this.state.quizzesData}/>
         }
@@ -101,6 +106,20 @@ var MathFacts = React.createClass({
           <View style={styles.container}>
             <Button text="Play" onPress={this.startGame} />
             <Button text="Stats" onPress={this.showStats} />
+            <View style={styles.toggleButtons}>
+              <Button
+                text="Addition"
+                color={mode == 'addition' ? "#666" : "#ccc"}
+                onPress={() => {
+                  this.setState({ mode: "addition" })}
+                }/>
+              <Button
+                text="Multiplication"
+                color={mode == 'multiplication' ? "#666" : "#ccc"}
+                onPress={() => {
+                  this.setState({ mode: "multiplication" })}
+                }/>
+            </View>
           </View>
         }
       </View>
@@ -130,6 +149,10 @@ var styles = StyleSheet.create({
   buttonText: {
     fontSize: 30,
     color: "#fff"
+  },
+
+  toggleButtons: {
+    flexDirection: 'row'
   }
 
 });

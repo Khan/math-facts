@@ -35,7 +35,6 @@ var Circle = React.createClass({
 var Quizzer = React.createClass({
   getInitialState: function() {
     return {
-      type: 'add',
       count: 0,
       leftNumber: randomIntBetween(1, 10),
       rightNumber: randomIntBetween(1, 10),
@@ -73,15 +72,17 @@ var Quizzer = React.createClass({
     });
   },
   check: function() {
-    var answer = this.state.leftNumber + this.state.rightNumber;
+    var left = this.state.leftNumber;
+    var right = this.state.rightNumber;
+    var answer =  this.props.mode === 'addition' ? left + right : left * right;
     if (this.state.response === answer.toString()) {
       setTimeout(() => {
         var data = _.clone(this.state.data);
         data.push({
           left: this.state.leftNumber,
           right: this.state.rightNumber,
-          type: this.state.type,
           time: this.state.time, // time taken in ms
+          type: this.props.mode,
           hintUsed: this.state.hintUsed
         });
 
@@ -171,7 +172,7 @@ var Quizzer = React.createClass({
   render: function() {
     var left = this.state.leftNumber;
     var right = this.state.rightNumber;
-    var total = left + right;
+    var total = this.props.mode === 'addition' ? left + right : left * right;
 
     var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
@@ -214,6 +215,8 @@ var Quizzer = React.createClass({
       );
     });
 
+    var sign = this.props.mode === 'addition' ? '+' : 'x';
+
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>
         <TouchableHighlight
@@ -230,7 +233,7 @@ var Quizzer = React.createClass({
         </View>
         <View style={styles.questionContainer}>
           <Text style={styles.question}>
-            {left.toString() + ' + ' + right.toString()}
+            {left.toString() + ' ' + sign + ' ' + right.toString()}
           </Text>
           <Text style={styles.response}>
             {this.state.response}

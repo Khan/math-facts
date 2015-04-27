@@ -38,11 +38,13 @@ var Stats = React.createClass({
       var id = obj._id;
       var quizData = obj.quizData;
       _.each(quizData, (data) => {
-        attemptData[data.left][data.right]++;
+        if (data.type === this.props.mode) {
+          attemptData[data.left][data.right]++;
 
-        var time = timeData[data.left][data.right];
-        timeData[data.left][data.right] = time > 0 ?
-          Math.min(time, data.time) : data.time;
+          var time = timeData[data.left][data.right];
+          timeData[data.left][data.right] = time > 0 ?
+            Math.min(time, data.time) : data.time;
+        }
       });
     });
 
@@ -81,12 +83,14 @@ var Stats = React.createClass({
       }
     };
 
+    var sign = this.state.mode === 'addition' ? '+' : 'x';
+
     var grid = (
       <View style={styles.grid}>
         <View
             style={styles.gridRow}
             key={'header-row'}>
-          {gridCell('+', '#ddd', 'cell-sign')}
+          {gridCell(sign, '#ddd', 'cell-sign')}
           {_.map(_.range(0, 10), (col) => {
             return (gridCell(col + 1, '#eee', 'cell-col-header-' + col));
           })}
@@ -118,7 +122,10 @@ var Stats = React.createClass({
 
                   var rgb = colors[index];
 
-                  return (gridCell(row + 1 + col + 1,
+                  var answer = this.state.mode === 'addition' ?
+                                (row + 1) + (col + 1) :
+                                (row + 1) * (col + 1);
+                  return (gridCell(answer,
                     'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')',
                     'cell-' + row + '-' + col,
                     () => {
@@ -138,9 +145,13 @@ var Stats = React.createClass({
     var timesAnswered = this.state.attemptData[activeRow][activeCol];
     var bestTime = this.state.timeData[activeRow][activeCol]/1000;
 
+    var answer = this.state.mode === 'addition' ?
+                  (activeRow) + (activeCol) :
+                  (activeRow) * (activeCol);
     var info = (<View style={styles.infoContainer}>
       <Text style={styles.infoQuestion}>
-        {activeRow + ' + ' + activeCol + ' = ' + (activeRow + activeCol)}
+        {activeRow + ' ' + sign + ' ' + activeCol + ' = ' +
+          answer}
       </Text>
       <Text style={styles.infoStat}>
         {'Times Answered: ' + timesAnswered}
