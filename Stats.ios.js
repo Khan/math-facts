@@ -13,6 +13,118 @@ var {
 
 var hslToRgb = require('./Helpers.ios').hslToRgb;
 
+
+var GridCell = React.createClass({
+  defaultProps: {
+    content: React.PropTypes.string,
+    color: React.PropTypes.string,
+    key: React.PropTypes.string.isRequired,
+    onPress: React.PropTypes.func,
+  },
+  render: function() {
+    var onPress = this.props.onPress || null;
+    var color = this.props.color.length ? this.props.color : '#ddd';
+    if (onPress) {
+      return (
+        <TouchableHighlight
+            key={this.props.key}
+            style={[styles.gridCell, {backgroundColor: color}]}
+            underlayColor="transparent"
+            onPress={onPress}>
+          <Text style={styles.gridCellText}>
+            {this.props.content}
+          </Text>
+        </TouchableHighlight>
+      );
+    } else {
+      return (
+        <View
+            key={this.props.key}
+            style={[styles.gridCell, {backgroundColor: color}]}>
+          <Text style={styles.gridCellText}>
+            {this.props.content}
+          </Text>
+        </View>
+      );
+    }
+
+  }
+});
+
+var Grid = React.createClass({
+  defaultProps: {
+    attemptData: React.PropTypes.array,
+    timeData: React.PropTypes.array,
+    mode: React.PropTypes.string,
+    onPress: React.PropTypes.func
+  },
+  render: function() {
+    var sign = this.props.mode === 'addition' ? '+' : 'x';
+    return (
+      <View style={styles.grid}>
+        <View
+            style={styles.gridRow}
+            key={'header-row'}>
+          <GridCell content={sign} color='#ddd' key='cell-sign' />
+          {_.map(_.range(0, 10), (col) => {
+            return (
+              <GridCell
+                content={col + 1}
+                color='#eee'
+                key={'cell-col-header-' + col}/>
+            );
+          })}
+        </View>
+        {_.map(_.range(0, 10), (row) => {
+          return (
+              <View style={styles.gridRow} key={'row-' + row}>
+                  <GridCell
+                    content={row + 1}
+                    color='#eee'
+                    key={'cell-row-header-' + row}/>
+                {_.map(_.range(0, 10), (col) => {
+                  var numTries = this.props.attemptData[row + 1][col + 1];
+                  var colors = [
+                    hslToRgb(0, 0.7, 0.6), // red
+                    hslToRgb(0.06, 0.7, 0.6), // orange
+                    hslToRgb(0.1, 0.75, 0.58), // yellow
+                    hslToRgb(0.2, 0.5, 0.5), // light green
+                    hslToRgb(0.35, 0.4, 0.55), // green
+                    hslToRgb(0.45, 0.6, 0.5), // teal
+                    hslToRgb(0.55, 0.5, 0.5), // blue
+                    hslToRgb(0.7, 0.6, 0.65), // purple
+                    hslToRgb(0.8, 0.6, 0.65), // purple-pink
+                    hslToRgb(0.9, 0.6, 0.65), // pink
+                  ];
+                  // TODO: Make this calculation take into account time and
+                  // recent stuff and stuff.
+                  var index = numTries > 5 ? 4 :
+                              numTries > 2 ? 3 :
+                              numTries > 1 ? 2 :
+                              numTries > 0 ? 1 : 0;
+
+                  var rgb = colors[index];
+
+                  var answer = this.props.mode === 'addition' ?
+                                (row + 1) + (col + 1) :
+                                (row + 1) * (col + 1);
+                  return (<GridCell
+                    content={answer}
+                    color={'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')'}
+                    key={'cell-' + row + '-' + col}
+                    onPress={() => {
+                      this.props.onPress([row + 1, col + 1]);
+                    }}/>
+                  );
+                })}
+              </View>
+          );
+        })}
+      </View>
+    );
+  }
+});
+
 var Stats = React.createClass({
   propTypes: {
 
@@ -38,13 +150,13 @@ var Stats = React.createClass({
       var id = obj._id;
       var quizData = obj.quizData;
       _.each(quizData, (data) => {
-        if (data.type === this.props.mode) {
+        //if (data.type === this.props.mode) {
           attemptData[data.left][data.right]++;
 
           var time = timeData[data.left][data.right];
           timeData[data.left][data.right] = time > 0 ?
             Math.min(time, data.time) : data.time;
-        }
+        //}
       });
     });
 
@@ -55,90 +167,16 @@ var Stats = React.createClass({
   },
   render: function() {
 
-    var gridCell = (content, color, key, onPress) => {
-      onPress = onPress || null;
-      color = color.length ? color : '#ddd';
-      if (onPress) {
-        return (
-          <TouchableHighlight
-              key={key}
-              style={[styles.gridCell, {backgroundColor: color}]}
-              underlayColor="transparent"
-              onPress={onPress}>
-            <Text style={styles.gridCellText}>
-              {content}
-            </Text>
-          </TouchableHighlight>
-        );
-      } else {
-        return (
-          <View
-              key={key}
-              style={[styles.gridCell, {backgroundColor: color}]}>
-            <Text style={styles.gridCellText}>
-              {content}
-            </Text>
-          </View>
-        );
-      }
-    };
-
     var sign = this.props.mode === 'addition' ? '+' : 'x';
-
-    var grid = (
-      <View style={styles.grid}>
-        <View
-            style={styles.gridRow}
-            key={'header-row'}>
-          {gridCell(sign, '#ddd', 'cell-sign')}
-          {_.map(_.range(0, 10), (col) => {
-            return (gridCell(col + 1, '#eee', 'cell-col-header-' + col));
-          })}
-        </View>
-        {_.map(_.range(0, 10), (row) => {
-          return (
-              <View style={styles.gridRow} key={'row-' + row}>
-                {gridCell(row + 1, '#eee', 'cell-row-header-' + row)}
-                {_.map(_.range(0, 10), (col) => {
-                  var numTries = this.state.attemptData[row + 1][col + 1];
-                  var colors = [
-                    hslToRgb(0, 0.7, 0.6), // red
-                    hslToRgb(0.06, 0.7, 0.6), // orange
-                    hslToRgb(0.1, 0.75, 0.58), // yellow
-                    hslToRgb(0.2, 0.5, 0.5), // light green
-                    hslToRgb(0.35, 0.4, 0.55), // green
-                    hslToRgb(0.45, 0.6, 0.5), // teal
-                    hslToRgb(0.55, 0.5, 0.5), // blue
-                    hslToRgb(0.7, 0.6, 0.65), // purple
-                    hslToRgb(0.8, 0.6, 0.65), // purple-pink
-                    hslToRgb(0.9, 0.6, 0.65), // pink
-                  ];
-                  // TODO: Make this calculation take into account time and
-                  // recent stuff and stuff.
-                  var index = numTries > 5 ? 4 :
-                              numTries > 2 ? 3 :
-                              numTries > 1 ? 2 :
-                              numTries > 0 ? 1 : 0;
-
-                  var rgb = colors[index];
-
-                  var answer = this.props.mode === 'addition' ?
-                                (row + 1) + (col + 1) :
-                                (row + 1) * (col + 1);
-                  return (gridCell(answer,
-                    'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')',
-                    'cell-' + row + '-' + col,
-                    () => {
-                      this.setState({
-                        active: [row + 1, col + 1]
-                      });
-                    }));
-                })}
-              </View>
-          );
-        })}
-      </View>
-    );
+    var grid = <Grid
+      attemptData={this.state.attemptData}
+      timeData={this.state.timeData}
+      mode={this.props.mode}
+      onPress={(active) => {
+        this.setState({
+          active: active
+        });
+      }} />
 
     var activeRow = this.state.active[0];
     var activeCol = this.state.active[1];
