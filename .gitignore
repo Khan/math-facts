@@ -26,3 +26,8 @@ project.xcworkspace
 #
 node_modules/
 npm-debug.log
+
+# React Native
+#
+iOS/main.jsbundle
+
