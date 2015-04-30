@@ -20,18 +20,25 @@ var Quizzer = require('./Quizzer.ios');
 var Stats = require('./Stats.ios');
 
 var Button = React.createClass({
+  defaultProps: {
+    small: React.PropTypes.bool,
+    color: React.PropTypes.string,
+    text: React.PropTypes.string,
+  },
   render: function() {
     var color = this.props.color ? this.props.color : '#89dacc';
+
     var buttonTextStyle = styles.buttonText;
     if (this.props.small) {
       buttonTextStyle = [buttonTextStyle, { fontSize: 20 }];
     }
+
     return (
       <TouchableHighlight
         onPress={this.props.onPress}
         underlayColor="transparent"
         activeOpacity={0.5}>
-        <View style={[styles.button, {backgroundColor: color}]}>
+        <View style={[styles.button, { backgroundColor: color }]}>
           <Text style={buttonTextStyle}>{this.props.text}</Text>
         </View>
       </TouchableHighlight>
@@ -95,6 +102,27 @@ var MathFacts = React.createClass({
   setMultiplicationMode: function() {
     this.setState({mode: 'multiplication'});
   },
+  _renderHomeScreen: function() {
+    var mode = this.state.mode;
+    return (
+      <View style={styles.container}>
+        <Button text="Play" onPress={this.startGame} />
+        <Button text="Stats" onPress={this.showStats} />
+        <View style={styles.toggleButtons}>
+          <Button
+            text="Addition"
+            color={mode === 'addition' ? "#666" : "#ccc"}
+            small={true}
+            onPress={this.setAdditionMode}/>
+          <Button
+            text="Multiplication"
+            color={mode === 'multiplication' ? "#666" : "#ccc"}
+            small={true}
+            onPress={this.setMultiplicationMode}/>
+        </View>
+      </View>
+    );
+  },
   render: function() {
     var mode = this.state.mode;
     return (
@@ -113,22 +141,7 @@ var MathFacts = React.createClass({
             quizzesData={this.state.quizzesData}/>
         }
         {!this.state.playing && !this.state.showStats &&
-          <View style={styles.container}>
-            <Button text="Play" onPress={this.startGame} />
-            <Button text="Stats" onPress={this.showStats} />
-            <View style={styles.toggleButtons}>
-              <Button
-                text="Addition"
-                color={mode === 'addition' ? "#666" : "#ccc"}
-                small={true}
-                onPress={this.setAdditionMode}/>
-              <Button
-                text="Multiplication"
-                color={mode === 'multiplication' ? "#666" : "#ccc"}
-                small={true}
-                onPress={this.setMultiplicationMode}/>
-            </View>
-          </View>
+          this._renderHomeScreen()
         }
       </View>
     );
