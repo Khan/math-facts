@@ -15,6 +15,27 @@ var randomIntBetween = function(min, max) {
   return Math.floor(Math.random()*(max - min + 1)) + min;
 };
 
+
+
+/**
+ * Given data about a particular math fact, determine the fact's mastery level
+ *
+ */
+var masteryLevel = function() {
+  // TODO: ...this.
+
+};
+
+// From /webapp/stylesheets/shared-package/variables.less
+var masteryColors = {
+  unknown: '#dddddd',
+  struggling: '#c30202',
+  practiced: '#9cdceb',
+  levelOne: '#58c4dd',
+  levelTwo: '#29abca',
+  mastered: '#1c758a',
+};
+
 /**
  * Converts an HSL color value to RGB. Conversion formula
  * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
