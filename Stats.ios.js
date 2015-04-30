@@ -133,7 +133,7 @@ var Stats = React.createClass({
     return {
       attemptData: this.getInitialQuizzesData(),
       timeData: this.getInitialQuizzesData(),
-      active: [1, 2]
+      active: [1, 1]
     };
   },
   getInitialQuizzesData: function() {
