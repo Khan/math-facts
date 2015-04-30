@@ -22,13 +22,17 @@ var Stats = require('./Stats.ios');
 var Button = React.createClass({
   render: function() {
     var color = this.props.color ? this.props.color : '#89dacc';
+    var buttonTextStyle = styles.buttonText;
+    if (this.props.small) {
+      buttonTextStyle = [buttonTextStyle, { fontSize: 20 }];
+    }
     return (
       <TouchableHighlight
         onPress={this.props.onPress}
         underlayColor="transparent"
         activeOpacity={0.5}>
         <View style={[styles.button, {backgroundColor: color}]}>
-          <Text style={styles.buttonText}>{this.props.text}</Text>
+          <Text style={buttonTextStyle}>{this.props.text}</Text>
         </View>
       </TouchableHighlight>
     );
@@ -116,10 +120,12 @@ var MathFacts = React.createClass({
               <Button
                 text="Addition"
                 color={mode === 'addition' ? "#666" : "#ccc"}
+                small={true}
                 onPress={this.setAdditionMode}/>
               <Button
                 text="Multiplication"
                 color={mode === 'multiplication' ? "#666" : "#ccc"}
+                small={true}
                 onPress={this.setMultiplicationMode}/>
             </View>
           </View>
@@ -150,11 +156,12 @@ var styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 30,
-    color: "#fff"
+    color: '#fff'
   },
 
   toggleButtons: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center'
   }
 
 });

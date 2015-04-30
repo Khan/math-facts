@@ -282,20 +282,20 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   question: {
-    fontSize: 60,
+    fontSize: 40,
     margin: 10,
     color: '#fff'
   },
   response: {
-    fontSize: 80,
-    height: 80,
+    fontSize: 65,
+    height: 70,
     color: '#fff',
     marginBottom: 5,
   },
 
   hintContainer: {
     flex: 0,
-    height: 100,
+    height: 90,
     alignSelf: 'stretch',
     flexDirection: 'column'
   },

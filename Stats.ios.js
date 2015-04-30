@@ -253,8 +253,8 @@ var styles = StyleSheet.create({
   },
   gridCell: {
     flex: 1,
-    height: 32,
-    width: 32,
+    height: 27, // 32 for iPhone 6
+    width: 27,
     margin: 1,
     backgroundColor: '#face01',
     flexDirection: 'column',
@@ -262,7 +262,7 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   gridCellText: {
-    fontSize: 16,
+    fontSize: 15, // 16 for iPhone 6
     fontWeight: '400'
 
   }
