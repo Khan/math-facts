@@ -11,19 +11,21 @@ var {
   View,
 } = React;
 
-var hslToRgb = require('./Helpers.ios').hslToRgb;
-var masteryLevel = require('./Helpers.ios').masteryLevel;
+var ColorHelpers = require('./ColorHelpers.ios');
+var MasteryHelpers = require('./MasteryHelpers.ios');
 
 var GridCell = React.createClass({
   defaultProps: {
     content: React.PropTypes.string,
     color: React.PropTypes.string,
+    textColor: React.PropTypes.string,
     key: React.PropTypes.string.isRequired,
     onPress: React.PropTypes.func,
   },
   render: function() {
     var onPress = this.props.onPress || null;
-    var color = this.props.color.length ? this.props.color : '#ddd';
+    var color = this.props.color || '#ddd';
+    var textColor = this.props.textColor || '#222';
     if (onPress) {
       return (
         <TouchableHighlight
@@ -31,7 +33,7 @@ var GridCell = React.createClass({
             style={[styles.gridCell, {backgroundColor: color}]}
             underlayColor="transparent"
             onPress={onPress}>
-          <Text style={styles.gridCellText}>
+          <Text style={[styles.gridCellText, {color: textColor}]}>
             {this.props.content}
           </Text>
         </TouchableHighlight>
@@ -41,7 +43,7 @@ var GridCell = React.createClass({
         <View
             key={this.props.key}
             style={[styles.gridCell, {backgroundColor: color}]}>
-          <Text style={styles.gridCellText}>
+          <Text style={[styles.gridCellText, {color: textColor}]}>
             {this.props.content}
           </Text>
         </View>
@@ -83,14 +85,19 @@ var Grid = React.createClass({
                     color='#eee'
                     key={'cell-row-header-' + row}/>
                 {_.map(_.range(0, 10), (col) => {
-                  var numTries = this.props.attemptData[row + 1][col + 1];
-                  var cellColor = masteryLevel(numTries);
+                  var timesAnswered = this.props.attemptData[row + 1][col + 1];
+                  var masteryColor = MasteryHelpers.masteryLevel(
+                    timesAnswered);
+                  var masteryColorText = MasteryHelpers.masteryColorText(
+                    masteryColor);
+
                   var answer = this.props.mode === 'addition' ?
                                 (row + 1) + (col + 1) :
                                 (row + 1) * (col + 1);
                   return (<GridCell
                     content={answer}
-                    color={cellColor}
+                    color={masteryColor}
+                    textColor={masteryColorText}
                     key={'cell-' + row + '-' + col}
                     onPress={() => {
                       this.props.onPress([row + 1, col + 1]);
@@ -161,25 +168,38 @@ var Stats = React.createClass({
     var activeRow = this.state.active[0];
     var activeCol = this.state.active[1];
     var timesAnswered = this.state.attemptData[activeRow][activeCol];
-    var bestTime = this.state.timeData[activeRow][activeCol]/1000;
+    var bestTimeInMilliseconds = this.state.timeData[activeRow][activeCol];
+    var bestTime = parseFloat(bestTimeInMilliseconds/1000).toFixed(2);
+
+    var masteryColor = MasteryHelpers.masteryLevel(timesAnswered, bestTime);
+    var masteryColorText = MasteryHelpers.masteryColorText(masteryColor);
 
     var answer = this.props.mode === 'addition' ?
                   (activeRow) + (activeCol) :
                   (activeRow) * (activeCol);
-    var info = (<View style={styles.infoContainer}>
-      <Text style={styles.infoQuestion}>
-        {activeRow + ' ' + sign + ' ' + activeCol + ' = ' +
-          answer}
-      </Text>
-      <Text style={styles.infoStat}>
-        {'Times Answered: ' + timesAnswered}
-      </Text>
-      {(timesAnswered && bestTime) ?
-        <Text style={styles.infoStat}>
-          {'Best Time: ' + bestTime + 's'}
+
+    var infoStatTextStyle = [styles.infoStatText, {color: masteryColorText}];
+    var info = (
+      <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
+        <Text style={[styles.infoQuestion, {color: masteryColorText}]}>
+          {activeRow + ' ' + sign + ' ' + activeCol + ' = ' +
+            answer}
         </Text>
-      : null}
-    </View>);
+        <View style={styles.infoStats}>
+          <View style={styles.infoStat}>
+            <Text style={infoStatTextStyle}>
+              {timesAnswered + ' attempt' + (timesAnswered !== 1 ? 's' : '')}
+            </Text>
+          </View>
+          {(timesAnswered > 0 && bestTime > 0) ?
+          <View style={styles.infoStat}>
+            <Text style={infoStatTextStyle}>
+              {'Best time: ' + bestTime + 's'}
+            </Text>
+          </View> : null}
+        </View>
+      </View>
+    );
 
     return (
       <View style={styles.container}>
@@ -211,17 +231,30 @@ var styles = StyleSheet.create({
   },
 
   infoContainer: {
+    flex: 1,
+    alignSelf: 'stretch',
     alignItems: 'center',
-    margin: 20
+    padding: 20
   },
   infoQuestion: {
     fontSize: 40,
     fontWeight: 'bold',
     margin: 10
   },
+  infoStats: {
+    flexDirection: 'row'
+  },
   infoStat: {
-    fontSize: 20,
-    margin: 5
+    margin: 5,
+    backgroundColor: '#fff',
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 3,
+    paddingBottom: 3,
+    borderRadius: 10
+  },
+  infoStatText: {
+    fontSize: 15,
   },
 
   grid: {

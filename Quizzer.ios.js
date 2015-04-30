@@ -12,7 +12,7 @@ var {
 } = React;
 
 var randomIntBetween = require('./Helpers.ios').randomIntBetween;
-var hslToRgb = require('./Helpers.ios').hslToRgb;
+var ColorHelpers = require('./ColorHelpers.ios');
 
 var Circle = React.createClass({
   render: function() {
@@ -164,19 +164,20 @@ var Quizzer = React.createClass({
 
   getColor: function() {
     var colors = [
-      hslToRgb(0, 0.7, 0.6), // red
-      hslToRgb(0.06, 0.7, 0.6), // orange
-      hslToRgb(0.1, 0.75, 0.58), // yellow
-      hslToRgb(0.2, 0.5, 0.5), // light green
-      hslToRgb(0.35, 0.4, 0.55), // green
-      hslToRgb(0.45, 0.6, 0.5), // teal
-      hslToRgb(0.55, 0.5, 0.5), // blue
-      hslToRgb(0.7, 0.6, 0.65), // purple
-      hslToRgb(0.8, 0.6, 0.65), // purple-pink
-      hslToRgb(0.9, 0.6, 0.65), // pink
+      ColorHelpers.hslToRgb([0, 0.7, 0.6]), // red
+      ColorHelpers.hslToRgb([0.06, 0.7, 0.6]), // orange
+      ColorHelpers.hslToRgb([0.1, 0.75, 0.58]), // yellow
+      ColorHelpers.hslToRgb([0.2, 0.5, 0.5]), // light green
+      ColorHelpers.hslToRgb([0.35, 0.4, 0.55]), // green
+      ColorHelpers.hslToRgb([0.45, 0.6, 0.5]), // teal
+      ColorHelpers.hslToRgb([0.55, 0.5, 0.5]), // blue
+      ColorHelpers.hslToRgb([0.7, 0.6, 0.65]), // purple
+      ColorHelpers.hslToRgb([0.8, 0.6, 0.65]), // purple-pink
+      ColorHelpers.hslToRgb([0.9, 0.6, 0.65]), // pink
     ];
     return colors[this.state.colorHue];
   },
+
   render: function() {
     var left = this.state.leftNumber;
     var right = this.state.rightNumber;
@@ -236,7 +237,7 @@ var Quizzer = React.createClass({
           {_.map(_.range(0, this.props.count), (value) => {
             var opacity = value < this.state.count ? 1 : 0.2;
             var color = 'rgba(255, 255, 255, ' + opacity + ')';
-            return (<Circle size={8} color={color}/>);
+            return (<Circle size={8} key={'circle-' + value} color={color}/>);
           })}
         </View>
         <View style={styles.questionContainer}>
