@@ -78,12 +78,14 @@ var Quizzer = React.createClass({
     if (this.state.response === answer.toString()) {
       setTimeout(() => {
         var data = _.clone(this.state.data);
+        var d = new Date();
         data.push({
           left: this.state.leftNumber,
           right: this.state.rightNumber,
           time: this.state.time, // time taken in ms
           type: this.props.mode,
-          hintUsed: this.state.hintUsed
+          hintUsed: this.state.hintUsed,
+          date: d.getTime()
         });
 
         if (this.state.count >= this.props.count - 1) {
