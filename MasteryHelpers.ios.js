@@ -13,6 +13,14 @@ var masteryColors = {
   levelTwo: '#29abca',
   mastered: '#1c758a',
 };
+var masteryTextColors = {
+  unknown: '#5d5d5d',
+  struggling: '#ffdfdf',
+  practiced: '#124653',
+  levelOne: '#144956',
+  levelTwo: '#0C3842',
+  mastered: '#f7feff',
+};
 
 /**
  * Given data about a particular math fact, determine the fact's mastery level
@@ -27,11 +35,13 @@ var masteryLevel = function(numTries, bestTime) {
   //   {time: 1000, date: 19346832, hint: false},
   //    ... ]
 
-  return numTries > 3 ? masteryColors.mastered :
-         numTries > 2 ? masteryColors.levelTwo :
-         numTries > 1 ? masteryColors.levelOne :
-         numTries > 0 ? masteryColors.practiced :
-                        masteryColors.unknown;
+  if (bestTime > 0 && bestTime < 1000 && numTries > 2) {
+    return 'mastered';
+  }
+  return numTries > 2 ? 'levelTwo' :
+         numTries > 1 ? 'levelOne' :
+         numTries > 0 ? 'practiced' :
+                        'unknown';
 
 };
 
@@ -51,5 +61,6 @@ var masteryColorText = function(masteryColor) {
 
 module.exports = {
   masteryLevel: masteryLevel,
-  masteryColorText: masteryColorText
+  masteryColors: masteryColors,
+  masteryTextColors: masteryTextColors
 };

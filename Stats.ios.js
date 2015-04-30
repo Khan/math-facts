@@ -86,10 +86,13 @@ var Grid = React.createClass({
                     key={'cell-row-header-' + row}/>
                 {_.map(_.range(0, 10), (col) => {
                   var timesAnswered = this.props.attemptData[row + 1][col + 1];
-                  var masteryColor = MasteryHelpers.masteryLevel(
-                    timesAnswered);
-                  var masteryColorText = MasteryHelpers.masteryColorText(
-                    masteryColor);
+                  var bestTime = this.props.timeData[row + 1][col + 1];
+                  var masteryLevel = MasteryHelpers.masteryLevel(
+                    timesAnswered, bestTime);
+                  var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
+                  var masteryColorText = MasteryHelpers.masteryTextColors[
+                    masteryLevel
+                  ];
 
                   var answer = this.props.mode === 'addition' ?
                                 (row + 1) + (col + 1) :
@@ -171,14 +174,16 @@ var Stats = React.createClass({
     var bestTimeInMilliseconds = this.state.timeData[activeRow][activeCol];
     var bestTime = parseFloat(bestTimeInMilliseconds/1000).toFixed(2);
 
-    var masteryColor = MasteryHelpers.masteryLevel(timesAnswered, bestTime);
-    var masteryColorText = MasteryHelpers.masteryColorText(masteryColor);
+    var masteryLevel = MasteryHelpers.masteryLevel(
+      timesAnswered, bestTimeInMilliseconds);
+    var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
+    var masteryColorText = MasteryHelpers.masteryTextColors[masteryLevel];
 
     var answer = this.props.mode === 'addition' ?
                   (activeRow) + (activeCol) :
                   (activeRow) * (activeCol);
 
-    var infoStatTextStyle = [styles.infoStatText, {color: masteryColorText}];
+    var infoStatTextStyle = styles.infoStatText;
     var info = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
         <Text style={[styles.infoQuestion, {color: masteryColorText}]}>
@@ -234,7 +239,8 @@ var styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     alignItems: 'center',
-    padding: 20
+    padding: 20,
+    marginTop: 1
   },
   infoQuestion: {
     fontSize: 40,
@@ -255,6 +261,7 @@ var styles = StyleSheet.create({
   },
   infoStatText: {
     fontSize: 15,
+    color: '#144956'
   },
 
   grid: {
