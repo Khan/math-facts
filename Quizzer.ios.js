@@ -132,9 +132,15 @@ var Quizzer = React.createClass({
       return button(() => {this.addDigit(value)}, value);
     });
 
-    buttons.push(button(this.backspace, '<x'));
+    buttons.push(button(this.backspace, '⌫'));
     buttons.push(button(() => {this.addDigit(0)}, '0'));
-    buttons.push(button(this.hint, '?'));
+
+    // TODO: Implement hints for multiplication
+    if (this.props.mode === 'addition') {
+      buttons.push(button(this.hint, '?'));
+    } else {
+      buttons.push(button(null, ' '));
+    }
 
     return (
       <View style={styles.buttons}>
