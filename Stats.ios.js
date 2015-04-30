@@ -150,13 +150,13 @@ var Stats = React.createClass({
       var id = obj._id;
       var quizData = obj.quizData;
       _.each(quizData, (data) => {
-        //if (data.type === this.props.mode) {
+        if (data.type === this.props.mode) {
           attemptData[data.left][data.right]++;
 
           var time = timeData[data.left][data.right];
           timeData[data.left][data.right] = time > 0 ?
             Math.min(time, data.time) : data.time;
-        //}
+        }
       });
     });
 
