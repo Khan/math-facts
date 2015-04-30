@@ -17,15 +17,6 @@ var randomIntBetween = function(min, max) {
 
 
 
-/**
- * Given data about a particular math fact, determine the fact's mastery level
- *
- */
-var masteryLevel = function() {
-  // TODO: ...this.
-
-};
-
 // From /webapp/stylesheets/shared-package/variables.less
 var masteryColors = {
   unknown: '#dddddd',
@@ -34,6 +25,27 @@ var masteryColors = {
   levelOne: '#58c4dd',
   levelTwo: '#29abca',
   mastered: '#1c758a',
+};
+
+/**
+ * Given data about a particular math fact, determine the fact's mastery level
+ *
+ */
+var masteryLevel = function(numTries, bestTime) {
+  // TODO: Make this calculation take into account time and
+  // recent stuff and stuff.
+
+  // TODO: make this take an array of time data in the form:
+  // [ {time: 1200, date: 19346832, hint: true},
+  //   {time: 1000, date: 19346832, hint: false},
+  //    ... ]
+
+  return numTries > 3 ? masteryColors.mastered :
+         numTries > 2 ? masteryColors.levelTwo :
+         numTries > 1 ? masteryColors.levelOne :
+         numTries > 0 ? masteryColors.practiced :
+                        masteryColors.unknown;
+
 };
 
 /**
@@ -77,7 +89,43 @@ function hslToRgb(h, s, l){
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ *
+ * From: http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+ *
+ * @param   Number  r       The red color value
+ * @param   Number  g       The green color value
+ * @param   Number  b       The blue color value
+ * @return  Array           The HSL representation
+ */
+function rgbToHsl(r, g, b){
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+
+    if (max == min) {
+        h = s = 0; // achromatic
+    } else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch(max){
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+    }
+
+    return [h, s, l];
+}
+
 module.exports = {
-	randomIntBetween: randomIntBetween,
-	hslToRgb: hslToRgb
+  randomIntBetween: randomIntBetween,
+  hslToRgb: hslToRgb,
+  rgbToHsl: rgbToHsl,
+  masteryLevel: masteryLevel
 };

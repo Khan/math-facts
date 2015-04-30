@@ -12,7 +12,7 @@ var {
 } = React;
 
 var hslToRgb = require('./Helpers.ios').hslToRgb;
-
+var masteryLevel = require('./Helpers.ios').masteryLevel;
 
 var GridCell = React.createClass({
   defaultProps: {
@@ -84,33 +84,13 @@ var Grid = React.createClass({
                     key={'cell-row-header-' + row}/>
                 {_.map(_.range(0, 10), (col) => {
                   var numTries = this.props.attemptData[row + 1][col + 1];
-                  var colors = [
-                    hslToRgb(0, 0.7, 0.6), // red
-                    hslToRgb(0.06, 0.7, 0.6), // orange
-                    hslToRgb(0.1, 0.75, 0.58), // yellow
-                    hslToRgb(0.2, 0.5, 0.5), // light green
-                    hslToRgb(0.35, 0.4, 0.55), // green
-                    hslToRgb(0.45, 0.6, 0.5), // teal
-                    hslToRgb(0.55, 0.5, 0.5), // blue
-                    hslToRgb(0.7, 0.6, 0.65), // purple
-                    hslToRgb(0.8, 0.6, 0.65), // purple-pink
-                    hslToRgb(0.9, 0.6, 0.65), // pink
-                  ];
-                  // TODO: Make this calculation take into account time and
-                  // recent stuff and stuff.
-                  var index = numTries > 5 ? 4 :
-                              numTries > 2 ? 3 :
-                              numTries > 1 ? 2 :
-                              numTries > 0 ? 1 : 0;
-
-                  var rgb = colors[index];
-
+                  var cellColor = masteryLevel(numTries);
                   var answer = this.props.mode === 'addition' ?
                                 (row + 1) + (col + 1) :
                                 (row + 1) * (col + 1);
                   return (<GridCell
                     content={answer}
-                    color={'rgb(' + rgb[0] +', ' + rgb[1] +', ' + rgb[2] +')'}
+                    color={cellColor}
                     key={'cell-' + row + '-' + col}
                     onPress={() => {
                       this.props.onPress([row + 1, col + 1]);
@@ -253,16 +233,15 @@ var styles = StyleSheet.create({
   },
   gridCell: {
     flex: 1,
-    height: 27, // 32 for iPhone 6
-    width: 27,
-    margin: 1,
+    height: 29, // 34 for iPhone 6
+    width: 29,
     backgroundColor: '#face01',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
   },
   gridCellText: {
-    fontSize: 15, // 16 for iPhone 6
+    fontSize: 14, // 16 for iPhone 6
     fontWeight: '400'
 
   }
