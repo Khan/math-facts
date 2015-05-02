@@ -55,7 +55,6 @@ var GridCell = React.createClass({
 
 var Grid = React.createClass({
   defaultProps: {
-    attemptData: React.PropTypes.array,
     timeData: React.PropTypes.array,
     mode: React.PropTypes.string,
     onPress: React.PropTypes.func
@@ -85,10 +84,10 @@ var Grid = React.createClass({
                     color='#eee'
                     key={'cell-row-header-' + row}/>
                 {_.map(_.range(0, 10), (col) => {
-                  var timesAnswered = this.props.attemptData[row + 1][col + 1];
-                  var bestTime = this.props.timeData[row + 1][col + 1];
-                  var masteryLevel = MasteryHelpers.masteryLevel(
-                    timesAnswered, bestTime);
+                  var times = this.props.timeData[row + 1][col + 1];
+                  var timesAnswered = times.length;
+                  var bestTime = Math.min.apply(Math, times);
+                  var masteryLevel = MasteryHelpers.masteryLevel(times);
                   var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
                   var masteryColorText = MasteryHelpers.masteryTextColors[
                     masteryLevel
@@ -121,7 +120,6 @@ var Stats = React.createClass({
   },
   getInitialState: function() {
     return {
-      attemptData: this.getInitialQuizzesData(),
       timeData: this.getInitialQuizzesData(),
       active: [1, 1]
     };
@@ -129,11 +127,10 @@ var Stats = React.createClass({
   getInitialQuizzesData: function() {
     // Size must be larger than the max size of the values that are added
     return _.map(_.range(0, 12), () => {
-      return _.map(_.range(0, 12), () => { return 0 });
+      return _.map(_.range(0, 12), () => { return []; });
     });
   },
   componentWillReceiveProps: function(newProps) {
-    var attemptData = this.getInitialQuizzesData();
     var timeData = this.getInitialQuizzesData();
 
     _.each(newProps.quizzesData, (obj, index) => {
@@ -141,17 +138,15 @@ var Stats = React.createClass({
       var quizData = obj.quizData;
       _.each(quizData, (data) => {
         if (data.type === this.props.mode) {
-          attemptData[data.left][data.right]++;
-
-          var time = timeData[data.left][data.right];
-          timeData[data.left][data.right] = time > 0 ?
-            Math.min(time, data.time) : data.time;
+          if (timeData[data.left][data.right].length === 0) {
+            timeData[data.left][data.right].length = [];
+          }
+          timeData[data.left][data.right].push(data.time);
         }
       });
     });
 
     this.setState({
-      attemptData: attemptData,
       timeData: timeData
     });
   },
@@ -159,7 +154,6 @@ var Stats = React.createClass({
 
     var sign = this.props.mode === 'addition' ? '+' : 'x';
     var grid = <Grid
-      attemptData={this.state.attemptData}
       timeData={this.state.timeData}
       mode={this.props.mode}
       onPress={(active) => {
@@ -170,12 +164,13 @@ var Stats = React.createClass({
 
     var activeRow = this.state.active[0];
     var activeCol = this.state.active[1];
-    var timesAnswered = this.state.attemptData[activeRow][activeCol];
-    var bestTimeInMilliseconds = this.state.timeData[activeRow][activeCol];
+
+    var times = this.state.timeData[activeRow][activeCol];
+    var timesAnswered = times.length;
+    var bestTimeInMilliseconds = Math.min.apply(Math, times);
     var bestTime = parseFloat(bestTimeInMilliseconds/1000).toFixed(2);
 
-    var masteryLevel = MasteryHelpers.masteryLevel(
-      timesAnswered, bestTimeInMilliseconds);
+    var masteryLevel = MasteryHelpers.masteryLevel(times);
     var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
     var masteryColorText = MasteryHelpers.masteryTextColors[masteryLevel];
 

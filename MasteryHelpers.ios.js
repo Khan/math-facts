@@ -26,7 +26,12 @@ var masteryTextColors = {
  * Given data about a particular math fact, determine the fact's mastery level
  *
  */
-var masteryLevel = function(numTries, bestTime) {
+var masteryLevel = function(times) {
+  // times is an array of the most recent time data:
+  // times = [1350, 2000, 1500, 2000, 1000, 950, 1300]
+  var bestTime = Math.min.apply(Math, times);
+  var numTries = times.length;
+
   // TODO: Make this calculation take into account time and
   // recent stuff and stuff.
 
