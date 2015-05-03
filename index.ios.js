@@ -14,7 +14,7 @@ var {
   View,
 } = React;
 
-var ReactNativeStore = require('react-native-store');
+var MathFactsDB = require('./MathFactsDB');
 
 var Quizzer = require('./Quizzer.ios');
 var Stats = require('./Stats.ios');
@@ -73,24 +73,26 @@ var MathFacts = React.createClass({
     });
   },
   updatequizzesData: function() {
+    var mode = this.state.mode;
+    var range = [[1, 1], [10, 10]];
     var quizzesData = {};
-    ReactNativeStore.table("quizzes").then((quizzes) => {
-      return quizzes.databaseData["quizzes"].rows;
-    }).then((quizzesData) => {
+    MathFactsDB.getFactsInRange(mode, range).then((data) => {
       this.setState({
-        quizzesData: quizzesData
+        quizzesData: data
       });
-    });
+    }).done();
+
   },
-  finish: function(quizzesData) {
+  finish: function(quizData) {
+    var mode = this.state.mode;
+    _.each(quizData, (questionData) => {
+      MathFactsDB
+        .addFactAttempt(mode, questionData.inputs, questionData.data)
+        .done();
+    });
+
     this.setState({
       playing: false
-    }, () => {
-      ReactNativeStore.table("quizzes").then((quizzes) => {
-        var id = quizzes.add({
-          quizData: quizzesData
-        });
-      });
     });
   },
   componentDidMount: function() {

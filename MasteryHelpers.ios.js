@@ -27,18 +27,21 @@ var masteryTextColors = {
  *
  */
 var masteryLevel = function(times) {
-  // times is an array of the most recent time data:
-  // times = [1350, 2000, 1500, 2000, 1000, 950, 1300]
-  var bestTime = Math.min.apply(Math, times);
+  // times is an array of the most recent time data in the form:
+  // [ {time: 1200, date: 19346832, hintUsed: true},
+  //   {time: 1000, date: 19346832, hintUsed: false},
+  //    ... ]
+
+  var bestTime = 0;
+  _.each(times, (data) => {
+    if (data != null && (bestTime === 0 || data.time < bestTime)) {
+      bestTime = data.time;
+    }
+  });
   var numTries = times.length;
 
   // TODO: Make this calculation take into account time and
   // recent stuff and stuff.
-
-  // TODO: make this take an array of time data in the form:
-  // [ {time: 1200, date: 19346832, hint: true},
-  //   {time: 1000, date: 19346832, hint: false},
-  //    ... ]
 
   if (bestTime > 0 && bestTime < 1000 && numTries > 2) {
     return 'mastered';

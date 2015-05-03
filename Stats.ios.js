@@ -134,15 +134,16 @@ var Stats = React.createClass({
     var timeData = this.getInitialQuizzesData();
 
     _.each(newProps.quizzesData, (obj, index) => {
-      var id = obj._id;
-      var quizData = obj.quizData;
-      _.each(quizData, (data) => {
-        if (data.type === this.props.mode) {
-          if (timeData[data.left][data.right].length === 0) {
-            timeData[data.left][data.right].length = [];
-          }
-          timeData[data.left][data.right].push(data.time);
+      var inputs = obj.input;
+      var attemptData = obj.attempts;
+      var left = inputs[0];
+      var right = inputs[1];
+
+      _.each(attemptData, (attempt) => {
+        if (timeData[left][right].length === 0) {
+          timeData[left][right].length = [];
         }
+        timeData[left][right].push(attempt);
       });
     });
 
@@ -167,8 +168,13 @@ var Stats = React.createClass({
 
     var times = this.state.timeData[activeRow][activeCol];
     var timesAnswered = times.length;
-    var bestTimeInMilliseconds = Math.min.apply(Math, times);
-    var bestTime = parseFloat(bestTimeInMilliseconds/1000).toFixed(2);
+    var bestTime = 0;
+    _.each(times, (data) => {
+      if (data != null && (bestTime === 0 || data.time < bestTime)) {
+        bestTime = data.time;
+      }
+    });
+    var bestTimePrint = parseFloat(bestTime/1000).toFixed(2);
 
     var masteryLevel = MasteryHelpers.masteryLevel(times);
     var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
@@ -191,10 +197,10 @@ var Stats = React.createClass({
               {timesAnswered + ' attempt' + (timesAnswered !== 1 ? 's' : '')}
             </Text>
           </View>
-          {(timesAnswered > 0 && bestTime > 0) ?
+          {(timesAnswered > 0 && bestTimePrint > 0) ?
           <View style={styles.infoStat}>
             <Text style={infoStatTextStyle}>
-              {'Best time: ' + bestTime + 's'}
+              {'Best time: ' + bestTimePrint + 's'}
             </Text>
           </View> : null}
         </View>

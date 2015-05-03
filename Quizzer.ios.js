@@ -80,21 +80,17 @@ var Quizzer = React.createClass({
         var data = _.clone(this.state.data);
         var d = new Date();
         data.push({
-          left: this.state.leftNumber,
-          right: this.state.rightNumber,
-          time: this.state.time, // time taken in ms
-          type: this.props.mode,
-          hintUsed: this.state.hintUsed,
-          date: d.getTime()
+          inputs: [left, right],
+          data: {
+            time: this.state.time, // time taken in ms
+            hintUsed: this.state.hintUsed,
+            date: d.getTime()
+          }
         });
 
         if (this.state.count >= this.props.count - 1) {
           // Finished the quiz
-          this.setState({
-            data: data
-          }, () => {
-            this.props.finish(this.state.data);
-          });
+          this.props.finish(data);
 
         } else {
           // Load a new question
