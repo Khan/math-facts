@@ -5,8 +5,8 @@ var _ = require('underscore');
 var React = require('react-native');
 var AsyncStorage = React.AsyncStorage;
 
-function makeKey(mode: string, inputs: Array<int>): string {
-  var key = mode + '-';
+function makeKey(operation: string, inputs: Array<int>): string {
+  var key = operation + '-';
 
   _.each(inputs, function(input, i) {
     key += (i === 0 ? '' : ',') + input;
@@ -18,19 +18,19 @@ function makeKey(mode: string, inputs: Array<int>): string {
 var MathFactsDB = {
   /*
    * Data is stored in the form:
-   *   mode => inputs => [data, data, data, ...]
-   *           inputs => data
-   *           inputs => data
-   *           ...
+   *   operation => inputs => [data, data, data, ...]
+   *                inputs => data
+   *                inputs => data
+   *                ...
    *
-   * @param  String  mode    The type of fact (e.g. addition, multiplication)
+   * @param  String  operation    The type of fact (e.g. addition, multiplication)
    * @param  Array   inputs  An array of inputs (e.g. [factor, multiplier])
    * @param  Object  data    The data about the fact
    * @return Promise
    */
-  addFactAttempt: function(mode: string, inputs: Array<int>, data: object):
+  addFactAttempt: function(operation: string, inputs: Array<int>, data: object):
       Promise {
-    var key = makeKey(mode, inputs);
+    var key = makeKey(operation, inputs);
 
     return AsyncStorage.getItem(key).then((currentData) => {
       if (currentData != null) {
@@ -50,12 +50,12 @@ var MathFactsDB = {
   /*
    * Get the array of data for the given fact
    *
-   * @param  String  mode    The type of fact (e.g. addition, multiplication)
-   * @param  Array   inputs  An array of inputs (e.g. [factor, multiplier])
+   * @param  String  operation  The type of fact (e.g. addition, multiplication)
+   * @param  Array   inputs     An array of inputs (e.g. [factor, multiplier])
    * @return Promise
    */
-  getAttemptsForFact: function(mode: string, inputs: Array<int>): Promise {
-    var key = makeKey(mode, inputs);
+  getAttemptsForFact: function(operation: string, inputs: Array<int>): Promise {
+    var key = makeKey(operation, inputs);
 
     return AsyncStorage.getItem(key).then((data) => {
       return JSON.parse(data);
@@ -68,12 +68,13 @@ var MathFactsDB = {
    * Get data for each fact in a range of facts
    * e.g. 'multiplication', [[1, 1], [5, 5]] yields all facts b/w 1x1 and 5x5
    *
-   * @param  String  mode    The type of fact (e.g. addition, multiplication)
-   * @param  Array   range   A range of inputs from [factor1, multiplier1] to
-   *                         [factor2, multiplier2].
+   * @param  String  operation The type of fact (e.g. addition, multiplication)
+   * @param  Array   range     A range of inputs from [factor1, multiplier1] to
+   *                           [factor2, multiplier2].
    * @return Promise
    */
-  getFactsInRange: function(mode: string, range: Array<Array<int>>): Promise {
+  getFactsInRange: function(operation: string, range: Array<Array<int>>):
+      Promise {
     var flippedRange = _.map(range[0], (left, i) => {
       return [left, range[1][i]];
     });
@@ -88,12 +89,13 @@ var MathFactsDB = {
     }, [[]]);
 
     return Promise.all(_.map(inputs, (input) => {
-      return MathFactsDB.getAttemptsForFact(mode, input).then((attempts) => {
-        return {
-          input: input,
-          attempts: attempts
-        };
-      });
+      return MathFactsDB.getAttemptsForFact(operation, input).then(
+        (attempts) => {
+          return {
+            input: input,
+            attempts: attempts
+          };
+        });
     }));
   }
 };

@@ -52,7 +52,7 @@ var MathFacts = React.createClass({
       playing: false,
       showStats: false,
       quizzesData: {},
-      mode: 'multiplication'
+      operation: 'multiplication'
     };
   },
   startGame: function() {
@@ -73,10 +73,10 @@ var MathFacts = React.createClass({
     });
   },
   updatequizzesData: function() {
-    var mode = this.state.mode;
+    var operation = this.state.operation;
     var range = [[1, 1], [10, 10]];
     var quizzesData = {};
-    MathFactsDB.getFactsInRange(mode, range).then((data) => {
+    MathFactsDB.getFactsInRange(operation, range).then((data) => {
       this.setState({
         quizzesData: data
       });
@@ -84,10 +84,10 @@ var MathFacts = React.createClass({
 
   },
   finish: function(quizData) {
-    var mode = this.state.mode;
+    var operation = this.state.operation;
     _.each(quizData, (questionData) => {
       MathFactsDB
-        .addFactAttempt(mode, questionData.inputs, questionData.data)
+        .addFactAttempt(operation, questionData.inputs, questionData.data)
         .done();
     });
 
@@ -98,14 +98,14 @@ var MathFacts = React.createClass({
   componentDidMount: function() {
     this.updatequizzesData();
   },
-  setAdditionMode: function() {
-    this.setState({mode: 'addition'});
+  setAdditionoperation: function() {
+    this.setState({operation: 'addition'});
   },
-  setMultiplicationMode: function() {
-    this.setState({mode: 'multiplication'});
+  setMultiplicationoperation: function() {
+    this.setState({operation: 'multiplication'});
   },
   _renderHomeScreen: function() {
-    var mode = this.state.mode;
+    var operation = this.state.operation;
     return (
       <View style={styles.container}>
         <Button text="Play" onPress={this.startGame} />
@@ -113,32 +113,32 @@ var MathFacts = React.createClass({
         <View style={styles.toggleButtons}>
           <Button
             text="Addition"
-            color={mode === 'addition' ? "#666" : "#ccc"}
+            color={operation === 'addition' ? "#666" : "#ccc"}
             small={true}
-            onPress={this.setAdditionMode}/>
+            onPress={this.setAdditionoperation}/>
           <Button
             text="Multiplication"
-            color={mode === 'multiplication' ? "#666" : "#ccc"}
+            color={operation === 'multiplication' ? "#666" : "#ccc"}
             small={true}
-            onPress={this.setMultiplicationMode}/>
+            onPress={this.setMultiplicationoperation}/>
         </View>
       </View>
     );
   },
   render: function() {
-    var mode = this.state.mode;
+    var operation = this.state.operation;
     return (
       <View style={styles.appWrapper}>
         {this.state.playing &&
           <Quizzer
-            mode={mode}
+            operation={operation}
             back={this.showMenu}
             finish={this.finish}
             count={10}/>
         }
         {this.state.showStats &&
           <Stats
-            mode={mode}
+            operation={operation}
             back={this.showMenu}
             quizzesData={this.state.quizzesData}/>
         }

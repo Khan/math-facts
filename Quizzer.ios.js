@@ -74,7 +74,7 @@ var Quizzer = React.createClass({
   check: function() {
     var left = this.state.leftNumber;
     var right = this.state.rightNumber;
-    var answer =  this.props.mode === 'addition' ? left + right : left * right;
+    var answer =  this.props.operation === 'addition' ? left + right : left * right;
     if (this.state.response === answer.toString()) {
       setTimeout(() => {
         var data = _.clone(this.state.data);
@@ -134,7 +134,7 @@ var Quizzer = React.createClass({
     buttons.push(button(() => {this.addDigit(0)}, '0'));
 
     // TODO: Implement hints for multiplication
-    if (this.props.mode === 'addition') {
+    if (this.props.operation === 'addition') {
       buttons.push(button(this.hint, '?'));
     } else {
       buttons.push(button(null, ' '));
@@ -177,7 +177,7 @@ var Quizzer = React.createClass({
   render: function() {
     var left = this.state.leftNumber;
     var right = this.state.rightNumber;
-    var total = this.props.mode === 'addition' ? left + right : left * right;
+    var total = this.props.operation === 'addition' ? left + right : left * right;
 
     var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
@@ -220,7 +220,7 @@ var Quizzer = React.createClass({
       );
     });
 
-    var sign = this.props.mode === 'addition' ? '+' : 'x';
+    var sign = this.props.operation === 'addition' ? '+' : 'x';
 
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>

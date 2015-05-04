@@ -56,11 +56,11 @@ var GridCell = React.createClass({
 var Grid = React.createClass({
   defaultProps: {
     timeData: React.PropTypes.array,
-    mode: React.PropTypes.string,
+    operation: React.PropTypes.string,
     onPress: React.PropTypes.func
   },
   render: function() {
-    var sign = this.props.mode === 'addition' ? '+' : 'x';
+    var sign = this.props.operation === 'addition' ? '+' : 'x';
     return (
       <View style={styles.grid}>
         <View
@@ -93,7 +93,7 @@ var Grid = React.createClass({
                     masteryLevel
                   ];
 
-                  var answer = this.props.mode === 'addition' ?
+                  var answer = this.props.operation === 'addition' ?
                                 (row + 1) + (col + 1) :
                                 (row + 1) * (col + 1);
                   return (<GridCell
@@ -153,10 +153,10 @@ var Stats = React.createClass({
   },
   render: function() {
 
-    var sign = this.props.mode === 'addition' ? '+' : 'x';
+    var sign = this.props.operation === 'addition' ? '+' : 'x';
     var grid = <Grid
       timeData={this.state.timeData}
-      mode={this.props.mode}
+      operation={this.props.operation}
       onPress={(active) => {
         this.setState({
           active: active
@@ -180,7 +180,7 @@ var Stats = React.createClass({
     var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
     var masteryColorText = MasteryHelpers.masteryTextColors[masteryLevel];
 
-    var answer = this.props.mode === 'addition' ?
+    var answer = this.props.operation === 'addition' ?
                   (activeRow) + (activeCol) :
                   (activeRow) * (activeCol);
 
