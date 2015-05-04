@@ -134,6 +134,8 @@ var MathFacts = React.createClass({
             operation={operation}
             back={this.showMenu}
             finish={this.finish}
+            mode={'time'}
+            seconds={20}
             count={10}/>
         }
         {this.state.showStats &&
