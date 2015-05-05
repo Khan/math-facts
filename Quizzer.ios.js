@@ -37,8 +37,7 @@ var Quizzer = React.createClass({
   getInitialState: function() {
     return {
       count: 0,
-      leftNumber: randomIntBetween(1, 10),
-      rightNumber: randomIntBetween(1, 10),
+      inputs: this.getInputs(),
       hintUsed: false,
       time: 0,
       data: [],
@@ -46,6 +45,9 @@ var Quizzer = React.createClass({
       colorHue: 0,
       overallTime: 0
     };
+  },
+  getInputs: function() {
+    return [randomIntBetween(1, 10), randomIntBetween(1, 10)];
   },
   addDigit: function(value) {
     this.setState({
@@ -80,17 +82,14 @@ var Quizzer = React.createClass({
     }
   },
   check: function() {
-    var left = this.state.leftNumber;
-    var right = this.state.rightNumber;
-    var answer =  OperationHelper[this.props.operation].getAnswer(
-      [left, right]
-    );
+    var inputs = this.state.inputs;
+    var answer =  OperationHelper[this.props.operation].getAnswer(inputs);
     if (this.state.response === answer.toString()) {
       setTimeout(() => {
         var data = _.clone(this.state.data);
         var d = new Date();
         data.push({
-          inputs: [left, right],
+          inputs: inputs,
           data: {
             time: this.state.time, // time taken in ms
             hintUsed: this.state.hintUsed,
@@ -106,8 +105,7 @@ var Quizzer = React.createClass({
           // Load a new question
           this.setState({
             count: this.state.count + 1,
-            leftNumber: randomIntBetween(1, 10),
-            rightNumber: randomIntBetween(1, 10),
+            inputs: this.getInputs(),
             hintUsed: false,
             time: 0,
             data: data,
@@ -185,9 +183,8 @@ var Quizzer = React.createClass({
   },
 
   render: function() {
-    var left = this.state.leftNumber;
-    var right = this.state.rightNumber;
-    var total = OperationHelper[this.props.operation].getAnswer([left, right]);
+    var inputs = this.state.inputs;
+    var total = OperationHelper[this.props.operation].getAnswer(inputs);
 
     var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
@@ -209,7 +206,7 @@ var Quizzer = React.createClass({
             {_.map(_.range(0, 5), () => {
               var offset = hint10 * 10 + hint5 * 5;
               var round = hint5 === 0 ? Math.ceil : Math.floor;
-              var showLeft = num - offset <= round((left - hint10 * 10)/2);
+              var showLeft = num - offset <= round((inputs[0] - hint10 * 10)/2);
               var showRight = num - offset <= round((total - hint10 * 10)/2);
 
               var color = showLeft ? '#fff' :
@@ -258,9 +255,7 @@ var Quizzer = React.createClass({
       </View>
     );
 
-    var question = OperationHelper[this.props.operation].getQuestion(
-      [left, right]
-    );
+    var question = OperationHelper[this.props.operation].getQuestion(inputs);
 
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>
