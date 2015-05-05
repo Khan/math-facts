@@ -1,3 +1,4 @@
+/* @flow */
 'use strict';
 
 var _ = require('underscore');
@@ -5,7 +6,7 @@ var _ = require('underscore');
 var React = require('react-native');
 var AsyncStorage = React.AsyncStorage;
 
-function makeKey(operation: string, inputs: Array<int>): string {
+function makeKey(operation: string, inputs: Array<number>): string {
   var key = operation + '-';
 
   _.each(inputs, function(input, i) {
@@ -28,7 +29,7 @@ var MathFactsDB = {
    * @param  Object  data    The data about the fact
    * @return Promise
    */
-  addFactAttempt: function(operation: string, inputs: Array<int>, data: object):
+  addFactAttempt: function(operation: string, inputs: Array<number>, data: Object):
       Promise {
     var key = makeKey(operation, inputs);
 
@@ -39,6 +40,7 @@ var MathFactsDB = {
         list.push(data);
         return AsyncStorage.setItem(key, JSON.stringify(list));
       } else {
+        // Add a list with a single value if it doesn't exist
         return AsyncStorage.setItem(key, JSON.stringify([data]));
       }
     }, (error) => {
@@ -54,7 +56,7 @@ var MathFactsDB = {
    * @param  Array   inputs     An array of inputs (e.g. [factor, multiplier])
    * @return Promise
    */
-  getAttemptsForFact: function(operation: string, inputs: Array<int>): Promise {
+  getAttemptsForFact: function(operation: string, inputs: Array<number>): Promise {
     var key = makeKey(operation, inputs);
 
     return AsyncStorage.getItem(key).then((data) => {
@@ -73,7 +75,7 @@ var MathFactsDB = {
    *                           [factor2, multiplier2].
    * @return Promise
    */
-  getFactsInRange: function(operation: string, range: Array<Array<int>>):
+  getFactsInRange: function(operation: string, range: Array<Array<number>>):
       Promise {
     var flippedRange = _.map(range[0], (left, i) => {
       return [left, range[1][i]];
