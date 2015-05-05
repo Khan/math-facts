@@ -97,7 +97,10 @@ var Quizzer = React.createClass({
           }
         });
 
-        if (this.state.count >= this.props.count - 1) {
+        var timesUp = this.state.overallTime > this.props.seconds * 1000;
+        var finished = this.props.mode === 'time' ? timesUp :
+                       (this.state.count >= this.props.count - 1)
+        if (finished) {
           // Finished the quiz
           this.props.finish(data);
 
