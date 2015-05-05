@@ -11,8 +11,9 @@ var {
   View,
 } = React;
 
-var randomIntBetween = require('./Helpers.ios').randomIntBetween;
 var ColorHelpers = require('./ColorHelpers.ios');
+var OperationHelper = require('./OperationHelpers.ios');
+var randomIntBetween = require('./Helpers.ios').randomIntBetween;
 
 var Circle = React.createClass({
   render: function() {
@@ -81,7 +82,9 @@ var Quizzer = React.createClass({
   check: function() {
     var left = this.state.leftNumber;
     var right = this.state.rightNumber;
-    var answer =  this.props.operation === 'addition' ? left + right : left * right;
+    var answer =  OperationHelper[this.props.operation].getAnswer(
+      [left, right]
+    );
     if (this.state.response === answer.toString()) {
       setTimeout(() => {
         var data = _.clone(this.state.data);
@@ -184,7 +187,7 @@ var Quizzer = React.createClass({
   render: function() {
     var left = this.state.leftNumber;
     var right = this.state.rightNumber;
-    var total = this.props.operation === 'addition' ? left + right : left * right;
+    var total = OperationHelper[this.props.operation].getAnswer([left, right]);
 
     var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
@@ -255,7 +258,9 @@ var Quizzer = React.createClass({
       </View>
     );
 
-    var sign = this.props.operation === 'addition' ? '+' : 'x';
+    var question = OperationHelper[this.props.operation].getQuestion(
+      [left, right]
+    );
 
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>
@@ -267,7 +272,7 @@ var Quizzer = React.createClass({
         {progressBar}
         <View style={styles.questionContainer}>
           <Text style={styles.question}>
-            {left.toString() + ' ' + sign + ' ' + right.toString()}
+            {question}
           </Text>
           <Text style={styles.response}>
             {this.state.response}

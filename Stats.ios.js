@@ -13,6 +13,7 @@ var {
 
 var ColorHelpers = require('./ColorHelpers.ios');
 var MasteryHelpers = require('./MasteryHelpers.ios');
+var OperationHelper = require('./OperationHelpers.ios.js');
 
 var GridCell = React.createClass({
   defaultProps: {
@@ -60,7 +61,8 @@ var Grid = React.createClass({
     onPress: React.PropTypes.func
   },
   render: function() {
-    var sign = this.props.operation === 'addition' ? '+' : 'x';
+    var operation = this.props.operation;
+    var sign = OperationHelper[operation].getSign();
     return (
       <View style={styles.grid}>
         <View
@@ -93,9 +95,9 @@ var Grid = React.createClass({
                     masteryLevel
                   ];
 
-                  var answer = this.props.operation === 'addition' ?
-                                (row + 1) + (col + 1) :
-                                (row + 1) * (col + 1);
+                  var answer = OperationHelper[operation].getAnswer(
+                    [row + 1, col + 1]
+                  );
                   return (<GridCell
                     content={answer}
                     color={masteryColor}
@@ -152,8 +154,6 @@ var Stats = React.createClass({
     });
   },
   render: function() {
-
-    var sign = this.props.operation === 'addition' ? '+' : 'x';
     var grid = <Grid
       timeData={this.state.timeData}
       operation={this.props.operation}
@@ -180,16 +180,15 @@ var Stats = React.createClass({
     var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
     var masteryColorText = MasteryHelpers.masteryTextColors[masteryLevel];
 
-    var answer = this.props.operation === 'addition' ?
-                  (activeRow) + (activeCol) :
-                  (activeRow) * (activeCol);
+    var expression = OperationHelper[this.props.operation].getExpression(
+      [activeRow, activeCol]
+    );
 
     var infoStatTextStyle = styles.infoStatText;
     var info = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
         <Text style={[styles.infoQuestion, {color: masteryColorText}]}>
-          {activeRow + ' ' + sign + ' ' + activeCol + ' = ' +
-            answer}
+          {expression}
         </Text>
         <View style={styles.infoStats}>
           <View style={styles.infoStat}>
