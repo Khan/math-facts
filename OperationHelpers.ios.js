@@ -47,7 +47,7 @@ var Operations = {
 
   multiplication: {
     getSign: function(): string {
-      return 'x';
+      return '×';
     },
     getAnswer: function(inputs): number {
       var product = 1;
