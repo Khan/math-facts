@@ -182,7 +182,7 @@ var Quizzer = React.createClass({
       ColorHelpers.hslToRgb([0.8, 0.6, 0.65]), // purple-pink
       ColorHelpers.hslToRgb([0.9, 0.6, 0.65]), // pink
     ];
-    return colors[this.state.colorHue];
+    return colors[this.state.colorHue % colors.length];
   },
 
   render: function() {
