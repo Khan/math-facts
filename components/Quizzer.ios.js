@@ -11,9 +11,10 @@ var {
   View,
 } = React;
 
-var ColorHelpers = require('./ColorHelpers.ios');
-var OperationHelper = require('./OperationHelpers.ios');
-var randomIntBetween = require('./Helpers.ios').randomIntBetween;
+var ColorHelpers = require('../helpers/ColorHelpers.ios');
+var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
+var OperationHelper = require('../helpers/OperationHelpers.ios');
+var randomIntBetween = require('../helpers/Helpers.ios').randomIntBetween;
 
 var Circle = React.createClass({
   render: function() {
@@ -46,8 +47,63 @@ var Quizzer = React.createClass({
       overallTime: 0
     };
   },
+  generateInputs: function() {
+    // Return a list of facts in the order they should be asked
+    if (this.props.operation === 'addition') {
+      var easiestFacts = [
+        // +1s
+        [1, 1],
+        [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [10, 1],
+
+        // +0s
+        [0, 0], [1, 0],
+        [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0],
+
+        // +2s
+        [2, 2],
+        [1, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2], [9, 2], [10, 2],
+
+        // 5 + smalls
+        [5, 1], [5, 2], [5, 3], [5, 4],
+
+        // little doubles
+        [1, 1], [2, 2], [3, 3], [4, 4], [5, 5],
+
+        // 10+s
+        [10, 10],
+        [10, 2], [10, 3], [10, 4], [10, 5], [10, 6], [10, 7], [10, 8], [10, 9],
+
+        // pairs that make 10
+        [9, 1], [8, 2], [7, 3], [6, 4], [5, 5],
+
+        // pairs that make 11
+        [9, 2], [8, 3], [7, 4], [6, 5],
+
+        // big doubles
+        [6, 6], [7, 7], [8, 8], [9, 9], [10, 10],
+
+        // 9+s
+        [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8], [9, 9],
+
+        // leftovers
+        [4, 3], [6, 3], // the little ones
+        [8, 4], [8, 6], // even, even, even!
+        [6, 7], [7, 8], // the weird ones
+        [7, 5], [8, 5], // adding 5
+
+      ];
+
+      return easiestFacts[0];
+
+    } else if (this.props.operation === 'multiplication') {
+      return [randomIntBetween(1, 10), randomIntBetween(1, 10)];
+    } else {
+      return [randomIntBetween(1, 10), randomIntBetween(1, 10)];
+    }
+  },
   getInputs: function() {
-    return [randomIntBetween(1, 10), randomIntBetween(1, 10)];
+    // Get the next question's inputs
+    return this.generateInputs();
   },
   addDigit: function(value) {
     this.setState({

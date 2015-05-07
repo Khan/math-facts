@@ -11,9 +11,9 @@ var {
   View,
 } = React;
 
-var ColorHelpers = require('./ColorHelpers.ios');
-var MasteryHelpers = require('./MasteryHelpers.ios');
-var OperationHelper = require('./OperationHelpers.ios.js');
+var ColorHelpers = require('../helpers/ColorHelpers.ios');
+var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
+var OperationHelper = require('../helpers/OperationHelpers.ios.js');
 
 var GridCell = React.createClass({
   defaultProps: {
@@ -122,35 +122,21 @@ var Stats = React.createClass({
   },
   getInitialState: function() {
     return {
-      timeData: this.getInitialQuizzesData(),
+      timeData: this.getTimeData(),
       active: [1, 1]
     };
   },
-  getInitialQuizzesData: function() {
+  getTimeData: function() {
     // Size must be larger than the max size of the values that are added
-    return _.map(_.range(0, 12), () => {
-      return _.map(_.range(0, 12), () => { return []; });
-    });
-  },
-  componentWillReceiveProps: function(newProps) {
-    var timeData = this.getInitialQuizzesData();
-
-    _.each(newProps.quizzesData, (obj, index) => {
-      var inputs = obj.input;
-      var attemptData = obj.attempts;
-      var left = inputs[0];
-      var right = inputs[1];
-
-      _.each(attemptData, (attempt) => {
-        if (timeData[left][right].length === 0) {
-          timeData[left][right].length = [];
+    return _.map(_.range(0, 12), (left) => {
+      return _.map(_.range(0, 12), (right) => {
+        if (this.props.quizzesData[left] != null) {
+          if (this.props.quizzesData[left][right] != null) {
+            return this.props.quizzesData[left][right];
+          }
         }
-        timeData[left][right].push(attempt);
+        return [];
       });
-    });
-
-    this.setState({
-      timeData: timeData
     });
   },
   render: function() {
