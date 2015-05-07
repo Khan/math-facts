@@ -327,11 +327,18 @@ var Quizzer = React.createClass({
 
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>
-        <TouchableHighlight
-            onPress={this.props.back}
-            style={styles.backButton}>
-          <Text style={styles.backButtonText}>{'< Back'}</Text>
-        </TouchableHighlight>
+        <View style={styles.topRow}>
+          <TouchableHighlight
+              onPress={this.props.back}
+              style={styles.backButton}>
+            <Text style={styles.backButtonText}>{'< Back'}</Text>
+          </TouchableHighlight>
+          <View style={styles.points}>
+            <Text style={styles.pointsText}>
+              {this.state.points + ' points'}
+            </Text>
+          </View>
+        </View>
         {progressBar}
         <View style={styles.questionContainer}>
           <Text style={styles.question}>
@@ -344,9 +351,6 @@ var Quizzer = React.createClass({
         <View style={styles.hintContainer}>
           {this.state.hintUsed && <View style={styles.hint}>{hint}</View>}
         </View>
-        <Text>
-          {this.state.overallTime}
-        </Text>
 
         {this._renderNumpad()}
 
@@ -363,13 +367,33 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
 
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    alignSelf: 'stretch',
+  },
+
   backButton: {
+    flex: 1,
+    padding: 15,
     alignSelf: 'flex-start',
-    padding: 15
+    backgroundColor: 'rgba(0, 0, 0, 0.1)'
   },
   backButtonText: {
     color: '#fff',
   },
+
+  points: {
+    flex: 1,
+    alignItems: 'flex-end',
+    padding: 15,
+    backgroundColor: 'rgba(0, 0, 0, 0.05)'
+  },
+  pointsText: {
+    color: '#fff'
+  },
+
 
   progress: {
     flexDirection: 'row'

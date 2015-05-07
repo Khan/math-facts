@@ -117,7 +117,15 @@ var MathFactsApp = React.createClass({
     var operation = this.state.operation;
     return (
       <View style={styles.container}>
-        <Text>{this.state.points}</Text>
+        <View style={styles.points}>
+          <Text style={styles.pointsText}>
+            {'You have '}
+            <Text style={styles.pointsTextEmphasis}>
+              {this.state.points}
+            </Text>
+            {' points'}
+          </Text>
+        </View>
         <Button text="Play" onPress={this.startGame} />
         <Button text="Stats" onPress={this.showStats} />
         <View style={styles.toggleButtons}>
@@ -172,6 +180,20 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center'
+  },
+
+  points: {
+    alignItems: 'center',
+    marginTop: -20,
+    paddingBottom: 20,
+  },
+  pointsText: {
+    fontSize: 20,
+    color: '#999'
+  },
+  pointsTextEmphasis: {
+    fontWeight: 'bold',
+    color: '#555'
   },
 
   button: {
