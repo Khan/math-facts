@@ -55,6 +55,13 @@ var MathFactsApp = React.createClass({
           var allFacts = store.getAll();
           return allFacts;
         }
+      },
+      points: {
+        store: MathFactsStore,
+        fetch: (store) => {
+          var points = store.getPoints();
+          return points;
+        }
       }
     })
   ],
@@ -81,11 +88,12 @@ var MathFactsApp = React.createClass({
       showStats: false,
     });
   },
-  finish: function(quizData) {
+  finish: function(quizData, points) {
     var operation = this.state.operation;
     _.each(quizData, (questionData) => {
       MathFactsActions.addAttempts(operation, [questionData]);
     });
+    MathFactsActions.addPoints(points);
 
     this.setState({
       playing: false,
@@ -97,6 +105,7 @@ var MathFactsApp = React.createClass({
   },
   componentDidMount: function() {
     MathFactsActions.initializeData();
+    MathFactsActions.initializePoints();
   },
   setAdditionoperation: function() {
     this.setState({operation: 'addition'});
@@ -108,6 +117,7 @@ var MathFactsApp = React.createClass({
     var operation = this.state.operation;
     return (
       <View style={styles.container}>
+        <Text>{this.state.points}</Text>
         <Button text="Play" onPress={this.startGame} />
         <Button text="Stats" onPress={this.showStats} />
         <View style={styles.toggleButtons}>
@@ -134,6 +144,7 @@ var MathFactsApp = React.createClass({
             operation={operation}
             back={this.showMenu}
             finish={this.finish}
+            quizzesData={this.state.quizzesData[operation]}
             mode={'time'}
             seconds={3}
             count={10}/>

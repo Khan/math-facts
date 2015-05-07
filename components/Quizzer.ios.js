@@ -44,7 +44,8 @@ var Quizzer = React.createClass({
       data: [],
       response: '',
       colorHue: 0,
-      overallTime: 0
+      overallTime: 0,
+      points: 0,
     };
   },
   generateInputs: function() {
@@ -129,7 +130,7 @@ var Quizzer = React.createClass({
   tick: function() {
     var timesUp = this.state.overallTime > this.props.seconds * 1000;
     if (this.props.mode === 'time' && timesUp) {
-      this.props.finish(this.state.data);
+      this.props.finish(this.state.data, this.state.points);
     } else {
       this.setState({
         time: this.state.time + 50,
@@ -141,14 +142,21 @@ var Quizzer = React.createClass({
     var inputs = this.state.inputs;
     var answer =  OperationHelper[this.props.operation].getAnswer(inputs);
     if (this.state.response === answer.toString()) {
+      // Delay logic so user has a chance to see the digit they just entered
+      var time = this.state.time;
+      var hintUsed = this.state.hintUsed;
+      // TODO: Change this to be based on the user's typing speed and the number
+      // of digits in the answer
+      var timeBonus = (time < 1000 ? 20 : time < 2000 ? 5 : 1);
+      var newPoints = this.state.points + timeBonus;
       setTimeout(() => {
         var data = _.clone(this.state.data);
         var d = new Date();
         data.push({
           inputs: inputs,
           data: {
-            time: this.state.time, // time taken in ms
-            hintUsed: this.state.hintUsed,
+            time: time, // time taken in ms
+            hintUsed: hintUsed,
             date: d.getTime()
           }
         });
@@ -158,7 +166,7 @@ var Quizzer = React.createClass({
                        (this.state.count >= this.props.count - 1)
         if (finished) {
           // Finished the quiz
-          this.props.finish(data);
+          this.props.finish(data, newPoints);
 
         } else {
           // Load a new question
@@ -169,7 +177,8 @@ var Quizzer = React.createClass({
             time: 0,
             data: data,
             response: '',
-            colorHue: this.state.colorHue + 1
+            colorHue: this.state.colorHue + 1,
+            points: newPoints,
           });
         }
       }, 150);

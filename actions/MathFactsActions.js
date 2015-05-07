@@ -17,7 +17,20 @@ var MathFactsActions = {
     AppDispatcher.dispatch({
       actionType: MathFactsConstants.FACT_DATA_INITIALIZE,
     });
-  }
+  },
+
+  addPoints: function(amount) {
+    AppDispatcher.dispatch({
+      actionType: MathFactsConstants.POINTS_ADD,
+      amount: amount,
+    });
+  },
+
+  initializePoints: function() {
+    AppDispatcher.dispatch({
+      actionType: MathFactsConstants.POINTS_INITIALIZE,
+    });
+  },
 
 };
 

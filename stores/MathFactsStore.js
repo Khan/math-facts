@@ -9,6 +9,23 @@ var MathFactsConstants = require('../constants/MathFactsConstants');
 
 var CHANGE_EVENT = 'change';
 
+var _points = 0;
+
+var addPoints = function(amount) {
+  _points += amount;
+  updateStoredPoints();
+};
+
+var updateStoredPoints = function() {
+  AsyncStorage.setItem('points', _points.toString()).done();
+};
+
+var fetchPoints = function() {
+  return AsyncStorage.getItem('points').then((points) => {
+    _points = (points == null) ? 0 : parseInt(points);
+    MathFactStore.emitChange();
+  }).done();
+};
 
 /**
  * _factData = {
@@ -96,6 +113,10 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
     return _factData;
   },
 
+  getPoints: function() {
+    return _points;
+  },
+
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
@@ -131,6 +152,16 @@ AppDispatcher.register(function(action) {
     case MathFactsConstants.FACT_DATA_INITIALIZE:
       fetchStoredFactData();
       break;
+
+    case MathFactsConstants.POINTS_INITIALIZE:
+      fetchPoints();
+      break;
+
+    case MathFactsConstants.POINTS_ADD:
+     var amount = action.amount;
+     addPoints(amount);
+     MathFactStore.emitChange();
+     break;
 
     default:
       // no op
