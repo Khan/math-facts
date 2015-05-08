@@ -254,7 +254,7 @@ var styles = StyleSheet.create({
     paddingRight: 10,
     paddingTop: 3,
     paddingBottom: 3,
-    borderRadius: 10
+    borderRadius: 12
   },
   infoStatText: {
     fontSize: 15,
