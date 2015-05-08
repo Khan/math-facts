@@ -343,10 +343,12 @@ var Quizzer = React.createClass({
       <View style={[styles.container, {backgroundColor: mainColor}]}>
         <View style={styles.topRow}>
           <TouchableHighlight
+              underlayColor='transparent'
+              activeOpacity={0.4}
               onPress={this.props.back}
               style={styles.backButton}>
             <View>
-              <AppText style={styles.backButtonText}>{'< Back'}</AppText>
+              <AppText style={styles.backButtonText}>{'×'}</AppText>
             </View>
           </TouchableHighlight>
           <View style={styles.points}>
@@ -390,23 +392,25 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'stretch',
     alignSelf: 'stretch',
+    backgroundColor: 'rgba(0, 0, 0, 0.15)'
   },
 
   backButton: {
-    flex: 1,
+    flex: 0,
     padding: 15,
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(0, 0, 0, 0.1)'
+    alignSelf: 'flex-start'
   },
   backButtonText: {
     color: '#fff',
+    fontSize: 30,
+    height: 30,
+    marginTop: -11
   },
 
   points: {
     flex: 1,
     alignItems: 'flex-end',
-    padding: 15,
-    backgroundColor: 'rgba(0, 0, 0, 0.05)'
+    padding: 15
   },
   pointsText: {
     color: '#fff'
@@ -439,14 +443,14 @@ var styles = StyleSheet.create({
   },
   response: {
     fontSize: 65,
-    height: 70,
+    height: 80,
     color: '#fff',
     marginBottom: 5,
   },
 
   hintContainer: {
     flex: 0,
-    height: 90,
+    height: 50,
     alignSelf: 'stretch',
     flexDirection: 'column'
   },

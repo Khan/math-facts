@@ -198,10 +198,12 @@ var Stats = React.createClass({
     return (
       <View style={styles.container}>
         <TouchableHighlight
+            underlayColor='transparent'
+            activeOpacity={0.4}
             onPress={this.props.back}
             style={styles.backButton}>
           <View>
-            <AppText style={styles.backButtonText}>{'< Back'}</AppText>
+            <AppText style={styles.backButtonText}>{'×'}</AppText>
           </View>
         </TouchableHighlight>
         {grid}
@@ -224,6 +226,10 @@ var styles = StyleSheet.create({
     padding: 15
   },
   backButtonText: {
+    color: '#999',
+    fontSize: 30,
+    height: 30,
+    marginTop: -11
   },
 
   infoContainer: {
