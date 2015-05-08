@@ -27,10 +27,59 @@ var Circle = React.createClass({
           backgroundColor: color,
           width: size,
           height: size,
-          margin: 5,
+          margin: 3,
         }}
       />
     );
+  }
+});
+
+var AdditionHint = React.createClass({
+  render: function() {
+    var left = this.props.left;
+    var right = this.props.right;
+    var total = this.props.left + this.props.right;
+
+    var rgb = this.props.color;
+
+    var num = 1;
+    var hint = _.map(_.range(0, 2), (hint10) => {
+      var backgroundColor = hint10 % 10 ?
+            'rgba(255, 255, 255, 0.5)' :
+            'rgba(255, 255, 255, 0.3)';
+      return (
+        <View
+            style={[styles.hint10, {backgroundColor: backgroundColor}]}
+            key={'hint10-' + hint10}>
+        {_.map(_.range(0, 2), (hint5) => {
+          return (
+            <View
+                style={styles.hint5}
+                key={'hint5-' + hint5}>
+            {_.map(_.range(0, 5), () => {
+              var offset = hint10 * 10 + hint5 * 5;
+              var round = hint5 === 0 ? Math.ceil : Math.floor;
+              var showLeft = num - offset <= round((left - hint10 * 10)/2);
+              var showRight = num - offset <= round((total - hint10 * 10)/2);
+
+              var color = showLeft ? '#fff' :
+                          showRight ? 'rgba(0, 0, 0, 0.6)' :
+                          'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+', 0.4)';
+              num++;
+              return (
+                <Circle
+                  size={15}
+                  color={color}
+                  key={'circle-' + num}/>
+            );
+          })}
+          </View>
+          );
+        })}
+        </View>
+      );
+    });
+    return (<View style={styles.hint}>{hint}</View>);
   }
 });
 
@@ -257,44 +306,6 @@ var Quizzer = React.createClass({
     var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 
-    var num = 1;
-    var hint = _.map(_.range(0, 2), (hint10) => {
-      var backgroundColor = hint10 % 10 ?
-            'rgba(255, 255, 255, 0.5)' :
-            'rgba(255, 255, 255, 0.3)';
-      return (
-        <View
-            style={[styles.hint10, {backgroundColor: backgroundColor}]}
-            key={'hint10-' + hint10}>
-        {_.map(_.range(0, 2), (hint5) => {
-          return (
-            <View
-                style={styles.hint5}
-                key={'hint5-' + hint5}>
-            {_.map(_.range(0, 5), () => {
-              var offset = hint10 * 10 + hint5 * 5;
-              var round = hint5 === 0 ? Math.ceil : Math.floor;
-              var showLeft = num - offset <= round((inputs[0] - hint10 * 10)/2);
-              var showRight = num - offset <= round((total - hint10 * 10)/2);
-
-              var color = showLeft ? '#fff' :
-                          showRight ? 'rgba(0, 0, 0, 0.6)' :
-                          'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+', 0.4)';
-              num++;
-              return (
-                <Circle
-                  size={20}
-                  color={color}
-                  key={'circle-' + num}/>
-            );
-          })}
-          </View>
-          );
-        })}
-        </View>
-      );
-    });
-
     var progress = (
       <View style={styles.progress}>
         {_.map(_.range(0, this.props.count), (value) => {
@@ -349,7 +360,9 @@ var Quizzer = React.createClass({
           </Text>
         </View>
         <View style={styles.hintContainer}>
-          {this.state.hintUsed && <View style={styles.hint}>{hint}</View>}
+          {this.state.hintUsed &&
+            <AdditionHint color={rgb} left={inputs[0]} right={inputs[1]} />
+          }
         </View>
 
         {this._renderNumpad()}
@@ -451,7 +464,8 @@ var styles = StyleSheet.create({
   buttons: {
     flex: 0,
     alignSelf: 'stretch',
-    margin: 2
+    margin: 20,
+    marginTop: 2
   },
   buttonRow: {
     flexDirection: 'row',
