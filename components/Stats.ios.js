@@ -4,12 +4,13 @@ var _ = require('underscore');
 
 var React = require('react-native');
 var {
-  AppRegistry,
   StyleSheet,
   TouchableHighlight,
   Text,
   View,
 } = React;
+
+var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
 
 var ColorHelpers = require('../helpers/ColorHelpers.ios');
 var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
@@ -34,9 +35,11 @@ var GridCell = React.createClass({
             style={[styles.gridCell, {backgroundColor: color}]}
             underlayColor="transparent"
             onPress={onPress}>
-          <Text style={[styles.gridCellText, {color: textColor}]}>
-            {this.props.content}
-          </Text>
+          <View>
+            <AppText style={[styles.gridCellText, {color: textColor}]}>
+              {this.props.content}
+            </AppText>
+          </View>
         </TouchableHighlight>
       );
     } else {
@@ -44,9 +47,9 @@ var GridCell = React.createClass({
         <View
             key={this.props.key}
             style={[styles.gridCell, {backgroundColor: color}]}>
-          <Text style={[styles.gridCellText, {color: textColor}]}>
+          <AppText style={[styles.gridCellText, {color: textColor}]}>
             {this.props.content}
-          </Text>
+          </AppText>
         </View>
       );
     }
@@ -173,20 +176,20 @@ var Stats = React.createClass({
     var infoStatTextStyle = styles.infoStatText;
     var info = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
-        <Text style={[styles.infoQuestion, {color: masteryColorText}]}>
+        <AppText style={[styles.infoQuestion, {color: masteryColorText}]}>
           {expression}
-        </Text>
+        </AppText>
         <View style={styles.infoStats}>
           <View style={styles.infoStat}>
-            <Text style={infoStatTextStyle}>
+            <AppText style={infoStatTextStyle}>
               {timesAnswered + ' attempt' + (timesAnswered !== 1 ? 's' : '')}
-            </Text>
+            </AppText>
           </View>
           {(timesAnswered > 0 && bestTimePrint > 0) ?
           <View style={styles.infoStat}>
-            <Text style={infoStatTextStyle}>
+            <AppText style={infoStatTextStyle}>
               {'Best time: ' + bestTimePrint + 's'}
-            </Text>
+            </AppText>
           </View> : null}
         </View>
       </View>
@@ -197,7 +200,9 @@ var Stats = React.createClass({
         <TouchableHighlight
             onPress={this.props.back}
             style={styles.backButton}>
-          <Text style={styles.backButtonText}>{'< Back'}</Text>
+          <View>
+            <AppText style={styles.backButtonText}>{'< Back'}</AppText>
+          </View>
         </TouchableHighlight>
         {grid}
         {info}

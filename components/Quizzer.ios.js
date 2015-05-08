@@ -4,12 +4,13 @@ var _ = require('underscore');
 
 var React = require('react-native');
 var {
-  AppRegistry,
   StyleSheet,
   TouchableHighlight,
   Text,
   View,
 } = React;
+
+var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
 
 var ColorHelpers = require('../helpers/ColorHelpers.ios');
 var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
@@ -342,22 +343,24 @@ var Quizzer = React.createClass({
           <TouchableHighlight
               onPress={this.props.back}
               style={styles.backButton}>
-            <Text style={styles.backButtonText}>{'< Back'}</Text>
+            <View>
+              <AppText style={styles.backButtonText}>{'< Back'}</AppText>
+            </View>
           </TouchableHighlight>
           <View style={styles.points}>
-            <Text style={styles.pointsText}>
+            <AppText style={styles.pointsText}>
               {this.state.points + ' points'}
-            </Text>
+            </AppText>
           </View>
         </View>
         {progressBar}
         <View style={styles.questionContainer}>
-          <Text style={styles.question}>
+          <AppText style={styles.question}>
             {question}
-          </Text>
-          <Text style={styles.response}>
+          </AppText>
+          <AppText style={styles.response}>
             {this.state.response}
-          </Text>
+          </AppText>
         </View>
         <View style={styles.hintContainer}>
           {this.state.hintUsed &&

@@ -4,12 +4,13 @@ var _ = require('underscore');
 
 var React = require('react-native');
 var {
-  AppRegistry,
   StyleSheet,
   TouchableHighlight,
   Text,
   View,
 } = React;
+
+var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
 
 var MathFactsStore = require('../stores/MathFactsStore');
 var MathFactsActions = require('../actions/MathFactsActions');
@@ -39,7 +40,7 @@ var Button = React.createClass({
         underlayColor="transparent"
         activeOpacity={0.5}>
         <View style={[styles.button, { backgroundColor: color }]}>
-          <Text style={buttonTextStyle}>{this.props.text}</Text>
+          <AppText style={buttonTextStyle}>{this.props.text}</AppText>
         </View>
       </TouchableHighlight>
     );
@@ -118,13 +119,13 @@ var MathFactsApp = React.createClass({
     return (
       <View style={styles.container}>
         <View style={styles.points}>
-          <Text style={styles.pointsText}>
+          <AppText style={styles.pointsText}>
             {'You have '}
-            <Text style={styles.pointsTextEmphasis}>
+            <AppText style={styles.pointsTextEmphasis}>
               {this.state.points}
-            </Text>
+            </AppText>
             {' points'}
-          </Text>
+          </AppText>
         </View>
         <Button text="Play" onPress={this.startGame} />
         <Button text="Stats" onPress={this.showStats} />
