@@ -9,6 +9,10 @@ var MathFactsConstants = require('../constants/MathFactsConstants');
 
 var CHANGE_EVENT = 'change';
 
+
+/**
+ * Points
+ */
 var _points = 0;
 
 var addPoints = function(amount) {
@@ -28,6 +32,8 @@ var fetchPoints = function() {
 };
 
 /**
+ * Fact Data
+ *
  * _factData = {
  *  'multiplication': [
  *    [[{data for 1x1}, {more data for 1x1}], [{data for 1x2}], [...]],
@@ -50,9 +56,14 @@ var _factData = {
   'typing': [],
 };
 
+
+/**
+ * Adds fact attempts to the data store
+ * Takes and operation and data as an array of attempts in the form:
+ * [{inputs: [1, 2], data: {...}}, {inputs: [7, 4], data: {...}}]
+ *
+ */
 var addAttempts = function(operation, data) {
-  // Takes data as an array of attempt data in the form:
-  // [{inputs: [1, 2], data: {...} }]
   _.each(data, (attempt) => {
     var inputs = attempt.inputs;
     var attemptData = attempt.data;
@@ -90,8 +101,6 @@ var fetchStoredFactData = function() {
     });
     _factData = newFactData;
     MathFactStore.emitChange();
-  }, (error) => {
-    // ??
   }).done();
 
 };
