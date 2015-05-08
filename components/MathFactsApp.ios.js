@@ -20,32 +20,7 @@ var StateFromStoreMixin = require("../lib/state-from-store-mixin.js");
 var Quizzer = require('./Quizzer.ios');
 var Stats = require('./Stats.ios');
 
-var Button = React.createClass({
-  defaultProps: {
-    small: React.PropTypes.bool,
-    color: React.PropTypes.string,
-    text: React.PropTypes.string,
-  },
-  render: function() {
-    var color = this.props.color ? this.props.color : '#89dacc';
-
-    var buttonTextStyle = styles.buttonText;
-    if (this.props.small) {
-      buttonTextStyle = [buttonTextStyle, { fontSize: 16 }];
-    }
-
-    return (
-      <TouchableHighlight
-        onPress={this.props.onPress}
-        underlayColor="transparent"
-        activeOpacity={0.5}>
-        <View style={[styles.button, { backgroundColor: color }]}>
-          <AppText style={buttonTextStyle}>{this.props.text}</AppText>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-});
+var Button = require('./Button.ios');
 
 var MathFactsApp = React.createClass({
   mixins: [
@@ -127,8 +102,12 @@ var MathFactsApp = React.createClass({
             {' points'}
           </AppText>
         </View>
-        <Button text="Play" onPress={this.startGame} />
-        <Button text="Progress" onPress={this.showStats} />
+        <Button
+          text="Play"
+          onPress={this.startGame} />
+        <Button
+          text="Progress"
+          onPress={this.showStats} />
         <View style={styles.toggleButtons}>
           <Button
             text="Addition"
@@ -194,19 +173,6 @@ var styles = StyleSheet.create({
   },
   pointsTextEmphasis: {
     color: '#555'
-  },
-
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: "#89dacc",
-    padding: 20,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  buttonText: {
-    fontSize: 30,
-    color: '#fff'
   },
 
   toggleButtons: {
