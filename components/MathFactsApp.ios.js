@@ -30,7 +30,7 @@ var Button = React.createClass({
 
     var buttonTextStyle = styles.buttonText;
     if (this.props.small) {
-      buttonTextStyle = [buttonTextStyle, { fontSize: 20 }];
+      buttonTextStyle = [buttonTextStyle, { fontSize: 16 }];
     }
 
     return (
@@ -154,7 +154,7 @@ var MathFactsApp = React.createClass({
             finish={this.finish}
             quizzesData={this.state.quizzesData[operation]}
             mode={'time'}
-            seconds={3}
+            seconds={20}
             count={10}/>
         }
         {this.state.showStats &&

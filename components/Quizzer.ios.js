@@ -111,9 +111,9 @@ var Quizzer = React.createClass({
       response: this.state.response + value.toString()
     }, this.check);
   },
-  backspace: function() {
+  clear: function() {
     this.setState({
-      response: this.state.response.slice(0, -1)
+      response: ''
     });
   },
   hint: function() {
@@ -206,7 +206,7 @@ var Quizzer = React.createClass({
       return button(() => {this.addDigit(value)}, value);
     });
 
-    buttons.push(button(this.backspace, '⌫'));
+    buttons.push(button(this.clear, '×'));
     buttons.push(button(() => {this.addDigit(0)}, '0'));
 
     // TODO: Implement hints for multiplication
