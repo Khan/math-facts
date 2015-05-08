@@ -39,13 +39,13 @@ var AppTextThin = React.createClass({
 
 var styles = StyleSheet.create({
   baseText: {
-    fontFamily: 'AppleSDGothicNeo-Medium'
+    fontFamily: 'Avenir-Medium'
   },
   boldText: {
-    fontFamily: 'AppleSDGothicNeo-SemiBold'
+    fontFamily: 'Avenir-SemiBold'
   },
   thinText: {
-    fontFamily: 'AppleSDGothicNeo-Thin'
+    fontFamily: 'Avenir-Thin'
   },
 });
 

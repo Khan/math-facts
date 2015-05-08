@@ -245,9 +245,11 @@ var Quizzer = React.createClass({
             onPress={onPress}
             underlayColor='transparent'
             activeOpacity={0.2}>
-          <Text style={styles.buttonText}>
-            {content}
-          </Text>
+          <View>
+            <AppText style={styles.buttonText}>
+              {content}
+            </AppText>
+          </View>
         </TouchableHighlight>
       );
     }
