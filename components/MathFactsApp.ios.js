@@ -121,14 +121,14 @@ var MathFactsApp = React.createClass({
         <View style={styles.points}>
           <AppText style={styles.pointsText}>
             {'You have '}
-            <AppText style={styles.pointsTextEmphasis}>
+            <AppTextBold style={styles.pointsTextEmphasis}>
               {this.state.points}
-            </AppText>
+            </AppTextBold>
             {' points'}
           </AppText>
         </View>
         <Button text="Play" onPress={this.startGame} />
-        <Button text="Stats" onPress={this.showStats} />
+        <Button text="Progress" onPress={this.showStats} />
         <View style={styles.toggleButtons}>
           <Button
             text="Addition"
@@ -193,7 +193,6 @@ var styles = StyleSheet.create({
     color: '#999'
   },
   pointsTextEmphasis: {
-    fontWeight: 'bold',
     color: '#555'
   },
 

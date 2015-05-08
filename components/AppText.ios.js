@@ -42,7 +42,7 @@ var styles = StyleSheet.create({
     fontFamily: 'Avenir-Medium'
   },
   boldText: {
-    fontFamily: 'Avenir-SemiBold'
+    fontFamily: 'Avenir-Heavy'
   },
   thinText: {
     fontFamily: 'Avenir-Thin'
