@@ -11,39 +11,33 @@ var {
   View,
 } = React;
 
-var randomIntBetween = function(min, max) {
-  return Math.floor(Math.random()*(max - min + 1)) + min;
+// From /webapp/stylesheets/shared-package/variables.less
+
+var KAColors = {
+  mathDomainColor: '#1c758a',
+  mathSubjectColor: '#46a8bf',
+  mathTopicColor: '#4fbad4',
+  blueDark: '#2c3747',
+  blueDarkUnsaturated: '#3b414e',
+  blueDarkSaturated: '#1f3043',
+  blue: '#005a88',
+  blueLight: '#a9c0d1',
+  green: '#76a005',
+  greenLight: '#c6d1ad',
+  greenDark: '#356700',
+  yellowGreen: '#9db63b',
+  okGreen: '#a7cf5b',
+  orange: '#bf4f04',
+  red: '#cf5044',
 };
 
-// From /webapp/stylesheets/shared-package/variables.less
 var masteryColors = {
-  unknown: '#dddddd',
+  unknown: '#eeeeee',
   struggling: '#c30202',
   practiced: '#9cdceb',
   levelOne: '#58c4dd',
   levelTwo: '#29abca',
-  mastered: '#1c758a',
-};
-
-/**
- * Given data about a particular math fact, determine the fact's mastery level
- *
- */
-var masteryLevel = function(numTries, bestTime) {
-  // TODO: Make this calculation take into account time and
-  // recent stuff and stuff.
-
-  // TODO: make this take an array of time data in the form:
-  // [ {time: 1200, date: 19346832, hint: true},
-  //   {time: 1000, date: 19346832, hint: false},
-  //    ... ]
-
-  return numTries > 3 ? masteryColors.mastered :
-         numTries > 2 ? masteryColors.levelTwo :
-         numTries > 1 ? masteryColors.levelOne :
-         numTries > 0 ? masteryColors.practiced :
-                        masteryColors.unknown;
-
+  mastered: KAColors.mathDomainColor,
 };
 
 /**
