@@ -129,6 +129,11 @@ var Stats = React.createClass({
       active: [1, 1]
     };
   },
+  componentWillReceiveProps: function() {
+    this.setState({
+      timeData: this.getTimeData()
+    })
+  },
   getTimeData: function() {
     // Size must be larger than the max size of the values that are added
     return _.map(_.range(0, 12), (left) => {
