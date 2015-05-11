@@ -235,6 +235,22 @@ var Quizzer = React.createClass({
     }
   },
 
+  getColor: function() {
+    var colors = [
+      ColorHelpers.hslToRgb([0, 0.7, 0.6]), // red
+      ColorHelpers.hslToRgb([0.06, 0.7, 0.6]), // orange
+      ColorHelpers.hslToRgb([0.1, 0.75, 0.58]), // yellow
+      ColorHelpers.hslToRgb([0.2, 0.5, 0.5]), // light green
+      ColorHelpers.hslToRgb([0.35, 0.4, 0.55]), // green
+      ColorHelpers.hslToRgb([0.45, 0.6, 0.5]), // teal
+      ColorHelpers.hslToRgb([0.55, 0.5, 0.5]), // blue
+      ColorHelpers.hslToRgb([0.7, 0.6, 0.65]), // purple
+      ColorHelpers.hslToRgb([0.8, 0.6, 0.65]), // purple-pink
+      ColorHelpers.hslToRgb([0.9, 0.6, 0.65]), // pink
+    ];
+    return colors[this.state.colorHue % colors.length];
+  },
+
   _renderNumpad: function() {
 
     var button = (onPress, content) => {
@@ -286,20 +302,25 @@ var Quizzer = React.createClass({
     );
   },
 
-  getColor: function() {
-    var colors = [
-      ColorHelpers.hslToRgb([0, 0.7, 0.6]), // red
-      ColorHelpers.hslToRgb([0.06, 0.7, 0.6]), // orange
-      ColorHelpers.hslToRgb([0.1, 0.75, 0.58]), // yellow
-      ColorHelpers.hslToRgb([0.2, 0.5, 0.5]), // light green
-      ColorHelpers.hslToRgb([0.35, 0.4, 0.55]), // green
-      ColorHelpers.hslToRgb([0.45, 0.6, 0.5]), // teal
-      ColorHelpers.hslToRgb([0.55, 0.5, 0.5]), // blue
-      ColorHelpers.hslToRgb([0.7, 0.6, 0.65]), // purple
-      ColorHelpers.hslToRgb([0.8, 0.6, 0.65]), // purple-pink
-      ColorHelpers.hslToRgb([0.9, 0.6, 0.65]), // pink
-    ];
-    return colors[this.state.colorHue % colors.length];
+  _renderProgressBar: function() {
+    var progressBar = (
+      <View style={styles.progressBar}>
+        {_.map(_.range(0, this.props.seconds), (value) => {
+          var opacity = value + 1 < this.state.totalTimeElapsed/1000 ? 1 : 0.2;
+          var color = 'rgba(255, 255, 255, ' + opacity + ')';
+          var notchStyles = {
+            backgroundColor: color
+          };
+          return (
+            <View
+              key={'notch-' + value}
+              style={[styles.progressBarNotch, notchStyles]}>
+            </View>
+          );
+        })}
+      </View>
+    );
+    return progressBar;
   },
 
   render: function() {
@@ -315,24 +336,6 @@ var Quizzer = React.createClass({
           var opacity = value < this.state.count ? 1 : 0.2;
           var color = 'rgba(255, 255, 255, ' + opacity + ')';
           return (<Circle size={8} key={'circle-' + value} color={color}/>);
-        })}
-      </View>
-    );
-
-    var progressBar = (
-      <View style={styles.progressBar}>
-        {_.map(_.range(0, this.props.seconds), (value) => {
-          var opacity = value + 1 < this.state.overallTime/1000 ? 1 : 0.2;
-          var color = 'rgba(255, 255, 255, ' + opacity + ')';
-          var notchStyles = {
-            backgroundColor: color
-          };
-          return (
-            <View
-              key={'notch-' + value}
-              style={[styles.progressBarNotch, notchStyles]}>
-            </View>
-          );
         })}
       </View>
     );
@@ -357,7 +360,7 @@ var Quizzer = React.createClass({
             </AppText>
           </View>
         </View>
-        {progressBar}
+        {this._renderProgressBar()}
         <View style={styles.questionContainer}>
           <AppText style={styles.question}>
             {question}
