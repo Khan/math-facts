@@ -17,6 +17,9 @@ var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
 var OperationHelper = require('../helpers/OperationHelpers.ios');
 var randomIntBetween = require('../helpers/Helpers.ios').randomIntBetween;
 
+var NumPad = require('../components/NumPad.ios');
+var AdditionHint = require('../components/AdditionHint.ios');
+
 var Circle = React.createClass({
   render: function() {
     var size = this.props.size || 20;
@@ -32,55 +35,6 @@ var Circle = React.createClass({
         }}
       />
     );
-  }
-});
-
-var AdditionHint = React.createClass({
-  render: function() {
-    var left = this.props.left;
-    var right = this.props.right;
-    var total = this.props.left + this.props.right;
-
-    var rgb = this.props.color;
-
-    var num = 1;
-    var hint = _.map(_.range(0, 2), (hint10) => {
-      var backgroundColor = hint10 % 10 ?
-            'rgba(255, 255, 255, 0.5)' :
-            'rgba(255, 255, 255, 0.3)';
-      return (
-        <View
-            style={[styles.hint10, {backgroundColor: backgroundColor}]}
-            key={'hint10-' + hint10}>
-        {_.map(_.range(0, 2), (hint5) => {
-          return (
-            <View
-                style={styles.hint5}
-                key={'hint5-' + hint5}>
-            {_.map(_.range(0, 5), () => {
-              var offset = hint10 * 10 + hint5 * 5;
-              var round = hint5 === 0 ? Math.ceil : Math.floor;
-              var showLeft = num - offset <= round((left - hint10 * 10)/2);
-              var showRight = num - offset <= round((total - hint10 * 10)/2);
-
-              var color = showLeft ? '#fff' :
-                          showRight ? 'rgba(0, 0, 0, 0.6)' :
-                          'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+', 0.4)';
-              num++;
-              return (
-                <Circle
-                  size={15}
-                  color={color}
-                  key={'circle-' + num}/>
-            );
-          })}
-          </View>
-          );
-        })}
-        </View>
-      );
-    });
-    return (<View style={styles.hint}>{hint}</View>);
   }
 });
 
@@ -353,57 +307,6 @@ var Quizzer = React.createClass({
     return colors[this.state.colorHue % colors.length];
   },
 
-  _renderNumpad: function() {
-
-    var button = (onPress, content) => {
-      return (
-        <TouchableHighlight
-            key={'numpad-'+content}
-            style={styles.button}
-            onPress={onPress}
-            underlayColor='transparent'
-            activeOpacity={0.2}>
-          <View>
-            <AppText style={styles.buttonText}>
-              {content}
-            </AppText>
-          </View>
-        </TouchableHighlight>
-      );
-    }
-
-    var buttons = _.map(_.range(1, 10), (value, index) => {
-      return button(() => {this.addDigit(value)}, value);
-    });
-
-    buttons.push(button(this.clear, '×'));
-    buttons.push(button(() => {this.addDigit(0)}, '0'));
-
-    // TODO: Implement hints for multiplication
-    if (this.props.operation === 'addition') {
-      buttons.push(button(this.hint, '?'));
-    } else {
-      buttons.push(button(null, ' '));
-    }
-
-    return (
-      <View style={styles.buttons}>
-        <View style={styles.buttonRow}>
-          {buttons.slice(0, 3)}
-        </View>
-        <View style={styles.buttonRow}>
-          {buttons.slice(3, 6)}
-        </View>
-        <View style={styles.buttonRow}>
-          {buttons.slice(6, 9)}
-        </View>
-        <View style={styles.buttonRow}>
-          {buttons.slice(9, 12)}
-        </View>
-      </View>
-    );
-  },
-
   _renderProgressBar: function() {
     var progressBar = (
       <View style={styles.progressBar}>
@@ -441,7 +344,9 @@ var Quizzer = React.createClass({
 
     return (
       <QuizzerScreen color={this.getColor()} back={this.props.back}>
-        <Text>{countdown}</Text>
+        <View>
+          <Text>{countdown}</Text>
+        </View>
       </QuizzerScreen>
     );
   },
@@ -485,7 +390,11 @@ var Quizzer = React.createClass({
           }
         </View>
 
-        {this._renderNumpad()}
+        <NumPad
+          operation={this.props.operation}
+          addDigit={this.addDigit}
+          hint={this.hint}
+          clear={this.clear}/>
 
       </QuizzerScreen>
     );
@@ -590,53 +499,6 @@ var styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 5,
   },
-
-  hintContainer: {
-    flex: 0,
-    height: 50,
-    alignSelf: 'stretch',
-    flexDirection: 'column'
-  },
-  hint: {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'center',
-    flexDirection: 'row'
-  },
-  hint10: {
-    flex: 0,
-    alignSelf: 'center',
-    flexDirection: 'column',
-  },
-  hint5: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-
-  buttons: {
-    flex: 0,
-    alignSelf: 'stretch',
-    margin: 20,
-    marginTop: 2
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  button: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    flexDirection: 'column',
-    height: 60,
-    flex: 1,
-    justifyContent: 'center',
-    margin: 2
-  },
-  buttonText: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#fff'
-  }
 });
 
 module.exports = Quizzer;
