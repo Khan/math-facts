@@ -230,7 +230,8 @@ var Quizzer = React.createClass({
   },
   countdown: function() {
     var countdown = this.state.countdown;
-    if (countdown === 0) {
+    console.log('countdown', countdown)
+    if (countdown < 0) {
       clearInterval(this.interval);
       this.interval = setInterval(this.tick, 50);
     }
@@ -344,8 +345,11 @@ var Quizzer = React.createClass({
 
     return (
       <QuizzerScreen color={this.getColor()} back={this.props.back}>
-        <View>
-          <Text>{countdown}</Text>
+        {this._renderProgressBar()}
+        <View style={styles.countdown}>
+          <Text style={styles.countdownText}>
+            {countdown > 0 ? countdown : 'GO'}
+          </Text>
         </View>
       </QuizzerScreen>
     );
@@ -421,7 +425,7 @@ var Quizzer = React.createClass({
   render: function() {
     if (!this.state.loaded) {
       return this._renderLoading();
-    } else if (this.state.countdown > 0) {
+    } else if (this.state.countdown >= 0) {
       return this._renderCountdown();
     } else if (!this.state.finished) {
       return this._renderGame();
@@ -499,6 +503,17 @@ var styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 5,
   },
+
+  countdown: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 30
+  },
+  countdownText: {
+    fontSize: 80,
+    color: '#fff'
+  }
 });
 
 module.exports = Quizzer;
