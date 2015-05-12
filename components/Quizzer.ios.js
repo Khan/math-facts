@@ -334,7 +334,7 @@ var Quizzer = React.createClass({
     return (
       <QuizzerScreen color={this.getColor()} back={this.props.back}>
         <View>
-          <Text>Loading</Text>
+          <AppText>Loading</AppText>
         </View>
       </QuizzerScreen>
     );
@@ -347,9 +347,9 @@ var Quizzer = React.createClass({
       <QuizzerScreen color={this.getColor()} back={this.props.back}>
         {this._renderProgressBar()}
         <View style={styles.countdown}>
-          <Text style={styles.countdownText}>
+          <AppText style={styles.countdownText}>
             {countdown > 0 ? countdown : 'GO'}
-          </Text>
+          </AppText>
         </View>
       </QuizzerScreen>
     );
@@ -415,8 +415,15 @@ var Quizzer = React.createClass({
           back={() => {
             this.props.finish(this.state.data, this.state.points);
           }}>
-        <View>
-          <Text>Finished!</Text>
+        <View style={styles.summary}>
+          <AppText style={styles.summaryTitle}>
+            Time's up!
+          </AppText>
+          <AppText style={styles.summaryText}>
+            {'You earned '}
+            <AppTextBold>{this.state.points}</AppTextBold>
+            {' points'}
+          </AppText>
         </View>
       </QuizzerScreen>
     );
@@ -512,6 +519,21 @@ var styles = StyleSheet.create({
   },
   countdownText: {
     fontSize: 80,
+    color: '#fff'
+  },
+
+  summary: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 30
+  },
+  summaryTitle: {
+    fontSize: 60,
+    color: '#fff'
+  },
+  summaryText: {
+    fontSize: 25,
     color: '#fff'
   }
 });
