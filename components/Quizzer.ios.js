@@ -84,7 +84,39 @@ var AdditionHint = React.createClass({
   }
 });
 
+var QuizzerScreen = React.createClass({
+  render: function() {
+    var rgb = this.props.color;
+    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+
+    return (
+      <View style={[styles.container, {backgroundColor: mainColor}]}>
+        <View style={styles.topRow}>
+          <TouchableHighlight
+              underlayColor='transparent'
+              activeOpacity={0.4}
+              onPress={this.props.back}
+              style={styles.backButton}>
+            <View>
+              <AppText style={styles.backButtonText}>{'×'}</AppText>
+            </View>
+          </TouchableHighlight>
+          {(this.props.points != null) && <View style={styles.points}>
+            <AppText style={styles.pointsText}>
+              {this.props.points + ' points'}
+            </AppText>
+          </View>}
+        </View>
+        {this.props.children}
+      </View>
+    );
+  },
+});
+
 var Quizzer = React.createClass({
+  defaultProps: {
+
+  },
   getInitialState: function() {
     return {
       questionSeed: [],
@@ -394,60 +426,23 @@ var Quizzer = React.createClass({
   },
 
   _renderLoading: function() {
-    var rgb = this.getColor();
-    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 
     return (
-      <View style={[styles.container, {backgroundColor: mainColor}]}>
-        <View style={styles.topRow}>
-          <TouchableHighlight
-              underlayColor='transparent'
-              activeOpacity={0.4}
-              onPress={this.props.back}
-              style={styles.backButton}>
-            <View>
-              <AppText style={styles.backButtonText}>{'×'}</AppText>
-            </View>
-          </TouchableHighlight>
-          <View style={styles.points}>
-            <AppText style={styles.pointsText}>
-              {this.state.points + ' points'}
-            </AppText>
-          </View>
-        </View>
+      <QuizzerScreen color={this.getColor()} back={this.props.back}>
         <View>
           <Text>Loading</Text>
         </View>
-      </View>
+      </QuizzerScreen>
     );
   },
 
   _renderCountdown: function() {
     var countdown = this.state.countdown;
 
-    var rgb = this.getColor();
-    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-
     return (
-      <View style={[styles.container, {backgroundColor: mainColor}]}>
-        <View style={styles.topRow}>
-          <TouchableHighlight
-              underlayColor='transparent'
-              activeOpacity={0.4}
-              onPress={this.props.back}
-              style={styles.backButton}>
-            <View>
-              <AppText style={styles.backButtonText}>{'×'}</AppText>
-            </View>
-          </TouchableHighlight>
-          <View style={styles.points}>
-            <AppText style={styles.pointsText}>
-              {this.state.points + ' points'}
-            </AppText>
-          </View>
-        </View>
+      <QuizzerScreen color={this.getColor()} back={this.props.back}>
         <Text>{countdown}</Text>
-      </View>
+      </QuizzerScreen>
     );
   },
 
@@ -471,23 +466,10 @@ var Quizzer = React.createClass({
     var question = OperationHelper[this.props.operation].getQuestion(inputs);
 
     return (
-      <View style={[styles.container, {backgroundColor: mainColor}]}>
-        <View style={styles.topRow}>
-          <TouchableHighlight
-              underlayColor='transparent'
-              activeOpacity={0.4}
-              onPress={this.props.back}
-              style={styles.backButton}>
-            <View>
-              <AppText style={styles.backButtonText}>{'×'}</AppText>
-            </View>
-          </TouchableHighlight>
-          <View style={styles.points}>
-            <AppText style={styles.pointsText}>
-              {this.state.points + ' points'}
-            </AppText>
-          </View>
-        </View>
+      <QuizzerScreen
+          color={this.getColor()}
+          points={this.state.points}
+          back={this.props.back}>
         {this._renderProgressBar()}
         <View style={styles.questionContainer}>
           <AppText style={styles.question}>
@@ -505,7 +487,7 @@ var Quizzer = React.createClass({
 
         {this._renderNumpad()}
 
-      </View>
+      </QuizzerScreen>
     );
   },
 
@@ -514,29 +496,16 @@ var Quizzer = React.createClass({
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 
     return (
-      <View style={[styles.container, {backgroundColor: mainColor}]}>
-        <View style={styles.topRow}>
-          <TouchableHighlight
-              underlayColor='transparent'
-              activeOpacity={0.4}
-              onPress={() => {
-                this.props.finish(this.state.data, this.state.points);
-              }}
-              style={styles.backButton}>
-            <View>
-              <AppText style={styles.backButtonText}>{'×'}</AppText>
-            </View>
-          </TouchableHighlight>
-          <View style={styles.points}>
-            <AppText style={styles.pointsText}>
-              {this.state.points + ' points'}
-            </AppText>
-          </View>
-        </View>
+      <QuizzerScreen
+          color={this.getColor()}
+          points={this.state.points}
+          back={() => {
+            this.props.finish(this.state.data, this.state.points);
+          }}>
         <View>
           <Text>Finished!</Text>
         </View>
-      </View>
+      </QuizzerScreen>
     );
   },
 
