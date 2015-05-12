@@ -87,6 +87,12 @@ var AdditionHint = React.createClass({
 var Quizzer = React.createClass({
   getInitialState: function() {
     return {
+      questionSeed: [],
+      loaded: false,
+      studyFact: [1, 1],
+
+      countdown: 3,
+
       count: 0,
       inputs: this.getInputs(),
       hintUsed: false,
@@ -94,13 +100,15 @@ var Quizzer = React.createClass({
       data: [],
       response: '',
       colorHue: 0,
-      overallTime: 0,
+      totalTimeElapsed: 0,
       points: 0,
+
     };
   },
   generateInputs: function() {
-    // Return a list of facts in the order they should be asked
-    if (this.props.operation === 'addition') {
+    var operation = this.props.operation;
+
+    if (operation === 'addition') {
       var easiestFacts = [
         // +1s
         [1, 1],
@@ -138,18 +146,26 @@ var Quizzer = React.createClass({
 
         // leftovers
         [4, 3], [6, 3], // the little ones
+
         [8, 4], [8, 6], // even, even, even!
         [6, 7], [7, 8], // the weird ones
         [7, 5], [8, 5], // adding 5
-
       ];
 
-      return easiestFacts[0];
 
-    } else if (this.props.operation === 'multiplication') {
-      return [randomIntBetween(1, 10), randomIntBetween(1, 10)];
+      _.each(easiestFacts, (fact) => {
+        var left = fact[0];
+        var right = fact[1];
+
+      });
+
+
+      return [randomIntBetween(0, 6), randomIntBetween(0, 6)];
+
+    } else if (operation === 'multiplication') {
+      return [randomIntBetween(0, 6), randomIntBetween(0, 6)];
     } else {
-      return [randomIntBetween(1, 10), randomIntBetween(1, 10)];
+      return [randomIntBetween(0, 10), randomIntBetween(0, 10)];
     }
   },
   getInputs: function() {
@@ -171,22 +187,71 @@ var Quizzer = React.createClass({
       hintUsed: true
     });
   },
+  makeQuestionSeeds: function(quizzesData) {
+    var questionSeeds = [];
+    console.log('quizzesData', quizzesData)
+
+    // Populate question seeder with data about facts that have already been
+    // practiced
+    _.each(quizzesData, (rowData, row) => {
+      questionSeeds[row] = [];
+      _.each(quizzesData, (timeData, col) => {
+        _.each(timeData, (data) => {
+
+        });
+        questionSeeds[row][col] = 1;
+      });
+    });
+
+    console.log('questionSeeds', questionSeeds)
+
+    this.setState({
+      questionSeeds: questionSeeds,
+      loaded: true
+    }, () => {
+      this.interval = setInterval(this.countdown, 1000);
+    });
+  },
   componentDidMount: function() {
-    this.interval = setInterval(this.tick, 50);
+    if (this.props.quizzesData.length > 0) {
+      this.makeQuestionSeeds(this.props.quizzesData);
+    }
+  },
+  componentWillReceiveProps: function(newProps) {
+    var oldQuizzesData = this.props.quizzesData;
+
+    if (oldQuizzesData.length === 0 && newProps.quizzesData.length > 0) {
+      this.makeQuestionSeeds(newProps.quizzesData);
+    }
   },
   componentWillUnmount: function() {
     clearInterval(this.interval);
   },
   tick: function() {
-    var timesUp = this.state.overallTime > this.props.seconds * 1000;
+    var timeLimit = this.props.seconds * 1000;
+    var timesUp = this.state.totalTimeElapsed > timeLimit;
     if (this.props.mode === 'time' && timesUp) {
-      this.props.finish(this.state.data, this.state.points);
+      clearInterval(this.interval);
+      this.setState({
+        finished: true
+      });
     } else {
       this.setState({
         time: this.state.time + 50,
-        overallTime: this.state.overallTime + 50
+        totalTimeElapsed: this.state.totalTimeElapsed + 50
       });
     }
+  },
+  countdown: function() {
+    var countdown = this.state.countdown;
+    if (countdown === 0) {
+      clearInterval(this.interval);
+      this.interval = setInterval(this.tick, 50);
+    }
+
+    this.setState({
+      countdown: countdown - 1
+    });
   },
   check: function() {
     var inputs = this.state.inputs;
@@ -211,12 +276,17 @@ var Quizzer = React.createClass({
           }
         });
 
-        var timesUp = this.state.overallTime > this.props.seconds * 1000;
+        var timesUp = this.state.totalTimeElapsed > this.props.seconds * 1000;
         var finished = this.props.mode === 'time' ? timesUp :
                        (this.state.count >= this.props.count - 1)
         if (finished) {
           // Finished the quiz
-          this.props.finish(data, newPoints);
+          clearInterval(this.interval);
+          this.setState({
+            finished: true,
+            data: data,
+            points: newPoints
+          });
 
         } else {
           // Load a new question
@@ -323,7 +393,65 @@ var Quizzer = React.createClass({
     return progressBar;
   },
 
-  render: function() {
+  _renderLoading: function() {
+    var rgb = this.getColor();
+    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+
+    return (
+      <View style={[styles.container, {backgroundColor: mainColor}]}>
+        <View style={styles.topRow}>
+          <TouchableHighlight
+              underlayColor='transparent'
+              activeOpacity={0.4}
+              onPress={this.props.back}
+              style={styles.backButton}>
+            <View>
+              <AppText style={styles.backButtonText}>{'×'}</AppText>
+            </View>
+          </TouchableHighlight>
+          <View style={styles.points}>
+            <AppText style={styles.pointsText}>
+              {this.state.points + ' points'}
+            </AppText>
+          </View>
+        </View>
+        <View>
+          <Text>Loading</Text>
+        </View>
+      </View>
+    );
+  },
+
+  _renderCountdown: function() {
+    var countdown = this.state.countdown;
+
+    var rgb = this.getColor();
+    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+
+    return (
+      <View style={[styles.container, {backgroundColor: mainColor}]}>
+        <View style={styles.topRow}>
+          <TouchableHighlight
+              underlayColor='transparent'
+              activeOpacity={0.4}
+              onPress={this.props.back}
+              style={styles.backButton}>
+            <View>
+              <AppText style={styles.backButtonText}>{'×'}</AppText>
+            </View>
+          </TouchableHighlight>
+          <View style={styles.points}>
+            <AppText style={styles.pointsText}>
+              {this.state.points + ' points'}
+            </AppText>
+          </View>
+        </View>
+        <Text>{countdown}</Text>
+      </View>
+    );
+  },
+
+  _renderGame: function() {
     var inputs = this.state.inputs;
     var total = OperationHelper[this.props.operation].getAnswer(inputs);
 
@@ -379,6 +507,49 @@ var Quizzer = React.createClass({
 
       </View>
     );
+  },
+
+  _renderSummary: function() {
+    var rgb = this.getColor();
+    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+
+    return (
+      <View style={[styles.container, {backgroundColor: mainColor}]}>
+        <View style={styles.topRow}>
+          <TouchableHighlight
+              underlayColor='transparent'
+              activeOpacity={0.4}
+              onPress={() => {
+                this.props.finish(this.state.data, this.state.points);
+              }}
+              style={styles.backButton}>
+            <View>
+              <AppText style={styles.backButtonText}>{'×'}</AppText>
+            </View>
+          </TouchableHighlight>
+          <View style={styles.points}>
+            <AppText style={styles.pointsText}>
+              {this.state.points + ' points'}
+            </AppText>
+          </View>
+        </View>
+        <View>
+          <Text>Finished!</Text>
+        </View>
+      </View>
+    );
+  },
+
+  render: function() {
+    if (!this.state.loaded) {
+      return this._renderLoading();
+    } else if (this.state.countdown > 0) {
+      return this._renderCountdown();
+    } else if (!this.state.finished) {
+      return this._renderGame();
+    } else {
+      return this._renderSummary();
+    }
   }
 });
 
