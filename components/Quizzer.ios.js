@@ -20,24 +20,6 @@ var randomIntBetween = require('../helpers/Helpers.ios').randomIntBetween;
 var NumPad = require('../components/NumPad.ios');
 var AdditionHint = require('../components/AdditionHint.ios');
 
-var Circle = React.createClass({
-  render: function() {
-    var size = this.props.size || 20;
-    var color = this.props.color || '#527fe4';
-    return (
-      <View
-        style={{
-          borderRadius: size / 2,
-          backgroundColor: color,
-          width: size,
-          height: size,
-          margin: 3,
-        }}
-      />
-    );
-  }
-});
-
 var QuizzerScreen = React.createClass({
   render: function() {
     var rgb = this.props.color;
@@ -361,16 +343,6 @@ var Quizzer = React.createClass({
 
     var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-
-    var progress = (
-      <View style={styles.progress}>
-        {_.map(_.range(0, this.props.count), (value) => {
-          var opacity = value < this.state.count ? 1 : 0.2;
-          var color = 'rgba(255, 255, 255, ' + opacity + ')';
-          return (<Circle size={8} key={'circle-' + value} color={color}/>);
-        })}
-      </View>
-    );
 
     var question = OperationHelper[this.props.operation].getQuestion(inputs);
 
