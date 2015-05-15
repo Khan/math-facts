@@ -12,23 +12,7 @@ var {
 
 var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
 
-var Circle = React.createClass({
-  render: function() {
-    var size = this.props.size || 20;
-    var color = this.props.color || '#527fe4';
-    return (
-      <View
-        style={{
-          borderRadius: size / 2,
-          backgroundColor: color,
-          width: size,
-          height: size,
-          margin: 3,
-        }}
-      />
-    );
-  }
-});
+var Circle = require('../components/Circle.ios')
 
 var AdditionHint = React.createClass({
   render: function() {
