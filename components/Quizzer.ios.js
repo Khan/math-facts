@@ -20,6 +20,7 @@ var randomIntBetween = require('../helpers/Helpers.ios').randomIntBetween;
 var NumPad = require('../components/NumPad.ios');
 var AdditionHint = require('../components/AdditionHint.ios');
 var Button = require('../components/Button.ios');
+var Circle = require('../components/Circle.ios')
 
 var QuizzerScreen = React.createClass({
   render: function() {
@@ -216,7 +217,9 @@ var Quizzer = React.createClass({
     console.log('countdown', countdown)
     if (countdown < 0) {
       clearInterval(this.interval);
-      this.interval = setInterval(this.tick, 50);
+      if (this.props.mode === 'time') {
+        this.interval = setInterval(this.tick, 50);
+      }
     }
 
     this.setState({
@@ -252,25 +255,19 @@ var Quizzer = React.createClass({
         if (finished) {
           // Finished the quiz
           clearInterval(this.interval);
-          this.setState({
-            finished: true,
-            data: data,
-            points: newPoints
-          });
-
-        } else {
-          // Load a new question
-          this.setState({
-            count: this.state.count + 1,
-            inputs: this.getInputs(),
-            hintUsed: false,
-            time: 0,
-            data: data,
-            response: '',
-            colorHue: this.state.colorHue + 1,
-            points: newPoints,
-          });
         }
+        // Load a new question
+        this.setState({
+          count: this.state.count + 1,
+          inputs: this.getInputs(),
+          hintUsed: false,
+          time: 0,
+          data: data,
+          response: '',
+          colorHue: this.state.colorHue + 1,
+          points: newPoints,
+          finished: finished
+        });
       }, 150);
     }
   },
@@ -292,13 +289,12 @@ var Quizzer = React.createClass({
   },
 
   _renderProgressBar: function() {
-    var progressBar = (
+    return (
       <View style={styles.progressBar}>
         {_.map(_.range(0, this.props.seconds), (value) => {
           var opacity = value + 1 < this.state.totalTimeElapsed/1000 ? 1 : 0.2;
-          var color = 'rgba(255, 255, 255, ' + opacity + ')';
           var notchStyles = {
-            backgroundColor: color
+            backgroundColor: 'rgba(255, 255, 255, ' + opacity + ')'
           };
           return (
             <View
@@ -306,10 +302,38 @@ var Quizzer = React.createClass({
               style={[styles.progressBarNotch, notchStyles]}>
             </View>
           );
-        })}
+        })
+      }
       </View>
     );
-    return progressBar;
+  },
+
+  _renderProgressDots: function() {
+    console.log('_renderProgressDots')
+    return (
+      <View style={styles.progressDots}>
+        {_.map(_.range(0, this.props.count), (value) => {
+          console.log('value ' + value)
+          console.log('count ' + this.state.count)
+          var opacity = value < this.state.count ? 1 : 0.2;
+          var color = 'rgba(255, 255, 255, ' + opacity + ')';
+          return (
+            <Circle
+              key={'notch-' + value}
+              size={10}
+              color={color}>
+            </Circle>
+          );
+        })
+      }
+      </View>
+    );
+  },
+
+  _renderProgress: function() {
+    console.log('_renderProgress')
+    return this.props.mode === 'time' ? this._renderProgressBar() :
+                                        this._renderProgressDots();
   },
 
   _renderLoading: function() {
@@ -330,7 +354,7 @@ var Quizzer = React.createClass({
 
     return (
       <QuizzerScreen color={this.getColor()} back={this.props.back}>
-        {this._renderProgressBar()}
+        {this._renderProgress()}
         <View style={styles.countdown}>
           <AppText style={styles.countdownText}>
             {countdown > 0 ? countdown : 'GO'}
@@ -354,7 +378,7 @@ var Quizzer = React.createClass({
           color={this.getColor()}
           points={this.state.points}
           back={this.props.back}>
-        {this._renderProgressBar()}
+        {this._renderProgress()}
         <View style={styles.questionContainer}>
           <AppText style={styles.question}>
             {question}
@@ -393,6 +417,7 @@ var Quizzer = React.createClass({
           color={this.getColor()}
           points={this.state.points}
           back={finish}>
+        {this._renderProgress()}
         <View style={styles.summary}>
           <AppText style={styles.summaryTitle}>
             Time's up!
@@ -480,6 +505,13 @@ var styles = StyleSheet.create({
   progressBarNotch: {
     flex: 1,
     height: 7
+  },
+
+  progressDots: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    margin: 10
   },
 
   questionContainer: {
