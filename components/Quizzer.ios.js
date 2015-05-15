@@ -316,8 +316,10 @@ var Quizzer = React.createClass({
 
     return (
       <QuizzerScreen color={this.getColor()} back={this.props.back}>
-        <View>
-          <AppText>Loading</AppText>
+        <View style={styles.loading}>
+          <AppText style={styles.loadingText}>
+            Loading...
+          </AppText>
         </View>
       </QuizzerScreen>
     );
@@ -495,6 +497,17 @@ var styles = StyleSheet.create({
     height: 80,
     color: '#fff',
     marginBottom: 5,
+  },
+
+  loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 30
+  },
+  loadingText: {
+    fontSize: 30,
+    color: '#fff'
   },
 
   countdown: {
