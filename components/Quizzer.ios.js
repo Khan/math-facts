@@ -19,6 +19,7 @@ var randomIntBetween = require('../helpers/Helpers.ios').randomIntBetween;
 
 var NumPad = require('../components/NumPad.ios');
 var AdditionHint = require('../components/AdditionHint.ios');
+var Button = require('../components/Button.ios');
 
 var QuizzerScreen = React.createClass({
   render: function() {
@@ -379,24 +380,39 @@ var Quizzer = React.createClass({
   _renderSummary: function() {
     var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-
+    var finish = () => {
+      this.props.finish(this.state.data, this.state.points);
+    };
+    var playAgain = () => {
+      this.props.playAgain(this.state.data, this.state.points);
+    };
     return (
       <QuizzerScreen
           color={this.getColor()}
           points={this.state.points}
-          back={() => {
-            this.props.finish(this.state.data, this.state.points);
-          }}>
+          back={finish}>
         <View style={styles.summary}>
           <AppText style={styles.summaryTitle}>
             Time's up!
           </AppText>
           <AppText style={styles.summaryText}>
             {'You earned '}
-            <AppTextBold>{this.state.points}</AppTextBold>
-            {' points'}
+          </AppText>
+          <AppTextBold style={styles.summaryPoints}>
+            {this.state.points}
+          </AppTextBold>
+          <AppText style={styles.summaryText}>
+            {' points!'}
           </AppText>
         </View>
+        <Button
+          text="Play Again"
+          color="rgba(0, 0, 0, 0.15)"
+          onPress={playAgain}/>
+        <Button
+          text="Back"
+          color="rgba(0, 0, 0, 0.15)"
+          onPress={finish}/>
       </QuizzerScreen>
     );
   },
@@ -417,9 +433,7 @@ var Quizzer = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fafafa',
-    justifyContent: 'space-between'
+    backgroundColor: '#fafafa'
   },
 
   topRow: {
@@ -497,15 +511,20 @@ var styles = StyleSheet.create({
   summary: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 30
+    alignSelf: 'stretch',
+    justifyContent: 'center'
   },
   summaryTitle: {
-    fontSize: 60,
+    fontSize: 50,
+    marginBottom: 20,
     color: '#fff'
   },
   summaryText: {
     fontSize: 25,
+    color: '#fff'
+  },
+  summaryPoints: {
+    fontSize: 40,
     color: '#fff'
   }
 });

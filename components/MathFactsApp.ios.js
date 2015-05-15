@@ -64,7 +64,8 @@ var MathFactsApp = React.createClass({
       showStats: false,
     });
   },
-  finish: function(quizData, points) {
+  finish: function(quizData, points, playAgain) {
+    playAgain = playAgain ? playAgain : false;
     var operation = this.state.operation;
     _.each(quizData, (questionData) => {
       MathFactsActions.addAttempts(operation, [questionData]);
@@ -73,7 +74,14 @@ var MathFactsApp = React.createClass({
 
     this.setState({
       playing: false,
+    }, () => {
+      if (playAgain) {
+        this.startGame();
+      }
     });
+  },
+  playAgain: function(quizData, points) {
+    this.finish(quizData, points, true);
   },
   addFactAttempt: function() {
     var newData = _.clone(this.state.data);
@@ -132,6 +140,7 @@ var MathFactsApp = React.createClass({
             operation={operation}
             back={this.showMenu}
             finish={this.finish}
+            playAgain={this.playAgain}
             quizzesData={this.state.quizzesData[operation]}
             mode={'time'}
             seconds={20}
