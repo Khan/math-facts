@@ -199,13 +199,36 @@ var Quizzer = React.createClass({
 
     console.log('questionSeeds', questionSeeds)
 
+    var shuffle = function(arr) {
+      // Modified from: http://stackoverflow.com/a/6274381
+      for (var j, x, i = arr.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = arr[i - 1];
+        arr[i - 1] = arr[j];
+        arr[j] = x;
+      }
+      return arr;
+    };
+
+    var softShuffle = function(arr, blockSize, offset) {
+      // Takes an array and shuffles blocks of values so things don't move too
+      // far from their original location.
+      var newArr = [];
+      for (var i = offset; i < arr.length; i += blockSize) {
+        var arrayBlock = arr.slice(i, i + blockSize);
+        var shuffledBlock = shuffle(arr.slice(i, i + blockSize));
+        newArr = newArr.concat(shuffledBlock);
+      }
+      return newArr;
+    };
+
     var inputList = [];
 
     var fluentFacts = [];
     var nonFluentFacts = [];
     var unknownFacts = [];
 
-    _.each(easiestFacts, (fact) => {
+    var pushFact = function(fact) {
       var left = fact[0];
       var right = fact[1];
       var fluency = questionSeeds[left][right];
@@ -216,6 +239,14 @@ var Quizzer = React.createClass({
       } else {
         unknownFacts.push(fact);
       }
+    };
+
+    _.each(easiestFacts, (fact) => {
+      pushFact(fact);
+      if (fact[0] !== fact[1]) {
+        // Include the flipped fact if it's distinct (e.g. 2 + 1 and 1 + 2)
+        pushFact([fact[1], fact[0]]);
+      }
     });
 
     console.log('fluentFacts', fluentFacts)
@@ -224,11 +255,12 @@ var Quizzer = React.createClass({
 
     if (unknownFacts.length > 0) {
       // We don't have enough data about this user, so ask them unknown facts.
-      // TODO: gently shuffle these (i.e. keep them in ~ascending order of
-      // difficulty but not 1+1 then 1+2 then 1+3)
       // TODO: make sure there are enough facts for this quiz
-      // TODO: Include flipped facts (e.g. 1+2 and 2+1)
       inputList = unknownFacts.slice(0, this.props.count);
+
+      // gently shuffle these (i.e. keep them in ~ascending order of
+      // difficulty but not 1+1 then 1+2 then 1+3)
+      inputList = softShuffle(inputList, 5, 0);
     } else {
       // We know whether this user is fluent or not fluent in each fact.
       // We want to pick one struggling fact as the learning fact and use spaced
