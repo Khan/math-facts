@@ -406,12 +406,12 @@ var Quizzer = React.createClass({
           </AppText>
         </View>
         <Button
-          text="Play Again"
-          color="rgba(0, 0, 0, 0.15)"
+          text='Play Again'
+          color='rgba(0, 0, 0, 0.15)'
           onPress={playAgain}/>
         <Button
-          text="Back"
-          color="rgba(0, 0, 0, 0.15)"
+          text='Back'
+          color='rgba(0, 0, 0, 0.15)'
           onPress={finish}/>
       </QuizzerScreen>
     );

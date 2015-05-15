@@ -29,7 +29,7 @@ var Button = React.createClass({
     return (
       <TouchableHighlight
         onPress={this.props.onPress}
-        underlayColor="transparent"
+        underlayColor='transparent'
         activeOpacity={0.5}>
         <View style={[styles.button, { backgroundColor: color }]}>
           <AppText style={buttonTextStyle}>{this.props.text}</AppText>
@@ -43,7 +43,7 @@ var styles = StyleSheet.create({
   button: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: "#89dacc",
+    backgroundColor: '#89dacc',
     padding: 20,
     marginTop: 10,
     marginBottom: 10,

@@ -33,7 +33,7 @@ var GridCell = React.createClass({
         <TouchableHighlight
             key={this.props.key}
             style={[styles.gridCell, {backgroundColor: color}]}
-            underlayColor="transparent"
+            underlayColor='transparent'
             onPress={onPress}>
           <View>
             <AppText style={[styles.gridCellText, {color: textColor}]}>

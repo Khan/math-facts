@@ -15,7 +15,7 @@ var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
 var MathFactsStore = require('../stores/MathFactsStore');
 var MathFactsActions = require('../actions/MathFactsActions');
 
-var StateFromStoreMixin = require("../lib/state-from-store-mixin.js");
+var StateFromStoreMixin = require('../lib/state-from-store-mixin.js');
 
 var Quizzer = require('./Quizzer.ios');
 var Stats = require('./Stats.ios');
@@ -111,20 +111,20 @@ var MathFactsApp = React.createClass({
           </AppText>
         </View>
         <Button
-          text="Play"
+          text='Play'
           onPress={this.startGame} />
         <Button
-          text="Progress"
+          text='Progress'
           onPress={this.showStats} />
         <View style={styles.toggleButtons}>
           <Button
-            text="Addition"
-            color={operation === 'addition' ? "#666" : "#ccc"}
+            text='Addition'
+            color={operation === 'addition' ? '#666' : '#ccc'}
             small={true}
             onPress={this.setAdditionoperation}/>
           <Button
-            text="Multiplication"
-            color={operation === 'multiplication' ? "#666" : "#ccc"}
+            text='Multiplication'
+            color={operation === 'multiplication' ? '#666' : '#ccc'}
             small={true}
             onPress={this.setMultiplicationoperation}/>
         </View>
