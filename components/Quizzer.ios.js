@@ -182,14 +182,14 @@ var Quizzer = React.createClass({
     });
   },
   componentDidMount: function() {
-    if (this.props.quizzesData.length > 0) {
+    if (this.props.quizzesData != null) {
       this.makeQuestionSeeds(this.props.quizzesData);
     }
   },
   componentWillReceiveProps: function(newProps) {
     var oldQuizzesData = this.props.quizzesData;
 
-    if (oldQuizzesData.length === 0 && newProps.quizzesData.length > 0) {
+    if (oldQuizzesData == null && newProps.quizzesData != null) {
       this.makeQuestionSeeds(newProps.quizzesData);
     }
   },

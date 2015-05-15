@@ -51,9 +51,9 @@ var fetchPoints = function() {
  *
  */
 var _factData = {
-  'multiplication': [],
-  'addition': [],
-  'typing': [],
+  'multiplication': null,
+  'addition': null,
+  'typing': null,
 };
 
 
