@@ -89,18 +89,18 @@ var Grid = React.createClass({
                     color='#eee'
                     key={'cell-row-header-' + row}/>
                 {_.map(_.range(0, 10), (col) => {
-                  var times = this.props.timeData[row + 1][col + 1];
-                  var timesAnswered = times.length;
-                  var bestTime = Math.min.apply(Math, times);
-                  var masteryLevel = MasteryHelpers.masteryLevel(times);
-                  var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
-                  var masteryColorText = MasteryHelpers.masteryTextColors[
-                    masteryLevel
-                  ];
-
                   var answer = OperationHelper[operation].getAnswer(
                     [row + 1, col + 1]
                   );
+                  var times = this.props.timeData[row + 1][col + 1];
+                  var timesAnswered = times.length;
+                  var bestTime = Math.min.apply(Math, times);
+                  var factStatus = MasteryHelpers.getFactStatus(answer, times);
+                  var masteryColor = MasteryHelpers.masteryColors[factStatus];
+                  var masteryColorText = MasteryHelpers.masteryTextColors[
+                    factStatus
+                  ];
+
                   return (<GridCell
                     content={answer}
                     color={masteryColor}
@@ -148,9 +148,10 @@ var Stats = React.createClass({
     });
   },
   render: function() {
+    var operation = this.props.operation;
     var grid = <Grid
       timeData={this.state.timeData}
-      operation={this.props.operation}
+      operation={operation}
       onPress={(active) => {
         this.setState({
           active: active
@@ -170,18 +171,20 @@ var Stats = React.createClass({
     });
     var bestTimePrint = parseFloat(bestTime/1000).toFixed(2);
 
-    var masteryLevel = MasteryHelpers.masteryLevel(times);
-    var masteryColor = MasteryHelpers.masteryColors[masteryLevel];
-    var masteryColorText = MasteryHelpers.masteryTextColors[masteryLevel];
+    var inputs = [activeRow, activeCol];
+    var expression = OperationHelper[operation].getExpression(inputs);
+    var answer = OperationHelper[operation].getAnswer(inputs);
 
-    var expression = OperationHelper[this.props.operation].getExpression(
-      [activeRow, activeCol]
-    );
+    var factStatus = MasteryHelpers.getFactStatus(answer, times);
+    var masteryColor = MasteryHelpers.masteryColors[factStatus];
+    var masteryColorText = MasteryHelpers.masteryTextColors[factStatus];
+    var masteryDescription  = MasteryHelpers.masteryDescription[factStatus];
 
     var infoStatTextStyle = styles.infoStatText;
+    var color = {color: masteryColorText};
     var info = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
-        <AppText style={[styles.infoQuestion, {color: masteryColorText}]}>
+        <AppText style={[styles.infoQuestion, color]}>
           {expression}
         </AppText>
         <View style={styles.infoStats}>
@@ -197,6 +200,14 @@ var Stats = React.createClass({
             </AppText>
           </View> : null}
         </View>
+          <View style={styles.infoDescription}>
+            <AppText style={[styles.infoDescriptionTitle, color]}>
+              {factStatus.toUpperCase()}
+            </AppText>
+            <AppText style={[styles.infoDescriptionText, color]}>
+              {masteryDescription}
+            </AppText>
+          </View>
       </View>
     );
 
@@ -241,13 +252,12 @@ var styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     alignItems: 'center',
-    padding: 20,
+    padding: 10,
     marginTop: 1
   },
   infoQuestion: {
     fontSize: 40,
-    fontWeight: 'bold',
-    margin: 10
+    margin: 5
   },
   infoStats: {
     flexDirection: 'row'
@@ -264,6 +274,21 @@ var styles = StyleSheet.create({
   infoStatText: {
     fontSize: 15,
     color: '#144956'
+  },
+
+  infoDescription: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginLeft: 30,
+    marginRight: 30,
+    flexWrap: 'wrap'
+  },
+  infoDescriptionTitle: {
+    fontSize: 16
+  },
+  infoDescriptionText: {
+    fontSize: 11
   },
 
   grid: {
