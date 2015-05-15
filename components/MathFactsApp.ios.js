@@ -131,30 +131,36 @@ var MathFactsApp = React.createClass({
       </View>
     );
   },
-  render: function() {
+  _renderQuizzer: function() {
     var operation = this.state.operation;
     return (
+      <Quizzer
+        operation={operation}
+        back={this.showMenu}
+        finish={this.finish}
+        playAgain={this.playAgain}
+        quizzesData={this.state.quizzesData[operation]}
+        mode={'count'}
+        seconds={20}
+        count={10}/>
+    );
+  },
+  _renderStats: function() {
+    var operation = this.state.operation;
+    return (
+      <Stats
+        operation={operation}
+        back={this.showMenu}
+        quizzesData={this.state.quizzesData[operation]}/>
+    );
+  },
+  render: function() {
+    var content = this.state.playing   ? this._renderQuizzer() :
+                  this.state.showStats ? this._renderStats() :
+                                         this._renderHomeScreen();
+    return (
       <View style={styles.appWrapper}>
-        {this.state.playing &&
-          <Quizzer
-            operation={operation}
-            back={this.showMenu}
-            finish={this.finish}
-            playAgain={this.playAgain}
-            quizzesData={this.state.quizzesData[operation]}
-            mode={'count'}
-            seconds={20}
-            count={10}/>
-        }
-        {this.state.showStats &&
-          <Stats
-            operation={operation}
-            back={this.showMenu}
-            quizzesData={this.state.quizzesData[operation]}/>
-        }
-        {!this.state.playing && !this.state.showStats &&
-          this._renderHomeScreen()
-        }
+        {content}
       </View>
     );
   }
