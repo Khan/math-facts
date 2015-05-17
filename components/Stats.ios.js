@@ -6,7 +6,6 @@ var React = require('react-native');
 var {
   StyleSheet,
   TouchableHighlight,
-  Text,
   View,
 } = React;
 
@@ -14,7 +13,9 @@ var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
 
 var ColorHelpers = require('../helpers/ColorHelpers.ios');
 var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
-var OperationHelper = require('../helpers/OperationHelpers.ios.js');
+var OperationHelper = require('../helpers/OperationHelpers.ios');
+
+var BackButton = require('../components/BackButton.ios');
 
 var GridCell = React.createClass({
   defaultProps: {
@@ -213,15 +214,7 @@ var Stats = React.createClass({
 
     return (
       <View style={styles.container}>
-        <TouchableHighlight
-            underlayColor='transparent'
-            activeOpacity={0.4}
-            onPress={this.props.back}
-            style={styles.backButton}>
-          <View>
-            <AppText style={styles.backButtonText}>{'×'}</AppText>
-          </View>
-        </TouchableHighlight>
+        <BackButton onPress={this.props.back} />
         {grid}
         {info}
       </View>
@@ -235,17 +228,6 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fafafa',
     justifyContent: 'flex-start'
-  },
-
-  backButton: {
-    alignSelf: 'flex-start',
-    padding: 15
-  },
-  backButtonText: {
-    color: '#999',
-    fontSize: 30,
-    height: 30,
-    marginTop: -11
   },
 
   infoContainer: {

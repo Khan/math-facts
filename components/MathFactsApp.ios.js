@@ -17,10 +17,11 @@ var MathFactsActions = require('../actions/MathFactsActions');
 
 var StateFromStoreMixin = require('../lib/state-from-store-mixin.js');
 
-var Quizzer = require('./Quizzer.ios');
-var Stats = require('./Stats.ios');
+var Quizzer = require('../components/Quizzer.ios');
+var Stats = require('../components/Stats.ios');
 
-var Button = require('./Button.ios');
+var Button = require('../components/Button.ios');
+var BackButton = require('../components/BackButton.ios');
 
 var MathFactsApp = React.createClass({
   mixins: [

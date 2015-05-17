@@ -20,7 +20,9 @@ var randomIntBetween = require('../helpers/Helpers.ios').randomIntBetween;
 var NumPad = require('../components/NumPad.ios');
 var AdditionHint = require('../components/AdditionHint.ios');
 var Button = require('../components/Button.ios');
-var Circle = require('../components/Circle.ios')
+var Circle = require('../components/Circle.ios');
+
+var BackButton = require('../components/BackButton.ios');
 
 var QuizzerScreen = React.createClass({
   render: function() {
@@ -30,15 +32,7 @@ var QuizzerScreen = React.createClass({
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>
         <View style={styles.topRow}>
-          <TouchableHighlight
-              underlayColor='transparent'
-              activeOpacity={0.4}
-              onPress={this.props.back}
-              style={styles.backButton}>
-            <View>
-              <AppText style={styles.backButtonText}>{'×'}</AppText>
-            </View>
-          </TouchableHighlight>
+          <BackButton onPress={this.props.back} />
           {(this.props.points != null) && <View style={styles.points}>
             <AppText style={styles.pointsText}>
               {this.props.points + ' points'}
