@@ -32,19 +32,12 @@ var BackButton = React.createClass({
 
 
 var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fafafa',
-    justifyContent: 'flex-start'
-  },
-
   backButton: {
     alignSelf: 'flex-start',
     padding: 15
   },
   backButtonText: {
-    color: '#999',
+    color: 'rgba(0, 0, 0, 0.4)',
     fontSize: 30,
     height: 30,
     marginTop: -11
