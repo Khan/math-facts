@@ -59,10 +59,16 @@ var MathFactsApp = React.createClass({
       showStats: true
     });
   },
+  showSettings: function() {
+    this.setState({
+      showSettings: true
+    });
+  },
   showMenu: function() {
     this.setState({
       playing: false,
       showStats: false,
+      showSettings: false,
     });
   },
   finish: function(quizData, points, playAgain) {
@@ -120,15 +126,20 @@ var MathFactsApp = React.createClass({
         <View style={styles.toggleButtons}>
           <Button
             text='Addition'
-            color={operation === 'addition' ? '#666' : '#ccc'}
+            color={operation === 'addition' ? null : '#ddd'}
             small={true}
             onPress={this.setAdditionoperation}/>
           <Button
             text='Multiplication'
-            color={operation === 'multiplication' ? '#666' : '#ccc'}
+            color={operation === 'multiplication' ? null : '#ddd'}
             small={true}
             onPress={this.setMultiplicationoperation}/>
         </View>
+        <Button
+          text='Settings'
+          color='#bbb'
+          small={true}
+          onPress={this.showSettings}/>
       </View>
     );
   },
@@ -155,10 +166,26 @@ var MathFactsApp = React.createClass({
         quizzesData={this.state.quizzesData[operation]}/>
     );
   },
+  _renderSettings: function() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.topRow}>
+          <BackButton onPress={this.showMenu} />
+        </View>
+        <View style={styles.content}>
+          <Button
+            text='Clear data'
+            onPress={MathFactsActions.clearData}
+          />
+        </View>
+      </View>
+    );
+  },
   render: function() {
-    var content = this.state.playing   ? this._renderQuizzer() :
-                  this.state.showStats ? this._renderStats() :
-                                         this._renderHomeScreen();
+    var content = this.state.playing      ? this._renderQuizzer() :
+                  this.state.showStats    ? this._renderStats() :
+                  this.state.showSettings ? this._renderSettings() :
+                                            this._renderHomeScreen();
     return (
       <View style={styles.appWrapper}>
         {content}
@@ -176,6 +203,17 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center'
+  },
+
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    alignSelf: 'stretch',
+  },
+
+  content: {
+    flex: 1
   },
 
   points: {

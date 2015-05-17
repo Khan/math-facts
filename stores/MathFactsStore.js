@@ -56,6 +56,12 @@ var _factData = {
   'typing': null,
 };
 
+var getKeys = function() {
+  return _.map(_factData, (data, operation) => {
+    return operation;
+  });
+};
+
 
 /**
  * Adds fact attempts to the data store
@@ -88,9 +94,7 @@ var addAttempts = function(operation, data) {
 };
 
 var fetchStoredFactData = function() {
-  var keys = _.map(_factData, (data, operation) => {
-    return operation;
-  });
+  var keys = getKeys();
 
   return AsyncStorage.multiGet(keys).then((keyValuePairs) => {
     var newFactData = {};
@@ -110,6 +114,15 @@ var updateStoredFactData = function() {
     return [operation, JSON.stringify(data)];
   });
   AsyncStorage.multiSet(keyValuePairs).done();
+};
+
+// Clear all data
+var clearData = function() {
+  var keys = getKeys();
+
+  return AsyncStorage.multiRemove(keys).then(() => {
+    return fetchStoredFactData();
+  }).done();
 };
 
 var MathFactStore = assign({}, EventEmitter.prototype, {
@@ -171,6 +184,11 @@ AppDispatcher.register(function(action) {
      addPoints(amount);
      MathFactStore.emitChange();
      break;
+
+    case MathFactsConstants.DATA_CLEAR:
+      clearData();
+      MathFactStore.emitChange();
+      break;
 
     default:
       // no op

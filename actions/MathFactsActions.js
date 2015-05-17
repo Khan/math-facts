@@ -23,6 +23,12 @@ var MathFactsActions = {
     });
   },
 
+  clearData: function() {
+    AppDispatcher.dispatch({
+      actionType: MathFactsConstants.DATA_CLEAR,
+    });
+  },
+
   addPoints: function(amount) {
     AppDispatcher.dispatch({
       actionType: MathFactsConstants.POINTS_ADD,
