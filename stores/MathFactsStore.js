@@ -120,9 +120,15 @@ var updateStoredFactData = function() {
 var clearData = function() {
   var keys = getKeys();
 
-  return AsyncStorage.multiRemove(keys).then(() => {
-    return fetchStoredFactData();
-  }).done();
+  return Promise.all([
+    AsyncStorage.multiRemove(keys),
+    AsyncStorage.removeItem('points')
+  ]).then(() => {
+    return Promise.all([
+      fetchPoints(),
+      fetchStoredFactData()
+    ]);
+  }).then(() => undefined).done();
 };
 
 var MathFactStore = assign({}, EventEmitter.prototype, {
