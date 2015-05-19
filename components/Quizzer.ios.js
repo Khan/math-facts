@@ -55,7 +55,7 @@ var Quizzer = React.createClass({
       loaded: false,
       studyFact: [1, 1],
 
-      countdown: 3,
+      countdown: 1,
 
       count: 0,
       hintUsed: false,
@@ -440,7 +440,7 @@ var Quizzer = React.createClass({
         {this._renderProgress()}
         <View style={styles.countdown}>
           <AppText style={styles.countdownText}>
-            {countdown > 0 ? countdown : 'GO'}
+            {countdown > 0 ? 'Ready?' : 'GO!'}
           </AppText>
         </View>
       </QuizzerScreen>
@@ -632,7 +632,7 @@ var styles = StyleSheet.create({
     marginBottom: 30
   },
   countdownText: {
-    fontSize: 80,
+    fontSize: 60,
     color: '#fff'
   },
 
