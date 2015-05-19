@@ -14,19 +14,28 @@ var CHANGE_EVENT = 'change';
  * Points
  */
 var _points = 0;
+var _scores = [];
 
 var addPoints = function(amount) {
   _points += amount;
+  _scores.push(amount)
   updateStoredPoints();
 };
 
 var updateStoredPoints = function() {
   AsyncStorage.setItem('points', _points.toString()).done();
+  AsyncStorage.setItem('scores', JSON.stringify(_scores)).done();
 };
 
 var fetchPoints = function() {
-  return AsyncStorage.getItem('points').then((points) => {
-    _points = (points == null) ? 0 : parseInt(points);
+  return Promise.all([
+    AsyncStorage.getItem('points').then((points) => {
+      _points = (points == null) ? 0 : parseInt(points);
+    }),
+    AsyncStorage.getItem('scores').then((scores) => {
+      _scores = (scores == null) ? [] : JSON.parse(scores);
+    }),
+  ]).then(() => {
     MathFactStore.emitChange();
   }).done();
 };
@@ -122,7 +131,8 @@ var clearData = function() {
 
   return Promise.all([
     AsyncStorage.multiRemove(keys),
-    AsyncStorage.removeItem('points')
+    AsyncStorage.removeItem('points'),
+    AsyncStorage.removeItem('scores')
   ]).then(() => {
     return Promise.all([
       fetchPoints(),
@@ -143,6 +153,10 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
 
   getPoints: function() {
     return _points;
+  },
+
+  getScores: function() {
+    return _scores;
   },
 
   emitChange: function() {

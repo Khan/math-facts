@@ -39,6 +39,13 @@ var MathFactsApp = React.createClass({
           var points = store.getPoints();
           return points;
         }
+      },
+      scores: {
+        store: MathFactsStore,
+        fetch: (store) => {
+          var scores = store.getScores();
+          return scores;
+        }
       }
     })
   ],
@@ -113,6 +120,15 @@ var MathFactsApp = React.createClass({
             {'You have '}
             <AppTextBold style={styles.pointsTextEmphasis}>
               {this.state.points}
+            </AppTextBold>
+            {' points'}
+          </AppText>
+        </View>
+        <View style={styles.points}>
+          <AppText style={styles.pointsText}>
+            {'Your high score is '}
+            <AppTextBold style={styles.pointsTextEmphasis}>
+              {Math.max(0, ...this.state.scores)}
             </AppTextBold>
             {' points'}
           </AppText>
@@ -218,8 +234,7 @@ var styles = StyleSheet.create({
 
   points: {
     alignItems: 'center',
-    marginTop: -20,
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   pointsText: {
     fontSize: 20,
