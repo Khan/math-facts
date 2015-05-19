@@ -53,7 +53,7 @@ var MathFactsApp = React.createClass({
     return {
       playing: false,
       showStats: false,
-      operation: 'addition'
+      operation: 'multiplication'
     };
   },
   startGame: function() {
