@@ -202,11 +202,11 @@ var Stats = React.createClass({
     var timesAnswered = times.length;
     var bestTime = 0;
     _.each(times, (data) => {
-      if (data != null && (bestTime === 0 || data.time < bestTime)) {
+      if (data != null && bestTime !== 0 && data.time < bestTime) {
         bestTime = data.time;
       }
     });
-    var bestTimePrint = parseFloat(bestTime/1000).toFixed(2);
+    var bestTimePrint = parseFloat(bestTime/1000).toFixed(2).toString();
 
     var inputs = [activeRow, activeCol];
     var expression = OperationHelper[operation].getExpression(inputs);
@@ -248,11 +248,26 @@ var Stats = React.createClass({
       </View>
     );
 
+
+    var allTimes = [];
+    _.each(times, (data) => {
+      allTimes.push(
+        <View style={styles.infoStat}>
+          <AppText style={styles.infoStatText}>
+            {parseFloat(data.time/1000).toFixed(2).toString()}
+          </AppText>
+        </View>
+      );
+    });
+
     var lotsOfInfo = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
         <AppText style={[styles.infoQuestion, color]}>
           {expression}
         </AppText>
+        <View style={styles.infoStats}>
+          {allTimes}
+        </View>
 
       </View>
     );
@@ -284,28 +299,31 @@ var styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     alignSelf: 'stretch',
-    alignItems: 'center',
     padding: 10,
-    marginTop: 1
+    marginTop: 1,
   },
   infoQuestion: {
     fontSize: 40,
-    margin: 5
+    margin: 5,
+    alignSelf: 'center'
   },
   infoStats: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
+
   },
   infoStat: {
-    margin: 5,
+    margin: 2,
     backgroundColor: '#fff',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 3,
-    paddingBottom: 3,
-    borderRadius: 12
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 2,
+    paddingBottom: 2,
+    borderRadius: 10,
   },
   infoStatText: {
-    fontSize: 15,
+    fontSize: 13,
     color: '#144956'
   },
 
