@@ -112,16 +112,17 @@ var getFactStatus = function(number, times) {
     }
   });
 
+  if (numTries < 4) {
+    return 'introduced';
+  }
+
   // If the learner has shown fluency on this fact more than 75% of the time,
   // we can consider them fluent.
-  if (fluent > 3 && fluent > nonFluent * 3) {
+  if (fluent > nonFluent * 3) {
     // fluent
     return 'mastered';
   }
 
-  if (numTries < 4 && fluent > nonFluent) {
-    return 'introduced';
-  }
 
   if (fluent > nonFluent) {
     // working on it
