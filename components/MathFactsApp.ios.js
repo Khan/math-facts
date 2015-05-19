@@ -168,7 +168,7 @@ var MathFactsApp = React.createClass({
         finish={this.finish}
         playAgain={this.playAgain}
         quizzesData={this.state.quizzesData[operation]}
-        mode={'count'}
+        mode={'time'}
         seconds={20}
         count={10}/>
     );

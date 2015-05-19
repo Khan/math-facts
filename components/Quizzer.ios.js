@@ -250,11 +250,11 @@ var Quizzer = React.createClass({
     if (unknownFacts.length > 0) {
       // We don't have enough data about this user, so ask them unknown facts.
       // TODO: make sure there are enough facts for this quiz
-      inputList = unknownFacts.slice(0, this.props.count);
+      inputList = unknownFacts;
 
       // gently shuffle these (i.e. keep them in ~ascending order of
       // difficulty but not 1+1 then 1+2 then 1+3)
-      inputList = softShuffle(inputList, 5, 0);
+      inputList = softShuffle(inputList, 10, 0);
     } else {
       // We know whether this user is fluent or not fluent in each fact.
       // We want to pick one struggling fact as the learning fact and use spaced
