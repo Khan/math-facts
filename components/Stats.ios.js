@@ -142,29 +142,48 @@ var Stats = React.createClass({
   },
   getInitialState: function() {
     return {
-      timeData: this.getTimeData(),
+      timeData: [],
       active: [1, 1]
     };
   },
-  componentWillReceiveProps: function() {
-    this.setState({
-      timeData: this.getTimeData()
-    })
+  componentDidMount: function() {
+    if (this.props.quizzesData != null) {
+      this.loadTimeData(this.props.quizzesData);
+    }
   },
-  getTimeData: function() {
+  componentWillReceiveProps: function(newProps) {
+    if (this.state.timeData.length === 0 && newProps.quizzesData != null) {
+      this.loadTimeData(newProps.quizzesData);
+    }
+  },
+  loadTimeData: function (quizzesData) {
+    this.setState({
+      timeData: this.getTimeData(quizzesData),
+      loaded: true
+    });
+  },
+  getTimeData: function(quizzesData) {
     // Size must be larger than the max size of the values that are added
     return _.map(_.range(0, 12), (left) => {
       return _.map(_.range(0, 12), (right) => {
-        if (this.props.quizzesData[left] != null) {
-          if (this.props.quizzesData[left][right] != null) {
-            return this.props.quizzesData[left][right];
-          }
+        if (quizzesData[left] != null && quizzesData[left][right] != null) {
+          return quizzesData[left][right];
         }
         return [];
       });
     });
   },
   render: function() {
+    if (this.state.loaded) {
+      return this.renderStats();
+    }
+    return (
+      <View style={styles.loading}>
+        <AppText>Loading...</AppText>
+      </View>
+    );
+  },
+  renderStats: function() {
     var operation = this.props.operation;
     var grid = <Grid
       timeData={this.state.timeData}
@@ -229,11 +248,20 @@ var Stats = React.createClass({
       </View>
     );
 
+    var lotsOfInfo = (
+      <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
+        <AppText style={[styles.infoQuestion, color]}>
+          {expression}
+        </AppText>
+
+      </View>
+    );
+
     return (
       <View style={styles.container}>
         <BackButton onPress={this.props.back} />
         {grid}
-        {info}
+        {lotsOfInfo}
       </View>
     );
   }
@@ -245,6 +273,12 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fafafa',
     justifyContent: 'flex-start'
+  },
+
+  loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   infoContainer: {
