@@ -24,22 +24,32 @@ var GridCell = React.createClass({
     textColor: React.PropTypes.string,
     key: React.PropTypes.string.isRequired,
     onPress: React.PropTypes.func,
+    active: React.PropTypes.bool,
   },
   render: function() {
     var onPress = this.props.onPress || null;
     var color = this.props.color || '#ddd';
     var textColor = this.props.textColor || '#222';
-    if (onPress) {
+    var gridCellStyles = [
+      styles.gridCell,
+      {backgroundColor: color},
+      this.props.active ? {borderWidth: 1, borderColor: textColor} : null,
+    ];
+    var cellContent = (
+      <AppText style={[styles.gridCellText, {color: textColor}]}>
+        {this.props.content}
+      </AppText>
+    );
+
+    if (onPress != null) {
       return (
         <TouchableHighlight
             key={this.props.key}
-            style={[styles.gridCell, {backgroundColor: color}]}
+            style={gridCellStyles}
             underlayColor='transparent'
             onPress={onPress}>
           <View>
-            <AppText style={[styles.gridCellText, {color: textColor}]}>
-              {this.props.content}
-            </AppText>
+            {cellContent}
           </View>
         </TouchableHighlight>
       );
@@ -47,10 +57,8 @@ var GridCell = React.createClass({
       return (
         <View
             key={this.props.key}
-            style={[styles.gridCell, {backgroundColor: color}]}>
-          <AppText style={[styles.gridCellText, {color: textColor}]}>
-            {this.props.content}
-          </AppText>
+            style={gridCellStyles}>
+          {cellContent}
         </View>
       );
     }
@@ -62,7 +70,9 @@ var Grid = React.createClass({
   defaultProps: {
     timeData: React.PropTypes.array,
     operation: React.PropTypes.string,
-    onPress: React.PropTypes.func
+    onPress: React.PropTypes.func,
+    // The active cell as inputs: [row, col]
+    activeCell: React.PropTypes.array
   },
   render: function() {
     var operation = this.props.operation;
@@ -102,8 +112,14 @@ var Grid = React.createClass({
                     factStatus
                   ];
 
+                  var activeCell = this.props.activeCell;
+                  var active = activeCell != null &&
+                               activeCell[0] === row + 1 &&
+                               activeCell[1] === col + 1;
+
                   return (<GridCell
                     content={answer}
+                    active={active}
                     color={masteryColor}
                     textColor={masteryColorText}
                     key={'cell-' + row + '-' + col}
@@ -153,6 +169,7 @@ var Stats = React.createClass({
     var grid = <Grid
       timeData={this.state.timeData}
       operation={operation}
+      activeCell={this.state.active}
       onPress={(active) => {
         this.setState({
           active: active
