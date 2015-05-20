@@ -222,7 +222,7 @@ var Quizzer = React.createClass({
       return newArr;
     };
 
-    var inputList = [];
+    var inputList = this.state.inputList;
 
     var fluentFacts = [];
     var nonFluentFacts = [];
@@ -253,10 +253,19 @@ var Quizzer = React.createClass({
     console.log('nonFluentFacts', nonFluentFacts)
     console.log('unknownFacts', unknownFacts)
 
+    // TODO: make sure there are enough facts for this quiz
     if (unknownFacts.length > 0) {
       // We don't have enough data about this user, so ask them unknown facts.
-      // TODO: make sure there are enough facts for this quiz
-      inputList = inputList.concat(shuffle(unknownFacts));
+      if (unknownFacts.length < 10) {
+        // If we have too few unknown facts, pad the questions with some facts
+        // that we know are fluent, making sure that everything is shuffled.
+        inputList = inputList.concat(shuffle(
+          unknownFacts.concat(
+            shuffle(fluentFacts).slice(0, 10 - unknownFacts.length)
+        )));
+      } else {
+        inputList = inputList.concat(shuffle(unknownFacts));
+      }
     } else {
       // We know whether this user is fluent or not fluent in each fact.
       // We want to pick one struggling fact as the learning fact and use spaced
@@ -353,7 +362,7 @@ var Quizzer = React.createClass({
         }
 
         var inputList = this.state.inputList;
-        if (this.state.count >= inputList.length) {
+        if (this.state.count >= inputList.length - 1) {
           inputList = this.addToInputList(this.props.quizzesData);
         }
 
