@@ -87,7 +87,7 @@ var Quizzer = React.createClass({
       hintUsed: true
     });
   },
-  makeInputList: function(quizzesData) {
+  addToInputList: function(quizzesData) {
     var operation = this.props.operation;
 
     // TODO: Move these to OperationHelper
@@ -181,7 +181,6 @@ var Quizzer = React.createClass({
     }
 
     var questionSeeds = [];
-    console.log('quizzesData', quizzesData)
 
     // Populate question seeder with data about facts that have already been
     // practiced
@@ -257,20 +256,21 @@ var Quizzer = React.createClass({
     if (unknownFacts.length > 0) {
       // We don't have enough data about this user, so ask them unknown facts.
       // TODO: make sure there are enough facts for this quiz
-      inputList = unknownFacts;
-
-      // gently shuffle these (i.e. keep them in ~ascending order of
-      // difficulty but not 1+1 then 1+2 then 1+3)
-      inputList = softShuffle(inputList, 10, 0);
+      inputList = inputList.concat(shuffle(unknownFacts));
     } else {
       // We know whether this user is fluent or not fluent in each fact.
       // We want to pick one struggling fact as the learning fact and use spaced
       // repetition to introduce it into long term memory.
 
       // TODO: this.
+      inputList = inputList.concat(shuffle(fluentFacts));
     }
 
     console.log('inputList', inputList)
+    return inputList;
+  },
+  initializeInputList: function(quizzesData) {
+    var inputList = this.addToInputList(quizzesData);
 
     this.setState({
       inputList: inputList,
@@ -281,14 +281,14 @@ var Quizzer = React.createClass({
   },
   componentDidMount: function() {
     if (this.props.quizzesData != null) {
-      this.makeInputList(this.props.quizzesData);
+      this.initializeInputList(this.props.quizzesData);
     }
   },
   componentWillReceiveProps: function(newProps) {
     var oldQuizzesData = this.props.quizzesData;
 
     if (oldQuizzesData == null && newProps.quizzesData != null) {
-      this.makeInputList(newProps.quizzesData);
+      this.initializeInputList(newProps.quizzesData);
     }
   },
   componentWillUnmount: function() {
@@ -351,8 +351,16 @@ var Quizzer = React.createClass({
           // Finished the quiz
           clearInterval(this.interval);
         }
+
+        var inputList = this.state.inputList;
+        if (this.state.count >= inputList.length) {
+          inputList = this.addToInputList(this.props.quizzesData);
+        }
+
         // Load a new question
         this.setState({
+          inputList: inputList,
+
           count: this.state.count + 1,
           hintUsed: false,
           time: 0,

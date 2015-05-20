@@ -100,15 +100,11 @@ var getFactStatus = function(number, times) {
     // take into account times over the past few days to check for long-term
     // retention.
 
-    // Ignore broken times of 0 seconds
-    if (time > 0) {
-
-      // TODO: Maybe add another level of "quick but not fluent"?
-      if (time < getTypingTime(number) + MEMORY_TIME) {
-        fluent++;
-      } else {
-        nonFluent++;
-      }
+    // TODO: Maybe add another level of "quick but not fluent"?
+    if (time < getTypingTime(number) + MEMORY_TIME) {
+      fluent++;
+    } else {
+      nonFluent++;
     }
   });
 
