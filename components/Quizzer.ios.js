@@ -91,94 +91,15 @@ var Quizzer = React.createClass({
     var operation = this.props.operation;
 
     // TODO: Move these to OperationHelper
-    var easiestFacts = [];
-    if (operation === 'addition') {
-      easiestFacts = [
-        // +1s
-        [1, 1],
-        [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [10, 1],
-
-        // +0s
-        // [0, 0], [1, 0],
-        // [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0],
-
-        // +2s
-        [2, 2],
-        [1, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2], [9, 2], [10, 2],
-
-        // 5 + smalls
-        [5, 1], [5, 2], [5, 3], [5, 4],
-
-        // little doubles
-        [1, 1], [2, 2], [3, 3], [4, 4], [5, 5],
-
-        // 10+s
-        [10, 10],
-        [10, 2], [10, 3], [10, 4], [10, 5], [10, 6], [10, 7], [10, 8], [10, 9],
-
-        // pairs that make 10
-        [9, 1], [8, 2], [7, 3], [6, 4], [5, 5],
-
-        // pairs that make 11
-        [9, 2], [8, 3], [7, 4], [6, 5],
-
-        // big doubles
-        [6, 6], [7, 7], [8, 8], [9, 9], [10, 10],
-
-        // 9+s
-        [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8], [9, 9],
-
-        // leftovers
-        [4, 3], [6, 3], // the little ones
-
-        [8, 4], [8, 6], // even, even, even!
-        [6, 7], [7, 8], // the weird ones
-        [7, 5], [8, 5], // adding 5
-      ];
-
-      var min = 1;
-      var max = 10;
-    } else if (operation === 'multiplication') {
-      easiestFacts = [
-        // x1s
-        [1, 1],
-        [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [10, 1],
-
-        // x0s
-        // [0, 0], [1, 0], [2, 0],
-        // [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0],
-
-        // x2s
-        [2, 2],
-        [1, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2], [9, 2], [10, 2],
-
-        // x10s
-        [10, 10],
-        [10, 2], [10, 3], [10, 4], [10, 5], [10, 6], [10, 7], [10, 8], [10, 9],
-
-        // x5s
-        [5, 1], [5, 2], [5, 3], [5, 4], [5, 5], [5, 6], [5, 7], [5, 8], [5, 9],
-
-        // x9s
-        [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8], [9, 9],
-
-        // squares
-        [1, 1], [2, 2],
-        [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10],
-
-        // x3s
-        [3, 4], [3, 6], [3, 7], [3, 8],
-
-        // x4s
-        [4, 6], [4, 7], [4, 8],
-
-        // leftovers
-        [6, 7], [6, 8], [7, 8],
-
-      ];
-      var min = 1;
-      var max = 10;
-    }
+    var min = 1;
+    var max = 10;
+    var easiestFacts = _.flatten(_.map(
+        _.range(min, max - min + 2),
+        (a) => _.map(
+          _.range(min, a + 1),
+          (b) => [a, b]
+        )
+      ), true);
 
     var questionSeeds = [];
     console.log('quizzesData', quizzesData)
@@ -209,18 +130,6 @@ var Quizzer = React.createClass({
         arr[j] = x;
       }
       return arr;
-    };
-
-    var softShuffle = function(arr, blockSize, offset) {
-      // Takes an array and shuffles blocks of values so things don't move too
-      // far from their original location.
-      var newArr = [];
-      for (var i = offset; i < arr.length; i += blockSize) {
-        var arrayBlock = arr.slice(i, i + blockSize);
-        var shuffledBlock = shuffle(arr.slice(i, i + blockSize));
-        newArr = newArr.concat(shuffledBlock);
-      }
-      return newArr;
     };
 
     var inputList = [];
@@ -257,11 +166,7 @@ var Quizzer = React.createClass({
     if (unknownFacts.length > 0) {
       // We don't have enough data about this user, so ask them unknown facts.
       // TODO: make sure there are enough facts for this quiz
-      inputList = unknownFacts;
-
-      // gently shuffle these (i.e. keep them in ~ascending order of
-      // difficulty but not 1+1 then 1+2 then 1+3)
-      inputList = softShuffle(inputList, 10, 0);
+      inputList = shuffle(unknownFacts);
     } else {
       // We know whether this user is fluent or not fluent in each fact.
       // We want to pick one struggling fact as the learning fact and use spaced
@@ -299,9 +204,6 @@ var Quizzer = React.createClass({
     var timesUp = this.state.totalTimeElapsed > timeLimit;
     if (this.props.mode === 'time' && timesUp) {
       clearInterval(this.interval);
-      this.setState({
-        finished: true
-      });
     } else {
       this.setState({
         time: this.state.time + 50,
@@ -350,6 +252,9 @@ var Quizzer = React.createClass({
         if (finished) {
           // Finished the quiz
           clearInterval(this.interval);
+          this.setState({
+            finished: true
+          });
         }
         // Load a new question
         this.setState({
