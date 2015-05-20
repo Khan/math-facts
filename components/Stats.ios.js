@@ -349,8 +349,8 @@ var styles = StyleSheet.create({
   infoStat: {
     margin: 2,
     backgroundColor: '#fff',
-    paddingLeft: 8,
-    paddingRight: 8,
+    paddingLeft: 6,
+    paddingRight: 6,
     paddingTop: 2,
     paddingBottom: 2,
     borderRadius: 10,
