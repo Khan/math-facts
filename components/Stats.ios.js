@@ -278,6 +278,7 @@ var Stats = React.createClass({
 
     var stdDev = Math.sqrt(findAverage(squareDifferences));
 
+    var n = 0;
     var lotsOfInfo = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
         <AppText style={[styles.infoQuestion, color]}>
@@ -287,7 +288,7 @@ var Stats = React.createClass({
           <View style={styles.infoStatsGroup}>
             {_.map(timesArr, (time) => {
               return (
-                <View style={styles.infoStat}>
+                <View style={styles.infoStat} key={'time-' + (n++)}>
                   <AppText style={styles.infoStatText}>
                     {printTime(time)}
                   </AppText>
