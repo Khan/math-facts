@@ -200,13 +200,12 @@ var Stats = React.createClass({
 
     var times = this.state.timeData[activeRow][activeCol];
     var timesAnswered = times.length;
-    var bestTime = 0;
+    var bestTime = null;
     _.each(times, (data) => {
-      if (data != null && bestTime !== 0 && data.time < bestTime) {
+      if (data != null && (bestTime == null || data.time < bestTime)) {
         bestTime = data.time;
       }
     });
-    var bestTimePrint = parseFloat(bestTime/1000).toFixed(2).toString();
 
     var inputs = [activeRow, activeCol];
     var expression = OperationHelper[operation].getExpression(inputs);
@@ -219,21 +218,27 @@ var Stats = React.createClass({
 
     var infoStatTextStyle = styles.infoStatText;
     var color = {color: masteryColorText};
+
+
+    var printTime = (time) => {
+      return parseFloat(time/1000).toFixed(2).toString() + 's';
+    };
+
     var info = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
         <AppText style={[styles.infoQuestion, color]}>
           {expression}
         </AppText>
-        <View style={styles.infoStats}>
+        <View style={styles.infoStatsGroup}>
           <View style={styles.infoStat}>
             <AppText style={infoStatTextStyle}>
               {timesAnswered + ' attempt' + (timesAnswered !== 1 ? 's' : '')}
             </AppText>
           </View>
-          {(timesAnswered > 0 && bestTimePrint > 0) ?
+          {(timesAnswered > 0 && bestTime != null) ?
           <View style={styles.infoStat}>
             <AppText style={infoStatTextStyle}>
-              {'Best time: ' + bestTimePrint + 's'}
+              {'Best time: ' + printTime(bestTime)}
             </AppText>
           </View> : null}
         </View>
@@ -249,24 +254,52 @@ var Stats = React.createClass({
     );
 
 
-    var allTimes = [];
+    var timesArr = [];
     _.each(times, (data) => {
-      allTimes.push(
-        <View style={styles.infoStat}>
-          <AppText style={styles.infoStatText}>
-            {parseFloat(data.time/1000).toFixed(2).toString()}
-          </AppText>
-        </View>
-      );
+      timesArr.push(data.time);
     });
+
+    var findAverage = (arr) => {
+      var sum = arr.reduce((a, b) => {
+        return a + b;
+      }, 0);
+      return sum / arr.length;
+    };
+
+    // TODO: Reject outliers from these stats (e.g. times > 20 seconds because
+    // they got distracted or something)
+    var avg = findAverage(timesArr);
+
+    // Calculate standard deviation
+    var squareDifferences = timesArr.map((time) => {
+      var difference = time - avg;
+      return difference * difference;
+    });
+
+    var stdDev = Math.sqrt(findAverage(squareDifferences));
 
     var lotsOfInfo = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
         <AppText style={[styles.infoQuestion, color]}>
           {expression}
         </AppText>
-        <View style={styles.infoStats}>
-          {allTimes}
+        <View>
+          <View style={styles.infoStatsGroup}>
+            {_.map(timesArr, (time) => {
+              return (
+                <View style={styles.infoStat}>
+                  <AppText style={styles.infoStatText}>
+                    {printTime(time)}
+                  </AppText>
+                </View>
+              );
+            })}
+          </View>
+          <View style={styles.infoStat}>
+            <AppText style={styles.infoStatText}>
+              {'Avg ' + printTime(avg) + ' ± ' + printTime(stdDev)}
+            </AppText>
+          </View>
         </View>
 
       </View>
@@ -307,11 +340,10 @@ var styles = StyleSheet.create({
     margin: 5,
     alignSelf: 'center'
   },
-  infoStats: {
+  infoStatsGroup: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center'
-
   },
   infoStat: {
     margin: 2,
@@ -321,6 +353,7 @@ var styles = StyleSheet.create({
     paddingTop: 2,
     paddingBottom: 2,
     borderRadius: 10,
+    alignItems: 'center'
   },
   infoStatText: {
     fontSize: 13,
