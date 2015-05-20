@@ -53,7 +53,9 @@ var Quizzer = React.createClass({
     return {
       inputList: [],
       loaded: false,
-      studyFact: [1, 1],
+
+      studyFact: [],
+      spacer: 1,
 
       countdown: 1,
 
@@ -253,6 +255,9 @@ var Quizzer = React.createClass({
     console.log('nonFluentFacts', nonFluentFacts)
     console.log('unknownFacts', unknownFacts)
 
+    // TODO: update quizzesData on the fly so we can have the most up-to-date
+    // view of which facts are fluent/not
+
     // TODO: make sure there are enough facts for this quiz
     if (unknownFacts.length > 0) {
       // We don't have enough data about this user, so ask them unknown facts.
@@ -266,12 +271,35 @@ var Quizzer = React.createClass({
       } else {
         inputList = inputList.concat(shuffle(unknownFacts));
       }
-    } else {
-      // We know whether this user is fluent or not fluent in each fact.
+    } else if (nonFluentFacts.length > 0) {
+      // We know whether this learner is fluent or not fluent in each fact.
       // We want to pick one struggling fact as the learning fact and use spaced
       // repetition to introduce it into long term memory.
 
-      // TODO: this.
+      // TODO: Check something to do with long term memory?
+
+      var studyFact = this.state.studyFact;
+      if (studyFact.length === 0) {
+        // We get to choose the study fact! Pick the next easiest fact that we
+        // don't know.
+        studyFact = nonFluentFacts[0];
+      }
+
+      // We're introducing this fact via spaced repetition. This fact will be
+      // mixed in with fluent facts in the following pattern:
+      //    L F L F F L F F F L F F F F L F F F F F L F F F F F F L ...
+      // to attempt to work the fact into long-term memory.
+
+      var spacer = this.state.spacer;
+
+      inputList = inputList.concat([studyFact])
+                           .concat(shuffle(fluentFacts).slice(0, spacer));
+      this.setState({
+        spacer: spacer + 1
+      });
+    } else {
+      // This learner is fluent in everything! Let them practice to their
+      // heart's content.
       inputList = inputList.concat(shuffle(fluentFacts));
     }
 
