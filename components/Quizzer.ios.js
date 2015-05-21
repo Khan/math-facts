@@ -333,18 +333,11 @@ var Quizzer = React.createClass({
   },
   tick: function() {
     var timeLimit = this.props.seconds * 1000;
-    var timesUp = this.state.totalTimeElapsed > timeLimit;
-    if (this.props.mode === 'time' && timesUp) {
-      clearInterval(this.interval);
-      this.setState({
-        finished: true
-      });
-    } else {
-      this.setState({
-        time: this.state.time + 50,
-        totalTimeElapsed: this.state.totalTimeElapsed + 50
-      });
-    }
+
+    this.setState({
+      time: this.state.time + 50,
+      totalTimeElapsed: this.state.totalTimeElapsed + 50
+    });
   },
   countdown: function() {
     var countdown = this.state.countdown;
@@ -362,13 +355,15 @@ var Quizzer = React.createClass({
     var inputs = this.getInputs();
     var answer =  OperationHelper[this.props.operation].getAnswer(inputs);
     if (this.state.response === answer.toString()) {
-      // Delay logic so user has a chance to see the digit they just entered
       var time = this.state.time;
       var hintUsed = this.state.hintUsed;
+
       // TODO: Change this to be based on the user's typing speed and the number
       // of digits in the answer
       var timeBonus = (time < 1000 ? 20 : time < 2000 ? 5 : 1);
       var newPoints = this.state.points + timeBonus;
+
+      // Delay logic so user has a chance to see the digit they just entered
       setTimeout(() => {
         var data = _.clone(this.state.data);
         var d = new Date();
