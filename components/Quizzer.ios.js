@@ -75,8 +75,9 @@ var Quizzer = React.createClass({
     return this.state.inputList[this.state.count];
   },
   addDigit: function(value) {
+    var intResponse = parseInt(this.state.response + value.toString());
     this.setState({
-      response: this.state.response + value.toString()
+      response: intResponse
     }, this.check);
   },
   clear: function() {
@@ -354,7 +355,7 @@ var Quizzer = React.createClass({
   check: function() {
     var inputs = this.getInputs();
     var answer =  OperationHelper[this.props.operation].getAnswer(inputs);
-    if (this.state.response === answer.toString()) {
+    if (parseInt(this.state.response) === parseInt(answer)) {
       var time = this.state.time;
       var hintUsed = this.state.hintUsed;
 
