@@ -22,7 +22,9 @@ var NumPadButton = React.createClass({
           underlayColor='transparent'
           activeOpacity={0.2}>
         <View>
-          <AppText style={styles.buttonText}>
+          <AppText style={
+            [styles.buttonText, this.props.control && styles.controlButtonText]
+          }>
             {this.props.content}
           </AppText>
         </View>
@@ -45,7 +47,11 @@ var NumPad = React.createClass({
     });
 
     buttons.push(
-      <NumPadButton onPress={this.props.clear} content='×' key='clear'/>
+      <NumPadButton
+        onPress={this.props.clear}
+        content='CLEAR'
+        key='clear'
+        control={true} />
     );
     buttons.push(
       <NumPadButton
@@ -109,6 +115,10 @@ var styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fff'
+  },
+
+  controlButtonText: {
+    fontSize: 15,
   }
 });
 
