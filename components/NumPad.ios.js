@@ -95,7 +95,7 @@ var styles = StyleSheet.create({
   buttons: {
     flex: 0,
     alignSelf: 'stretch',
-    margin: 20,
+    margin: 2,
     marginTop: 2
   },
   buttonRow: {
