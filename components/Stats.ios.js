@@ -260,6 +260,9 @@ var Stats = React.createClass({
     });
 
     var findAverage = (arr) => {
+      if (arr.length === 0) {
+        return null;
+      }
       var sum = arr.reduce((a, b) => {
         return a + b;
       }, 0);
@@ -284,7 +287,7 @@ var Stats = React.createClass({
         <AppText style={[styles.infoQuestion, color]}>
           {expression}
         </AppText>
-        <View>
+        {timesArr.length > 0 && <View>
           <View style={styles.infoStatsGroup}>
             {_.map(timesArr, (time) => {
               return (
@@ -301,8 +304,7 @@ var Stats = React.createClass({
               {'Avg ' + printTime(avg) + ' ± ' + printTime(stdDev)}
             </AppText>
           </View>
-        </View>
-
+        </View>}
       </View>
     );
 
