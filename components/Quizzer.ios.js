@@ -75,10 +75,14 @@ var Quizzer = React.createClass({
     return this.state.inputList[this.state.count];
   },
   addDigit: function(value) {
-    var intResponse = parseInt(this.state.response + value.toString());
-    this.setState({
-      response: intResponse
-    }, this.check);
+    if (this.state.response.toString().length < 3) {
+      var intResponse = parseInt(this.state.response + value.toString());
+      this.setState({
+        response: intResponse
+      }, this.check);
+    } else {
+      // TODO: visual feedback that you're at the max number of digits
+    }
   },
   clear: function() {
     this.setState({
@@ -514,7 +518,9 @@ var Quizzer = React.createClass({
           <AppText style={styles.question}>
             {question}
           </AppText>
-          <AppText style={styles.response}>
+        </View>
+        <View style={styles.responseContainer}>
+          <AppText style={[styles.response]}>
             {this.state.response}
           </AppText>
         </View>
@@ -623,12 +629,6 @@ var styles = StyleSheet.create({
     color: '#fff'
   },
 
-
-  progress: {
-    flexDirection: 'row'
-  },
-
-
   progressBar: {
     flexDirection: 'row',
     alignSelf: 'stretch'
@@ -652,14 +652,18 @@ var styles = StyleSheet.create({
   },
   question: {
     fontSize: 40,
-    margin: 10,
     color: '#fff'
   },
+  responseContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   response: {
-    fontSize: 65,
-    height: 80,
+    fontSize: 75,
+    height: 90,
     color: '#fff',
-    marginBottom: 5,
+    marginBottom: 50,
   },
 
   loading: {
