@@ -10,6 +10,56 @@ var MathFactsConstants = require('../constants/MathFactsConstants');
 var CHANGE_EVENT = 'change';
 
 
+
+/**
+ * Users are stored as an object with their id (int) and their name (string).
+ * The UserList is an array of user objects
+ */
+var _user = {
+  id: 1,
+  name: 'Player',
+  deleted: false,
+};
+var _userList = [ _user ];
+
+var createKey = function(input) {
+  return _user.id + '-' + input;
+};
+
+var addUser = function(userName) {
+  var newUser = {
+    id: _userList.length,
+    name: userName,
+    deleted: false
+  };
+  _userList.push(newUser);
+  changeActiveUser(newUser);
+  updateUserData();
+};
+
+var changeActiveUser = function(user) {
+  _user = user;
+  updateUserData();
+};
+
+var updateUserData = function() {
+  AsyncStorage.setItem('user', _user).done();
+  AsyncStorage.setItem('users', JSON.stringify(_userList)).done();
+};
+
+var fetchUserData = function() {
+  return Promise.all([
+    AsyncStorage.getItem('user').then((user) => {
+      _user = (user == null) ? null : user;
+    }),
+    AsyncStorage.getItem('users').then((userList) => {
+      _userList = (userList == null) ? [] : JSON.parse(userList);
+    }),
+  ]).then(() => {
+    MathFactStore.emitChange();
+  }).done();
+};
+
 /**
  * Points
  */
@@ -18,21 +68,22 @@ var _scores = [];
 
 var addPoints = function(amount) {
   _points += amount;
-  _scores.push(amount)
+  _scores.push(amount);
+  MathFactStore.emitChange();
   updateStoredPoints();
 };
 
 var updateStoredPoints = function() {
-  AsyncStorage.setItem('points', _points.toString()).done();
-  AsyncStorage.setItem('scores', JSON.stringify(_scores)).done();
+  AsyncStorage.setItem(createKey('points'), _points.toString()).done();
+  AsyncStorage.setItem(createKey('scores'), JSON.stringify(_scores)).done();
 };
 
 var fetchPoints = function() {
   return Promise.all([
-    AsyncStorage.getItem('points').then((points) => {
+    AsyncStorage.getItem(createKey('points')).then((points) => {
       _points = (points == null) ? 0 : parseInt(points);
     }),
-    AsyncStorage.getItem('scores').then((scores) => {
+    AsyncStorage.getItem(createKey('scores')).then((scores) => {
       _scores = (scores == null) ? [] : JSON.parse(scores);
     }),
   ]).then(() => {
@@ -59,17 +110,12 @@ var fetchPoints = function() {
  *  ]
  *
  */
-var _factData = {
+var defaultFactData = {
   'multiplication': null,
   'addition': null,
   'typing': null,
 };
-
-var getKeys = function() {
-  return _.map(_factData, (data, operation) => {
-    return operation;
-  });
-};
+var _factData = defaultFactData;
 
 
 /**
@@ -103,13 +149,14 @@ var addAttempts = function(operation, data) {
 };
 
 var fetchStoredFactData = function() {
-  var keys = getKeys();
-
-  return AsyncStorage.multiGet(keys).then((keyValuePairs) => {
+  return AsyncStorage.getItem(createKey('factData')).then((factData) => {
     var newFactData = {};
-    _.each(keyValuePairs, (operationData) => {
-      var operation = operationData[0];
-      var data = JSON.parse(operationData[1]);
+    var factData = JSON.parse(factData);
+    if (factData == null) {
+      factData = defaultFactData;
+    }
+    _.each(defaultFactData, (defaultData, operation) => {
+      var data = factData[operation];
       newFactData[operation] = (data == null) ? [] : data;
     });
     _factData = newFactData;
@@ -119,26 +166,24 @@ var fetchStoredFactData = function() {
 };
 
 var updateStoredFactData = function() {
-  var keyValuePairs = _.map(_factData, (data, operation) => {
-    return [operation, JSON.stringify(data)];
-  });
-  AsyncStorage.multiSet(keyValuePairs).done();
+  AsyncStorage.setItem(createKey('factData'), JSON.stringify(_factData)).done();
 };
 
 // Clear all data
 var clearData = function() {
-  var keys = getKeys();
 
   return Promise.all([
-    AsyncStorage.multiRemove(keys),
-    AsyncStorage.removeItem('points'),
-    AsyncStorage.removeItem('scores')
+    AsyncStorage.removeItem(createKey('factData')),
+    AsyncStorage.removeItem(createKey('points')),
+    AsyncStorage.removeItem(createKey('scores'))
   ]).then(() => {
     return Promise.all([
       fetchPoints(),
       fetchStoredFactData()
     ]);
-  }).then(() => undefined).done();
+  }).then(() => {
+    MathFactStore.emitChange();
+  }).done();
 };
 
 var MathFactStore = assign({}, EventEmitter.prototype, {
@@ -157,6 +202,14 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
 
   getScores: function() {
     return _scores;
+  },
+
+  getUser: function() {
+    return _user;
+  },
+
+  getUserList: function() {
+    return _userList;
   },
 
   emitChange: function() {
@@ -187,7 +240,6 @@ AppDispatcher.register(function(action) {
       var data = action.data;
       if (!_.isEmpty(data)) {
         addAttempts(operation, data);
-        MathFactStore.emitChange();
       }
       break;
 
@@ -200,15 +252,21 @@ AppDispatcher.register(function(action) {
       break;
 
     case MathFactsConstants.POINTS_ADD:
-     var amount = action.amount;
-     addPoints(amount);
-     MathFactStore.emitChange();
-     break;
+      var amount = action.amount;
+      addPoints(amount);
+      break;
 
     case MathFactsConstants.DATA_CLEAR:
       clearData();
-      MathFactStore.emitChange();
       break;
+
+    case MathFactsConstants.USERS_INITIALIZE:
+      fetchUser();
+      break;
+
+    case MathFactsConstants.USERS_ADD:
+      var newUserName = action.userName;
+      addUser(newUserName);
 
     default:
       // no op

@@ -29,22 +29,31 @@ var MathFactsApp = React.createClass({
       quizzesData: {
         store: MathFactsStore,
         fetch: (store) => {
-          var allFacts = store.getAll();
-          return allFacts;
+          return store.getAll();
         }
       },
       points: {
         store: MathFactsStore,
         fetch: (store) => {
-          var points = store.getPoints();
-          return points;
+          return store.getPoints();
         }
       },
       scores: {
         store: MathFactsStore,
         fetch: (store) => {
-          var scores = store.getScores();
-          return scores;
+          return store.getScores();
+        }
+      },
+      user: {
+        store: MathFactsStore,
+        fetch: (store) => {
+          return store.getUser();
+        }
+      },
+      userList: {
+        store: MathFactsStore,
+        fetch: (store) => {
+          return store.getUserList();
         }
       }
     })
@@ -118,18 +127,18 @@ var MathFactsApp = React.createClass({
       <View style={styles.container}>
         <View style={styles.points}>
           <AppText style={styles.pointsText}>
-            {'You have '}
+            {'Hi '}
             <AppTextBold style={styles.pointsTextEmphasis}>
-              {this.state.points}
+              {this.state.user.name}
             </AppTextBold>
-            {' points'}
+            {'!'}
           </AppText>
         </View>
         <View style={styles.points}>
           <AppText style={styles.pointsText}>
-            {'Your high score is '}
+            {'You have '}
             <AppTextBold style={styles.pointsTextEmphasis}>
-              {Math.max(0, ...this.state.scores)}
+              {this.state.points}
             </AppTextBold>
             {' points'}
           </AppText>
