@@ -114,6 +114,7 @@ var MathFactsApp = React.createClass({
   componentDidMount: function() {
     MathFactsActions.initializeData();
     MathFactsActions.initializePoints();
+    MathFactsActions.initializeUsers();
   },
   setAdditionoperation: function() {
     this.setState({operation: 'addition'});

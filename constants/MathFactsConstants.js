@@ -6,4 +6,6 @@ module.exports = keyMirror({
   FACT_DATA_INITIALIZE: null,
   POINTS_ADD: null,
   POINTS_INITIALIZE: null,
+  USERS_ADD: null,
+  USERS_INITIALIZE: null,
 });

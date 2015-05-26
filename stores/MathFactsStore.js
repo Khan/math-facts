@@ -15,15 +15,17 @@ var CHANGE_EVENT = 'change';
  * Users are stored as an object with their id (int) and their name (string).
  * The UserList is an array of user objects
  */
-var _user = {
-  id: 1,
+var defaultUser = {
+  id: 0,
   name: 'Player',
   deleted: false,
 };
-var _userList = [ _user ];
+// The active user is the key of the user in _userList
+var _activeUser = 0;
+var _userList = [ defaultUser ];
 
 var createKey = function(input) {
-  return _user.id + '-' + input;
+  return _activeUser.id + '-' + input;
 };
 
 var addUser = function(userName) {
@@ -38,22 +40,22 @@ var addUser = function(userName) {
 };
 
 var changeActiveUser = function(user) {
-  _user = user;
+  _activeUser = user;
   updateUserData();
 };
 
 var updateUserData = function() {
-  AsyncStorage.setItem('user', _user).done();
-  AsyncStorage.setItem('users', JSON.stringify(_userList)).done();
+  AsyncStorage.setItem('activeUser', _activeUser).done();
+  AsyncStorage.setItem('userList', JSON.stringify(_userList)).done();
 };
 
 var fetchUserData = function() {
   return Promise.all([
-    AsyncStorage.getItem('user').then((user) => {
-      _user = (user == null) ? null : user;
+    AsyncStorage.getItem('activeUser').then((user) => {
+      _activeUser = (user == null) ? _activeUser : user;
     }),
-    AsyncStorage.getItem('users').then((userList) => {
-      _userList = (userList == null) ? [] : JSON.parse(userList);
+    AsyncStorage.getItem('userList').then((userList) => {
+      _userList = (userList == null) ? _userList : JSON.parse(userList);
     }),
   ]).then(() => {
     MathFactStore.emitChange();
@@ -205,7 +207,7 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
   },
 
   getUser: function() {
-    return _user;
+    return _userList[_activeUser];
   },
 
   getUserList: function() {
@@ -261,7 +263,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case MathFactsConstants.USERS_INITIALIZE:
-      fetchUser();
+      fetchUserData();
       break;
 
     case MathFactsConstants.USERS_ADD:
