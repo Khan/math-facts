@@ -72,7 +72,7 @@ var MathFactsApp = React.createClass({
     return {
       playing: false,
       showStats: false,
-      showSettings: false,
+      showSettings: true,
       operation: 'multiplication'
     };
   },
@@ -230,15 +230,15 @@ var MathFactsApp = React.createClass({
         </View>
         <View style={styles.content}>
           <View>
-            <AppText>Users:</AppText>
+            <AppText style={styles.heading}>Change User</AppText>
             {userList}
           </View>
           <View>
-            <AppText>Change Nickname</AppText>
+            <AppText style={styles.heading}>Change Nickname</AppText>
             <TextInput
               autoCapitalize='words'
               returnKeyType='done'
-              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+              style={styles.input}
               value={this.state.user.name}
               onSubmitEditing={(event) => {
                 MathFactsActions.changeName(event.nativeEvent.text);
@@ -246,22 +246,25 @@ var MathFactsApp = React.createClass({
             />
           </View>
           <View>
-            <AppText>Add User</AppText>
+            <AppText style={styles.heading}>Add New User</AppText>
             <TextInput
               autoCapitalize='words'
               returnKeyType='done'
-              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+              style={styles.input}
               onSubmitEditing={(event) => {
                 MathFactsActions.addUser(event.nativeEvent.text);
               }}
             />
           </View>
-          <Button
-            text='Clear data'
-            color='#fa573c'
-            small={true}
-            onPress={MathFactsActions.clearData}
-          />
+          <View>
+            <AppText style={styles.heading}>Clear your progress</AppText>
+            <Button
+              text='Clear data'
+              color='#fa573c'
+              small={true}
+              onPress={MathFactsActions.clearData}
+            />
+          </View>
         </View>
       </ScrollView>
     );
@@ -283,8 +286,7 @@ var MathFactsApp = React.createClass({
 var styles = StyleSheet.create({
   appWrapper: {
     flex: 1,
-    backgroundColor: '#fafafa',
-    paddingTop: 20
+    backgroundColor: '#fafafa'
   },
 
   container: {
@@ -326,6 +328,22 @@ var styles = StyleSheet.create({
     justifyContent: 'center'
   },
 
+  // Settings
+  heading: {
+    textAlign: 'center',
+    margin: 10,
+    marginTop: 20,
+    fontSize: 20,
+  },
+  input: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingRight: 10,
+    paddingLeft: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    textAlign: 'center'
+  },
   settingsButton: {
     borderColor: '#fff',
     borderWidth: 2,
@@ -335,6 +353,7 @@ var styles = StyleSheet.create({
     marginRight: 2,
     padding: 10,
   },
+
   activeSettingsButton: {
     borderColor: 'rgba(0, 0, 0, 0.5)'
   },
