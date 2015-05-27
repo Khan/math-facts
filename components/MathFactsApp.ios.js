@@ -5,6 +5,7 @@ var _ = require('underscore');
 var React = require('react-native');
 var {
   ScrollView,
+  StatusBarIOS,
   StyleSheet,
   TextInput,
   TouchableHighlight,
@@ -23,6 +24,8 @@ var Stats = require('../components/Stats.ios');
 
 var Button = require('../components/Button.ios');
 var BackButton = require('../components/BackButton.ios');
+
+StatusBarIOS.setHidden(true, StatusBarIOS.Animation.slide);
 
 var MathFactsApp = React.createClass({
   mixins: [
