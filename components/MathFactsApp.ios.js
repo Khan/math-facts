@@ -6,7 +6,7 @@ var React = require('react-native');
 var {
   StyleSheet,
   TouchableHighlight,
-  Text,
+  TextInput,
   View,
 } = React;
 
@@ -26,6 +26,12 @@ var BackButton = require('../components/BackButton.ios');
 var MathFactsApp = React.createClass({
   mixins: [
     StateFromStoreMixin({
+      loaded: {
+        store: MathFactsStore,
+        fetch: (store) => {
+          return store.isLoaded();
+        }
+      },
       quizzesData: {
         store: MathFactsStore,
         fetch: (store) => {
@@ -113,8 +119,6 @@ var MathFactsApp = React.createClass({
   },
   componentDidMount: function() {
     MathFactsActions.initializeData();
-    MathFactsActions.initializePoints();
-    MathFactsActions.initializeUsers();
   },
   setAdditionoperation: function() {
     this.setState({operation: 'addition'});
@@ -180,7 +184,7 @@ var MathFactsApp = React.createClass({
         playAgain={this.playAgain}
         quizzesData={this.state.quizzesData[operation]}
         mode={'time'}
-        seconds={20}
+        seconds={2}
         count={10}/>
     );
   },
@@ -193,13 +197,53 @@ var MathFactsApp = React.createClass({
         quizzesData={this.state.quizzesData[operation]}/>
     );
   },
+  _renderLoading: function() {
+    return (
+      <View style={styles.loadingScreen}>
+        <AppText>Loading...</AppText>
+      </View>
+    );
+  },
   _renderSettings: function() {
+    var userList = _.map(this.state.userList, (user) => {
+      return (
+        <Button
+          text={user.name}
+          small={true}
+          onPress={() => {
+            MathFactsActions.changeActiveUser(user.id);
+          }}/>
+      );
+    });
     return (
       <View style={styles.container}>
         <View style={styles.topRow}>
           <BackButton onPress={this.showMenu} />
         </View>
         <View style={styles.content}>
+          <View>
+            <AppText>Users:</AppText>
+            {userList}
+          </View>
+          <View>
+            <AppText>Change Nickname</AppText>
+            <TextInput
+              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+              value={this.state.user.name}
+              onSubmitEditing={(event) => {
+                MathFactsActions.changeName(event.nativeEvent.text);
+              }}
+            />
+          </View>
+          <View>
+            <AppText>Add User</AppText>
+            <TextInput
+              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+              onSubmitEditing={(event) => {
+                MathFactsActions.addUser(event.nativeEvent.text);
+              }}
+            />
+          </View>
           <Button
             text='Clear data'
             onPress={MathFactsActions.clearData}
@@ -209,7 +253,8 @@ var MathFactsApp = React.createClass({
     );
   },
   render: function() {
-    var content = this.state.playing      ? this._renderQuizzer() :
+    var content = this.state.loaded       ? this._renderLoading() :
+                  this.state.playing      ? this._renderQuizzer() :
                   this.state.showStats    ? this._renderStats() :
                   this.state.showSettings ? this._renderSettings() :
                                             this._renderHomeScreen();
@@ -241,6 +286,12 @@ var styles = StyleSheet.create({
 
   content: {
     flex: 1
+  },
+
+  loadingScreen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
   points: {

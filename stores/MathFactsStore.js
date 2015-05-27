@@ -10,6 +10,7 @@ var MathFactsConstants = require('../constants/MathFactsConstants');
 var CHANGE_EVENT = 'change';
 
 
+var _isLoaded = false;
 
 /**
  * Users are stored as an object with their id (int) and their name (string).
@@ -25,28 +26,40 @@ var _activeUser = 0;
 var _userList = [ defaultUser ];
 
 var createKey = function(input) {
-  return _activeUser.id + '-' + input;
+  var key = _activeUser + '-' + input;
+  return key;
 };
 
 var addUser = function(userName) {
+  var userId = _userList.length;
   var newUser = {
-    id: _userList.length,
+    id: userId,
     name: userName,
     deleted: false
   };
   _userList.push(newUser);
-  changeActiveUser(newUser);
+  changeActiveUser(userId);
+  MathFactStore.emitChange();
+  updateUserData().done();
+};
+
+var changeUserName = function(userName) {
+  _userList[_activeUser].name = userName;
+  MathFactStore.emitChange();
   updateUserData();
 };
 
-var changeActiveUser = function(user) {
-  _activeUser = user;
-  updateUserData();
+var changeActiveUser = function(id) {
+  _activeUser = id;
+  _isLoaded = false;
+  updateUserData().then(fetchStoredData).done();
 };
 
 var updateUserData = function() {
-  AsyncStorage.setItem('activeUser', _activeUser).done();
-  AsyncStorage.setItem('userList', JSON.stringify(_userList)).done();
+  return Promise.all([
+    AsyncStorage.setItem('activeUser', _activeUser.toString()),
+    AsyncStorage.setItem('userList', JSON.stringify(_userList)),
+  ]);
 };
 
 var fetchUserData = function() {
@@ -57,9 +70,7 @@ var fetchUserData = function() {
     AsyncStorage.getItem('userList').then((userList) => {
       _userList = (userList == null) ? _userList : JSON.parse(userList);
     }),
-  ]).then(() => {
-    MathFactStore.emitChange();
-  }).done();
+  ]);
 };
 
 /**
@@ -150,7 +161,7 @@ var addAttempts = function(operation, data) {
   updateStoredFactData();
 };
 
-var fetchStoredFactData = function() {
+var fetchFactData = function() {
   return AsyncStorage.getItem(createKey('factData')).then((factData) => {
     var newFactData = {};
     var factData = JSON.parse(factData);
@@ -162,9 +173,7 @@ var fetchStoredFactData = function() {
       newFactData[operation] = (data == null) ? [] : data;
     });
     _factData = newFactData;
-    MathFactStore.emitChange();
   }).done();
-
 };
 
 var updateStoredFactData = function() {
@@ -181,9 +190,22 @@ var clearData = function() {
   ]).then(() => {
     return Promise.all([
       fetchPoints(),
-      fetchStoredFactData()
+      fetchFactData()
     ]);
   }).then(() => {
+    MathFactStore.emitChange();
+  }).done();
+};
+
+
+var fetchStoredData = function() {
+  return fetchUserData().then(() => {
+    return Promise.all([
+      fetchPoints(),
+      fetchFactData(),
+    ]);
+  }).then(() => {
+    _loaded = true;
     MathFactStore.emitChange();
   }).done();
 };
@@ -194,6 +216,10 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
    * Get the entire database of Math Facts
    * @return {object}
    */
+  isLoaded: function() {
+    return _isLoaded;
+  },
+
   getAll: function() {
     return _factData;
   },
@@ -237,20 +263,17 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
 
   switch(action.actionType) {
+
+    case MathFactsConstants.INITIALIZE:
+      fetchStoredData();
+      break;
+
     case MathFactsConstants.FACT_DATA_ADD:
       var operation = action.operation;
       var data = action.data;
       if (!_.isEmpty(data)) {
         addAttempts(operation, data);
       }
-      break;
-
-    case MathFactsConstants.FACT_DATA_INITIALIZE:
-      fetchStoredFactData();
-      break;
-
-    case MathFactsConstants.POINTS_INITIALIZE:
-      fetchPoints();
       break;
 
     case MathFactsConstants.POINTS_ADD:
@@ -262,13 +285,20 @@ AppDispatcher.register(function(action) {
       clearData();
       break;
 
-    case MathFactsConstants.USERS_INITIALIZE:
-      fetchUserData();
+    case MathFactsConstants.USERS_ADD:
+      var newUserName = action.name;
+      addUser(newUserName);
       break;
 
-    case MathFactsConstants.USERS_ADD:
-      var newUserName = action.userName;
-      addUser(newUserName);
+    case MathFactsConstants.USERS_CHANGE_NAME:
+      var newUserName = action.name;
+      changeUserName(newUserName);
+      break;
+
+    case MathFactsConstants.USERS_CHANGE_ACTIVE_USER:
+      var id = action.id;
+      changeActiveUser(id);
+      break;
 
     default:
       // no op
