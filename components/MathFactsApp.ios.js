@@ -4,9 +4,10 @@ var _ = require('underscore');
 
 var React = require('react-native');
 var {
+  ScrollView,
   StyleSheet,
-  TouchableHighlight,
   TextInput,
+  TouchableHighlight,
   View,
 } = React;
 
@@ -206,17 +207,21 @@ var MathFactsApp = React.createClass({
   },
   _renderSettings: function() {
     var userList = _.map(this.state.userList, (user) => {
+      var activeStyles = this.state.user.id === user.id ?
+                            styles.activeSettingsButton : '';
       return (
         <Button
+          key={user.id}
           text={user.name}
           small={true}
+          style={[styles.settingsButton, activeStyles]}
           onPress={() => {
             MathFactsActions.changeActiveUser(user.id);
           }}/>
       );
     });
     return (
-      <View style={styles.container}>
+      <ScrollView>
         <View style={styles.topRow}>
           <BackButton onPress={this.showMenu} />
         </View>
@@ -228,6 +233,8 @@ var MathFactsApp = React.createClass({
           <View>
             <AppText>Change Nickname</AppText>
             <TextInput
+              autoCapitalize='words'
+              returnKeyType='done'
               style={{height: 40, borderColor: 'gray', borderWidth: 1}}
               value={this.state.user.name}
               onSubmitEditing={(event) => {
@@ -238,6 +245,8 @@ var MathFactsApp = React.createClass({
           <View>
             <AppText>Add User</AppText>
             <TextInput
+              autoCapitalize='words'
+              returnKeyType='done'
               style={{height: 40, borderColor: 'gray', borderWidth: 1}}
               onSubmitEditing={(event) => {
                 MathFactsActions.addUser(event.nativeEvent.text);
@@ -246,10 +255,12 @@ var MathFactsApp = React.createClass({
           </View>
           <Button
             text='Clear data'
+            color='#fa573c'
+            small={true}
             onPress={MathFactsActions.clearData}
           />
         </View>
-      </View>
+      </ScrollView>
     );
   },
   render: function() {
@@ -272,6 +283,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#fafafa',
     paddingTop: 20
   },
+
   container: {
     flex: 1,
     justifyContent: 'center'
@@ -309,7 +321,20 @@ var styles = StyleSheet.create({
   toggleButtons: {
     flexDirection: 'row',
     justifyContent: 'center'
-  }
+  },
+
+  settingsButton: {
+    borderColor: '#fff',
+    borderWidth: 2,
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 2,
+    marginRight: 2,
+    padding: 10,
+  },
+  activeSettingsButton: {
+    borderColor: 'rgba(0, 0, 0, 0.5)'
+  },
 
 });
 

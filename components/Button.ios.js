@@ -17,9 +17,11 @@ var Button = React.createClass({
     small: React.PropTypes.bool,
     color: React.PropTypes.string,
     text: React.PropTypes.string,
+    style: React.PropTypes.style
   },
   render: function() {
     var color = this.props.color ? this.props.color : '#89dacc';
+    var style = this.props.style ? this.props.style : null;
 
     var buttonTextStyle = styles.buttonText;
     if (this.props.small) {
@@ -31,7 +33,7 @@ var Button = React.createClass({
         onPress={this.props.onPress}
         underlayColor='transparent'
         activeOpacity={0.5}>
-        <View style={[styles.button, { backgroundColor: color }]}>
+        <View style={[styles.button, { backgroundColor: color }, style]}>
           <AppText style={buttonTextStyle}>{this.props.text}</AppText>
         </View>
       </TouchableHighlight>
