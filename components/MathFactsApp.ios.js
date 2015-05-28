@@ -72,7 +72,7 @@ var MathFactsApp = React.createClass({
     return {
       playing: false,
       showStats: false,
-      showSettings: true,
+      showSettings: false,
       operation: 'multiplication'
     };
   },
@@ -224,7 +224,7 @@ var MathFactsApp = React.createClass({
       );
     });
     return (
-      <ScrollView>
+      <ScrollView ref='scrollView' contentContainerStyle={styles.scrollView}>
         <View style={styles.topRow}>
           <BackButton onPress={this.showMenu} />
         </View>
@@ -240,6 +240,12 @@ var MathFactsApp = React.createClass({
               returnKeyType='done'
               style={styles.input}
               value={this.state.user.name}
+              ref='input'
+              onFocus={() => {
+                this.refs.scrollView.scrollResponderScrollNativeHandleToKeyboard(
+                  React.findNodeHandle(this.refs.input)
+                );
+              }}
               onSubmitEditing={(event) => {
                 MathFactsActions.changeName(event.nativeEvent.text);
               }}
@@ -329,6 +335,10 @@ var styles = StyleSheet.create({
   },
 
   // Settings
+  scrollView: {
+    // Leave space for the keyboard
+    paddingBottom: 270
+  },
   heading: {
     textAlign: 'center',
     margin: 10,
@@ -336,8 +346,7 @@ var styles = StyleSheet.create({
     fontSize: 20,
   },
   input: {
-    paddingTop: 20,
-    paddingBottom: 20,
+    height: 40,
     paddingRight: 10,
     paddingLeft: 10,
     borderWidth: 1,
