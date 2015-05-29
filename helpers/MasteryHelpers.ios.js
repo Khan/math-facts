@@ -2,7 +2,8 @@
 
 var _ = require('underscore');
 
-var ColorHelpers = require('./ColorHelpers.ios');
+var ColorHelpers = require('../helpers/ColorHelpers.ios');
+var OperationHelpers = require('../helpers/OperationHelpers.ios');
 
 // The time to recall a fact from memory should be less than 800ms
 var MEMORY_TIME = 800;
@@ -32,6 +33,55 @@ var masteryDescription = {
   mastered: 'You know this fact from memory.',
 };
 
+var getLearnerTypingTime = function(quizzesData, operation) {
+  var oneDigitTimes = [];
+  var twoDigitTimes = [];
+  var n = 0;
+  _.each(quizzesData, (rowData, row) => {
+    _.each(rowData, (data, col) => {
+      var answer = OperationHelpers[operation].getAnswer([row, col]);
+      var numberLength = answer.toString().length;
+      _.each(data, (timeData) => {
+        // TODO: check if the data is recent (throw out really old times)
+        if (numberLength === 1) {
+          oneDigitTimes.push(timeData.time);
+          n++;
+        } else if (numberLength === 2) {
+          twoDigitTimes.push(timeData.time);
+          n++;
+        }
+      });
+    });
+  });
+  console.log('oneDigitTimes');
+  console.log(oneDigitTimes);
+  console.log('twoDigitTimes');
+  console.log(twoDigitTimes);
+
+  // Find bottom quartile of each set
+  function median(values) {
+    values.sort((a,b) => {
+      return a - b;
+    });
+    var half = Math.floor(values.length/2);
+
+    if (values.length % 2) {
+      return values[half];
+    }
+    else {
+      return (values[half - 1] + values[half]) / 2.0;
+    }
+  }
+  var lowerQuartileOneDigit = median(oneDigitTimes.slice(0, median(oneDigitTimes)));
+  var lowerQuartileTwoDigit = median(twoDigitTimes.slice(0, median(twoDigitTimes)));
+  console.log('one', lowerQuartileOneDigit);
+  console.log('two/2', lowerQuartileTwoDigit);
+  if (n > 10) {
+    return [lowerQuartileOneDigit, lowerQuartileTwoDigit - lowerQuartileOneDigit];
+  }
+  // without enough data, assume their typing speed is 1s for now
+  return [800, 300];
+};
 
 var getTypingTime = function(number) {
   // For a given number estimate the time in ms it takes this learner to
@@ -135,6 +185,8 @@ module.exports = {
   masteryColors: masteryColors,
   masteryTextColors: masteryTextColors,
   masteryDescription: masteryDescription,
+
+  getLearnerTypingTime: getLearnerTypingTime,
 
   getFactStatus: getFactStatus
 };

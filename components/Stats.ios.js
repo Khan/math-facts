@@ -185,6 +185,12 @@ var Stats = React.createClass({
   },
   renderStats: function() {
     var operation = this.props.operation;
+
+    var typingTime = MasteryHelpers.getLearnerTypingTime(
+      this.props.quizzesData,
+      operation
+    );
+
     var grid = <Grid
       timeData={this.state.timeData}
       operation={operation}
@@ -310,7 +316,12 @@ var Stats = React.createClass({
 
     return (
       <View style={styles.container}>
-        <BackButton onPress={this.props.back} />
+        <View style={styles.topRow}>
+          <BackButton onPress={this.props.back} />
+          <AppText style={styles.typingTime}>
+            {'Typing time: ' + typingTime[0] + ', ' + typingTime[1]}
+          </AppText>
+        </View>
         {grid}
         {lotsOfInfo}
       </View>
@@ -324,6 +335,18 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fafafa',
     justifyContent: 'flex-start'
+  },
+
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+    alignSelf: 'stretch',
+  },
+
+  typingTime: {
+    fontSize: 12,
+    padding: 17
   },
 
   loading: {
