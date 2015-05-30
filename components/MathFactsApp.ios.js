@@ -158,18 +158,6 @@ var MathFactsApp = React.createClass({
         <Button
           text='Progress'
           onPress={this.showStats} />
-        <View style={styles.toggleButtons}>
-          <Button
-            text='Addition'
-            color={operation === 'addition' ? null : '#ddd'}
-            small={true}
-            onPress={this.setAdditionoperation}/>
-          <Button
-            text='Multiplication'
-            color={operation === 'multiplication' ? null : '#ddd'}
-            small={true}
-            onPress={this.setMultiplicationoperation}/>
-        </View>
         <Button
           text='Settings'
           color='#bbb'
@@ -209,6 +197,8 @@ var MathFactsApp = React.createClass({
     );
   },
   _renderSettings: function() {
+    var operation = this.state.operation;
+
     var userList = _.map(this.state.userList, (user) => {
       var activeStyles = this.state.user.id === user.id ?
                             styles.activeSettingsButton : '';
@@ -223,17 +213,35 @@ var MathFactsApp = React.createClass({
           }}/>
       );
     });
+
     return (
       <ScrollView ref='scrollView' contentContainerStyle={styles.scrollView}>
         <View style={styles.topRow}>
           <BackButton onPress={this.showMenu} />
         </View>
         <View style={styles.content}>
-          <View>
+          <View style={styles.settingsSection}>
+            <AppText style={styles.heading}>Mode</AppText>
+            <View style={styles.toggleButtons}>
+              <Button
+                text='Addition'
+                color={operation === 'addition' ? null : '#ddd'}
+                small={true}
+                wrapperStyle={styles.toggleButtonWrapper}
+                onPress={this.setAdditionoperation}/>
+              <Button
+                text='Multiplication'
+                color={operation === 'multiplication' ? null : '#ddd'}
+                small={true}
+                wrapperStyle={styles.toggleButtonWrapper}
+                onPress={this.setMultiplicationoperation}/>
+            </View>
+          </View>
+          <View style={styles.settingsSection}>
             <AppText style={styles.heading}>Change User</AppText>
             {userList}
           </View>
-          <View>
+          <View style={styles.settingsSection}>
             <AppText style={styles.heading}>Change Nickname</AppText>
             <TextInput
               autoCapitalize='words'
@@ -251,7 +259,7 @@ var MathFactsApp = React.createClass({
               }}
             />
           </View>
-          <View>
+          <View style={styles.settingsSection}>
             <AppText style={styles.heading}>Add New User</AppText>
             <TextInput
               autoCapitalize='words'
@@ -262,7 +270,7 @@ var MathFactsApp = React.createClass({
               }}
             />
           </View>
-          <View>
+          <View style={styles.settingsSection}>
             <AppText style={styles.heading}>Clear your progress</AppText>
             <Button
               text='Clear data'
@@ -331,7 +339,10 @@ var styles = StyleSheet.create({
 
   toggleButtons: {
     flexDirection: 'row',
-    justifyContent: 'center'
+    alignSelf: 'stretch'
+  },
+  toggleButtonWrapper: {
+    flex: 1
   },
 
   // Settings
@@ -339,10 +350,13 @@ var styles = StyleSheet.create({
     // Leave space for the keyboard
     paddingBottom: 270
   },
+  settingsSection: {
+    marginBottom: 20,
+  },
   heading: {
     textAlign: 'center',
     margin: 10,
-    marginTop: 20,
+    marginTop: 0,
     fontSize: 20,
   },
   input: {
