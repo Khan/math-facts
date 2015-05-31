@@ -21,7 +21,7 @@ var Button = React.createClass({
     wrapperStyle: React.PropTypes.style,
   },
   render: function() {
-    var color = this.props.color ? this.props.color : '#89dacc';
+    var color = this.props.color ? this.props.color : '#29abca';
     var style = this.props.style ? this.props.style : null;
     var wrapperStyle = this.props.wrapperStyle ? this.props.wrapperStyle : null;
 

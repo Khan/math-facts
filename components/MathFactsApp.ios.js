@@ -154,9 +154,11 @@ var MathFactsApp = React.createClass({
         </View>
         <Button
           text='Play'
+          color='#29abca'
           onPress={this.startGame} />
         <Button
           text='Progress'
+          color='#9cdceb'
           onPress={this.showStats} />
         <Button
           text='Settings'
