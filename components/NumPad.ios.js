@@ -19,6 +19,7 @@ var NumPadButton = React.createClass({
           key={'numpad-' + this.props.key}
           style={styles.button}
           onPress={this.props.onPress}
+          delayPressIn={0}
           underlayColor='transparent'
           activeOpacity={0.2}>
         <View>
