@@ -75,7 +75,7 @@ var getLearnerTypingTime = function(quizzesData, operation) {
   var lowerQuartileOneDigit = median(oneDigitTimes.slice(0, median(oneDigitTimes)));
   var lowerQuartileTwoDigit = median(twoDigitTimes.slice(0, median(twoDigitTimes)));
   console.log('one', lowerQuartileOneDigit);
-  console.log('two/2', lowerQuartileTwoDigit);
+  console.log('two', lowerQuartileTwoDigit);
   if (n > 10) {
     return [lowerQuartileOneDigit, lowerQuartileTwoDigit - lowerQuartileOneDigit];
   }

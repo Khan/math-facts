@@ -59,12 +59,12 @@ var GridCell = React.createClass({
         </View>
       );
     }
-
   }
 });
 
 var Grid = React.createClass({
   defaultProps: {
+    // The time data as a 2D array of time values: {time: ..., date: ..., ...}
     timeData: React.PropTypes.array,
     operation: React.PropTypes.string,
     onPress: React.PropTypes.func,

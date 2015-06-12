@@ -184,11 +184,23 @@ var MathFactsApp = React.createClass({
   },
   _renderStats: function() {
     var operation = this.state.operation;
+    var quizzesData = this.state.quizzesData[operation]
+
+    // Size must be larger than the max size of the values that are added
+    var timeData = _.map(_.range(0, 12), (left) => {
+      return _.map(_.range(0, 12), (right) => {
+        if (quizzesData[left] != null && quizzesData[left][right] != null) {
+          return quizzesData[left][right];
+        }
+        return [];
+      });
+    });
+
     return (
       <Stats
         operation={operation}
         back={this.showMenu}
-        quizzesData={this.state.quizzesData[operation]}/>
+        timeData={timeData}/>
     );
   },
   _renderLoading: function() {

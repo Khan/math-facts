@@ -29,30 +29,19 @@ var Stats = React.createClass({
     };
   },
   componentDidMount: function() {
-    if (this.props.quizzesData != null) {
-      this.loadTimeData(this.props.quizzesData);
+    if (this.props.timeData != null) {
+      this.loadTimeData(this.props.timeData);
     }
   },
   componentWillReceiveProps: function(newProps) {
-    if (this.state.timeData.length === 0 && newProps.quizzesData != null) {
-      this.loadTimeData(newProps.quizzesData);
+    if (this.state.timeData.length === 0 && newProps.timeData != null) {
+      this.loadTimeData(newProps.timeData);
     }
   },
-  loadTimeData: function (quizzesData) {
+  loadTimeData: function (timeData) {
     this.setState({
-      timeData: this.getTimeData(quizzesData),
+      timeData: timeData,
       loaded: true
-    });
-  },
-  getTimeData: function(quizzesData) {
-    // Size must be larger than the max size of the values that are added
-    return _.map(_.range(0, 12), (left) => {
-      return _.map(_.range(0, 12), (right) => {
-        if (quizzesData[left] != null && quizzesData[left][right] != null) {
-          return quizzesData[left][right];
-        }
-        return [];
-      });
     });
   },
   render: function() {
@@ -69,7 +58,7 @@ var Stats = React.createClass({
     var operation = this.props.operation;
 
     var typingTime = MasteryHelpers.getLearnerTypingTime(
-      this.props.quizzesData,
+      this.props.timeData,
       operation
     );
 
