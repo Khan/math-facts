@@ -173,7 +173,7 @@ var fetchFactData = function() {
       newFactData[operation] = (data == null) ? [] : data;
     });
     _factData = newFactData;
-  }).done();
+  });
 };
 
 var updateStoredFactData = function() {
