@@ -25,7 +25,7 @@ var Stats = require('../components/Stats.ios');
 var Button = require('../components/Button.ios');
 var BackButton = require('../components/BackButton.ios');
 
-StatusBarIOS.setHidden(true, StatusBarIOS.Animation.slide);
+StatusBarIOS.setHidden(true, 'slide');
 
 var MathFactsApp = React.createClass({
   mixins: [
