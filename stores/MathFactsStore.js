@@ -16,14 +16,21 @@ var _isLoaded = false;
  * Users are stored as an object with their id (int) and their name (string).
  * The UserList is an array of user objects
  */
-var defaultUser = {
-  id: 0,
-  name: 'Player',
-  deleted: false,
+var makeUser = function(userId, userName) {
+  return {
+    id: userId,
+    name: userName,
+    deleted: false,
+  };
 };
+
+var makeDefaultUser = function() {
+  return makeUser(0, 'Player');
+};
+
 // The active user is the key of the user in _userList
 var _activeUser = 0;
-var _userList = [ defaultUser ];
+var _userList = [ makeDefaultUser() ];
 
 var createKey = function(input) {
   var key = _activeUser + '-' + input;
@@ -32,11 +39,7 @@ var createKey = function(input) {
 
 var addUser = function(userName) {
   var userId = _userList.length;
-  var newUser = {
-    id: userId,
-    name: userName,
-    deleted: false
-  };
+  var newUser = makeUser(userId, userName);
   _userList.push(newUser);
   changeActiveUser(userId);
   MathFactStore.emitChange();
