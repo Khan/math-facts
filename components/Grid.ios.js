@@ -22,6 +22,7 @@ var GridCell = React.createClass({
     key: React.PropTypes.string.isRequired,
     onPress: React.PropTypes.func,
     active: React.PropTypes.bool,
+    small: React.PropTypes.small,
   },
   render: function() {
     var onPress = this.props.onPress || null;
@@ -30,9 +31,10 @@ var GridCell = React.createClass({
     var gridCellStyles = [
       styles.gridCell,
       {backgroundColor: color},
-      this.props.active ? {borderWidth: 1, borderColor: textColor} : null,
+      this.props.active && { borderWidth: 1, borderColor: textColor },
+      this.props.small && { height: 15, width: 15 }
     ];
-    var cellContent = (
+    var cellContent = !this.props.small && (
       <AppText style={[styles.gridCellText, {color: textColor}]}>
         {this.props.content}
       </AppText>
@@ -69,7 +71,9 @@ var Grid = React.createClass({
     operation: React.PropTypes.string,
     onPress: React.PropTypes.func,
     // The active cell as inputs: [row, col]
-    activeCell: React.PropTypes.array
+    activeCell: React.PropTypes.array,
+    // size
+    small: React.PropTypes.bool
   },
   render: function() {
     var operation = this.props.operation;
@@ -79,12 +83,16 @@ var Grid = React.createClass({
         <View
             style={styles.gridRow}
             key={'header-row'}>
-          <GridCell content={sign} color='#ddd' key='cell-sign' />
+          <GridCell content={sign}
+                    color='#ddd'
+                    key='cell-sign'
+                    small={this.props.small} />
           {_.map(_.range(0, 10), (col) => {
             return (
               <GridCell
                 content={col + 1}
                 color='#eee'
+                small={this.props.small}
                 key={'cell-col-header-' + col}/>
             );
           })}
@@ -95,6 +103,7 @@ var Grid = React.createClass({
                   <GridCell
                     content={row + 1}
                     color='#eee'
+                    small={this.props.small}
                     key={'cell-row-header-' + row}/>
                 {_.map(_.range(0, 10), (col) => {
                   var answer = OperationHelper[operation].getAnswer(
@@ -120,6 +129,7 @@ var Grid = React.createClass({
                     color={masteryColor}
                     textColor={masteryColorText}
                     key={'cell-' + row + '-' + col}
+                    small={this.props.small}
                     onPress={() => {
                       this.props.onPress([row + 1, col + 1]);
                     }}/>
@@ -142,7 +152,6 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
   },
   gridCell: {
-    flex: 1,
     height: 29, // 34 for iPhone 6
     width: 29,
     backgroundColor: '#face01',

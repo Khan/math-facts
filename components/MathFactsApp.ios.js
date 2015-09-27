@@ -22,6 +22,8 @@ var StateFromStoreMixin = require('../lib/state-from-store-mixin.js');
 var Quizzer = require('../components/Quizzer.ios');
 var Stats = require('../components/Stats.ios');
 
+var Grid = require('../components/Grid.ios');
+
 var Button = require('../components/Button.ios');
 var BackButton = require('../components/BackButton.ios');
 
@@ -132,6 +134,8 @@ var MathFactsApp = React.createClass({
   },
   _renderHomeScreen: function() {
     var operation = this.state.operation;
+    var quizzesData = this.state.quizzesData[operation];
+
     return (
       <View style={styles.container}>
         <View style={styles.points}>
@@ -152,14 +156,20 @@ var MathFactsApp = React.createClass({
             {' points'}
           </AppText>
         </View>
+        <View style={styles.gridWrapper}>
+          {quizzesData && <Grid
+            small={true}
+            timeData={this.parseQuizzesDataIntoTimeData(quizzesData)}
+            operation={operation}
+            onPress={this.showStats} />}
+          <View>
+            <AppText style={styles.gridCaption}>My Progress</AppText>
+          </View>
+        </View>
         <Button
           text='Play'
           color='#29abca'
           onPress={this.startGame} />
-        <Button
-          text='Progress'
-          color='#9cdceb'
-          onPress={this.showStats} />
         <Button
           text='Settings'
           color='#bbb'
@@ -182,12 +192,8 @@ var MathFactsApp = React.createClass({
         count={10}/>
     );
   },
-  _renderStats: function() {
-    var operation = this.state.operation;
-    var quizzesData = this.state.quizzesData[operation]
-
-    // Size must be larger than the max size of the values that are added
-    var timeData = _.map(_.range(0, 12), (left) => {
+  parseQuizzesDataIntoTimeData: function(quizzesData) {
+    return _.map(_.range(0, 12), (left) => {
       return _.map(_.range(0, 12), (right) => {
         if (quizzesData[left] != null && quizzesData[left][right] != null) {
           return quizzesData[left][right];
@@ -195,6 +201,13 @@ var MathFactsApp = React.createClass({
         return [];
       });
     });
+  },
+  _renderStats: function() {
+    var operation = this.state.operation;
+    var quizzesData = this.state.quizzesData[operation];
+
+    // Size must be larger than the max size of the values that are added
+    var timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
 
     return (
       <Stats
@@ -337,6 +350,17 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+
+  gridWrapper: {
+    alignItems: 'center',
+    height: 200
+  },
+  gridCaption: {
+    color: '#999',
+    fontSize: 12,
+    marginTop: 5,
+    marginBottom: 10,
   },
 
   points: {
