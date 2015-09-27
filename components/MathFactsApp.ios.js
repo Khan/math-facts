@@ -275,6 +275,13 @@ var MathFactsApp = React.createClass({
               returnKeyType='done'
               style={styles.input}
               value={this.state.user.name}
+              onChangeText={(text) => {
+                var user = _.clone(this.state.user);
+                user.name = text;
+                this.setState({
+                  user: user
+                });
+              }}
               ref='input'
               onFocus={() => {
                 this.refs.scrollView.scrollResponderScrollNativeHandleToKeyboard(
@@ -282,7 +289,7 @@ var MathFactsApp = React.createClass({
                 );
               }}
               onSubmitEditing={(event) => {
-                MathFactsActions.changeName(event.nativeEvent.text);
+                MathFactsActions.changeName(this.state.user.name);
               }}
             />
           </View>
