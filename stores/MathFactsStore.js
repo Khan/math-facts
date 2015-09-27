@@ -49,7 +49,7 @@ var addUser = function(userName) {
 var changeUserName = function(userName) {
   _userList[_activeUser].name = userName;
   MathFactStore.emitChange();
-  updateUserData();
+  updateUserData().done();
 };
 
 var changeActiveUser = function(id) {
