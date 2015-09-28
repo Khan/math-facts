@@ -3,17 +3,25 @@
 var _ = require('underscore');
 var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
+var Firebase = require('firebase');
 var React = require('react-native');
+var UuidGenerator = require('uuid');
+
 var AsyncStorage = React.AsyncStorage;
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
+var firebaseURL = require('../firebase-url.js');
 var MathFactsConstants = require('../constants/MathFactsConstants');
 
 var CHANGE_EVENT = 'change';
 
 
-/**
- *
+/*
+ * Default Data
+ */
+
+var _isLoaded = false;
+/*
  * _data['factData'] = {
  *  'multiplication': [
  *    [[{data for 1x1}, {more data for 1x1}], [{data for 1x2}], [...]],
@@ -36,7 +44,7 @@ var defaultFactData = {
   'typing': null,
 };
 
-/**
+/*
  * Users are stored as an object with their id (int) and their name (string).
  * The UserList is an array of user objects
  */
@@ -52,8 +60,14 @@ var makeDefaultUser = function() {
   return makeUser(0, 'Player');
 };
 
-var _isLoaded = false;
 var _data = {
+  /*
+   * Each Installation of the app has a uuid that (hopefully) makes it unique.
+   *
+   * We use the uuid as this installation's ID on Firebase.
+   */
+  uuid: null,
+
   // The active user is the key of the user in the userList
   activeUser: 0,
   userList: [makeDefaultUser()],
@@ -63,6 +77,10 @@ var _data = {
   factData: defaultFactData,
 };
 
+
+/*
+ * Users
+ */
 var createKey = function(input) {
   var key = _data['activeUser'] + '-' + input;
   return key;
@@ -96,18 +114,8 @@ var updateUserData = function() {
   ]);
 };
 
-var fetchUserData = function() {
-  return Promise.all([
-    AsyncStorage.getItem('activeUser').then((user) => {
-      _data['activeUser'] = (user == null) ? _data['activeUser'] : user;
-    }),
-    AsyncStorage.getItem('userList').then((userList) => {
-      _data['userList'] = (userList == null) ? _data['userList'] : JSON.parse(userList);
-    }),
-  ]);
-};
 
-/**
+/*
  * Points
  */
 var addPoints = function(amount) {
@@ -118,25 +126,16 @@ var addPoints = function(amount) {
 };
 
 var updateStoredPoints = function() {
-  AsyncStorage.setItem(createKey('points'), _data['points'].toString()).done();
-  AsyncStorage.setItem(createKey('scores'), JSON.stringify(_data['scores'])).done();
-};
-
-var fetchPoints = function() {
-  return Promise.all([
-    AsyncStorage.getItem(createKey('points')).then((points) => {
-      _data['points'] = (points == null) ? 0 : parseInt(points);
-    }),
-    AsyncStorage.getItem(createKey('scores')).then((scores) => {
-      _data['scores'] = (scores == null) ? [] : JSON.parse(scores);
-    }),
+  Promise.all([
+    AsyncStorage.setItem(createKey('points'), _data['points'].toString()),
+    AsyncStorage.setItem(createKey('scores'), JSON.stringify(_data['scores'])),
   ]).then(() => {
-    MathFactStore.emitChange();
+    updateRemoteStore();
   }).done();
 };
 
 
-/**
+/*
  * Adds fact attempts to the data store
  * Takes and operation and data as an array of attempts in the form:
  * [{inputs: [1, 2], data: {...}}, {inputs: [7, 4], data: {...}}]
@@ -166,28 +165,35 @@ var addAttempts = function(operation, data) {
   updateStoredFactData();
 };
 
-var fetchFactData = function() {
-  return AsyncStorage.getItem(createKey('factData')).then((factData) => {
-    var newFactData = {};
-    var factData = JSON.parse(factData);
-    if (factData == null) {
-      factData = defaultFactData;
-    }
-    _.each(defaultFactData, (defaultData, operation) => {
-      var data = factData[operation];
-      newFactData[operation] = (data == null) ? [] : data;
-    });
-    _data['factData'] = newFactData;
-  });
+var updateStoredFactData = function() {
+  var key = createKey('factData');
+  var value = JSON.stringify(_data['factData']);
+  AsyncStorage.setItem(key, value).then(() => {
+    updateRemoteStore();
+  }).done();
 };
 
-var updateStoredFactData = function() {
-  AsyncStorage.setItem(createKey('factData'), JSON.stringify(_data['factData'])).done();
+
+/*
+ * Update remate firebase storage
+ */
+var updateRemoteStore = function() {
+  var uuid = _data['uuid'];
+  if (firebaseURL && firebaseURL.length && uuid) {
+    var firebaseRef = new Firebase(firebaseURL);
+
+    var userRef = firebaseRef.child(uuid).child(_data['activeUser']);
+    userRef.update({
+      points: _data['points'],
+      scores: _data['scores'],
+      factData: _data['factData'],
+    });
+  }
 };
+
 
 // Clear all data
 var clearData = function() {
-
   return Promise.all([
     AsyncStorage.removeItem(createKey('factData')),
     AsyncStorage.removeItem(createKey('points')),
@@ -203,6 +209,62 @@ var clearData = function() {
 };
 
 
+/*
+ * Fetch data from AsyncStorage and load it into _data
+ */
+var fetchUserData = function() {
+  return Promise.all([
+    AsyncStorage.getItem('uuid').then((storedUuid) => {
+      // If we already have a uuid in _data then we don't need to do anything
+      if (_data['uuid'] != null) {
+        return;
+      };
+
+      // If the stored uuid exists then we should use that
+      if (storedUuid != null) {
+        _data['uuid'] = storedUuid;
+        return;
+      };
+
+      // If we don't have a uuid at all we should make one!
+      _data['uuid'] = UuidGenerator.v1();
+      return AsyncStorage.setItem('uuid', _data['uuid']);
+    }),
+    AsyncStorage.getItem('activeUser').then((user) => {
+      _data['activeUser'] = (user == null) ? _data['activeUser'] : user;
+    }),
+    AsyncStorage.getItem('userList').then((userList) => {
+      _data['userList'] = (userList == null) ? _data['userList'] : JSON.parse(userList);
+    }),
+  ]);
+};
+
+var fetchPoints = function() {
+  return Promise.all([
+    AsyncStorage.getItem(createKey('points')).then((points) => {
+      _data['points'] = (points == null) ? 0 : parseInt(points);
+    }),
+    AsyncStorage.getItem(createKey('scores')).then((scores) => {
+      _data['scores'] = (scores == null) ? [] : JSON.parse(scores);
+    }),
+  ]);
+};
+
+var fetchFactData = function() {
+  return AsyncStorage.getItem(createKey('factData')).then((factData) => {
+    var newFactData = {};
+    var factData = JSON.parse(factData);
+    if (factData == null) {
+      factData = defaultFactData;
+    }
+    _.each(defaultFactData, (defaultData, operation) => {
+      var data = factData[operation];
+      newFactData[operation] = (data == null) ? [] : data;
+    });
+    _data['factData'] = newFactData;
+  });
+};
+
 var fetchStoredData = function() {
   return fetchUserData().then(() => {
     return Promise.all([
@@ -215,6 +277,10 @@ var fetchStoredData = function() {
   }).done();
 };
 
+
+/*
+ * Math Facts Store
+ */
 var MathFactStore = assign({}, EventEmitter.prototype, {
 
   /**
@@ -235,6 +301,10 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
 
   getScores: function() {
     return _data['scores'];
+  },
+
+  getUuid: function() {
+    return _data['uuid'];
   },
 
   getUser: function() {
@@ -263,6 +333,7 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   }
 });
+
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
