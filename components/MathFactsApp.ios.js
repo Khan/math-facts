@@ -56,6 +56,12 @@ var MathFactsApp = React.createClass({
           return store.getScores();
         }
       },
+      uuid: {
+        store: MathFactsStore,
+        fetch: (store) => {
+          return store.getUuid();
+        }
+      },
       user: {
         store: MathFactsStore,
         fetch: (store) => {
@@ -313,6 +319,11 @@ var MathFactsApp = React.createClass({
               onPress={MathFactsActions.clearData}
             />
           </View>
+          <View style={styles.settingsSection}>
+            <AppText style={styles.uuidText}>
+              {this.state.uuid}
+            </AppText>
+          </View>
         </View>
       </ScrollView>
     );
@@ -421,9 +432,13 @@ var styles = StyleSheet.create({
     marginRight: 2,
     padding: 10,
   },
-
   activeSettingsButton: {
     borderColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  uuidText: {
+    color: '#aaa',
+    fontSize: 12,
+    textAlign: 'center',
   },
 
 });
