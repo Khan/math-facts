@@ -184,6 +184,7 @@ var updateRemoteStore = function() {
 
     var userRef = firebaseRef.child(uuid).child(_data['activeUser']);
     userRef.update({
+      user: _data['userList'][_data['activeUser']],
       points: _data['points'],
       scores: _data['scores'],
       factData: _data['factData'],
