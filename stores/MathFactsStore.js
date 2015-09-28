@@ -10,107 +10,9 @@ var MathFactsConstants = require('../constants/MathFactsConstants');
 var CHANGE_EVENT = 'change';
 
 
-var _isLoaded = false;
-
 /**
- * Users are stored as an object with their id (int) and their name (string).
- * The UserList is an array of user objects
- */
-var makeUser = function(userId, userName) {
-  return {
-    id: userId,
-    name: userName,
-    deleted: false,
-  };
-};
-
-var makeDefaultUser = function() {
-  return makeUser(0, 'Player');
-};
-
-// The active user is the key of the user in _userList
-var _activeUser = 0;
-var _userList = [ makeDefaultUser() ];
-
-var createKey = function(input) {
-  var key = _activeUser + '-' + input;
-  return key;
-};
-
-var addUser = function(userName) {
-  var userId = _userList.length;
-  var newUser = makeUser(userId, userName);
-  _userList.push(newUser);
-  changeActiveUser(userId);
-  MathFactStore.emitChange();
-  updateUserData().done();
-};
-
-var changeUserName = function(userName) {
-  _userList[_activeUser].name = userName;
-  MathFactStore.emitChange();
-  updateUserData().done();
-};
-
-var changeActiveUser = function(id) {
-  _activeUser = id;
-  _isLoaded = false;
-  updateUserData().then(fetchStoredData).done();
-};
-
-var updateUserData = function() {
-  return Promise.all([
-    AsyncStorage.setItem('activeUser', _activeUser.toString()),
-    AsyncStorage.setItem('userList', JSON.stringify(_userList)),
-  ]);
-};
-
-var fetchUserData = function() {
-  return Promise.all([
-    AsyncStorage.getItem('activeUser').then((user) => {
-      _activeUser = (user == null) ? _activeUser : user;
-    }),
-    AsyncStorage.getItem('userList').then((userList) => {
-      _userList = (userList == null) ? _userList : JSON.parse(userList);
-    }),
-  ]);
-};
-
-/**
- * Points
- */
-var _points = 0;
-var _scores = [];
-
-var addPoints = function(amount) {
-  _points += amount;
-  _scores.push(amount);
-  MathFactStore.emitChange();
-  updateStoredPoints();
-};
-
-var updateStoredPoints = function() {
-  AsyncStorage.setItem(createKey('points'), _points.toString()).done();
-  AsyncStorage.setItem(createKey('scores'), JSON.stringify(_scores)).done();
-};
-
-var fetchPoints = function() {
-  return Promise.all([
-    AsyncStorage.getItem(createKey('points')).then((points) => {
-      _points = (points == null) ? 0 : parseInt(points);
-    }),
-    AsyncStorage.getItem(createKey('scores')).then((scores) => {
-      _scores = (scores == null) ? [] : JSON.parse(scores);
-    }),
-  ]).then(() => {
-    MathFactStore.emitChange();
-  }).done();
-};
-
-/**
- * Fact Data
  *
- * _factData = {
+ * _data['factData'] = {
  *  'multiplication': [
  *    [[{data for 1x1}, {more data for 1x1}], [{data for 1x2}], [...]],
  *    [[{data for 2x1}, {more data for 2x1}], [{data for 2x2}], [...]],
@@ -131,7 +33,105 @@ var defaultFactData = {
   'addition': null,
   'typing': null,
 };
-var _factData = defaultFactData;
+
+/**
+ * Users are stored as an object with their id (int) and their name (string).
+ * The UserList is an array of user objects
+ */
+var makeUser = function(userId, userName) {
+  return {
+    id: userId,
+    name: userName,
+    deleted: false,
+  };
+};
+
+var makeDefaultUser = function() {
+  return makeUser(0, 'Player');
+};
+
+var _isLoaded = false;
+var _data = {
+  // The active user is the key of the user in the userList
+  activeUser: 0,
+  userList: [makeDefaultUser()],
+  points: 0,
+  scores: [],
+
+  factData: defaultFactData,
+};
+
+var createKey = function(input) {
+  var key = _data['activeUser'] + '-' + input;
+  return key;
+};
+
+var addUser = function(userName) {
+  var userId = _data['userList'].length;
+  var newUser = makeUser(userId, userName);
+  _data['userList'].push(newUser);
+  changeActiveUser(userId);
+  MathFactStore.emitChange();
+  updateUserData().done();
+};
+
+var changeUserName = function(userName) {
+  _data['userList'][_data['activeUser']].name = userName;
+  MathFactStore.emitChange();
+  updateUserData().done();
+};
+
+var changeActiveUser = function(id) {
+  _data['activeUser'] = id;
+  _isLoaded = false;
+  updateUserData().then(fetchStoredData).done();
+};
+
+var updateUserData = function() {
+  return Promise.all([
+    AsyncStorage.setItem('activeUser', _data['activeUser'].toString()),
+    AsyncStorage.setItem('userList', JSON.stringify(_data['userList'])),
+  ]);
+};
+
+var fetchUserData = function() {
+  return Promise.all([
+    AsyncStorage.getItem('activeUser').then((user) => {
+      _data['activeUser'] = (user == null) ? _data['activeUser'] : user;
+    }),
+    AsyncStorage.getItem('userList').then((userList) => {
+      _data['userList'] = (userList == null) ? _data['userList'] : JSON.parse(userList);
+    }),
+  ]);
+};
+
+/**
+ * Points
+ */
+var addPoints = function(amount) {
+  _data['points'] += amount;
+  _data['scores'].push(amount);
+  MathFactStore.emitChange();
+  updateStoredPoints();
+};
+
+var updateStoredPoints = function() {
+  AsyncStorage.setItem(createKey('points'), _data['points'].toString()).done();
+  AsyncStorage.setItem(createKey('scores'), JSON.stringify(_data['scores'])).done();
+};
+
+var fetchPoints = function() {
+  return Promise.all([
+    AsyncStorage.getItem(createKey('points')).then((points) => {
+      _data['points'] = (points == null) ? 0 : parseInt(points);
+    }),
+    AsyncStorage.getItem(createKey('scores')).then((scores) => {
+      _data['scores'] = (scores == null) ? [] : JSON.parse(scores);
+    }),
+  ]).then(() => {
+    MathFactStore.emitChange();
+  }).done();
+};
 
 
 /**
@@ -146,19 +146,19 @@ var addAttempts = function(operation, data) {
     var attemptData = attempt.data;
 
     // Initialize the row if it's empty
-    if (_factData[operation][inputs[0]] == null) {
-      _factData[operation][inputs[0]] = [];
+    if (_data['factData'][operation][inputs[0]] == null) {
+      _data['factData'][operation][inputs[0]] = [];
     }
 
     if (inputs.length === 1) {
       // If this operation takes a single input:
-      _factData[operation][inputs[0]].push(attempt);
+      _data['factData'][operation][inputs[0]].push(attempt);
     } else if (inputs.length === 2) {
       // If this operation takes two inputs:
-      if (_factData[operation][inputs[0]][inputs[1]] == null) {
-        _factData[operation][inputs[0]][inputs[1]] = [];
+      if (_data['factData'][operation][inputs[0]][inputs[1]] == null) {
+        _data['factData'][operation][inputs[0]][inputs[1]] = [];
       }
-      _factData[operation][inputs[0]][inputs[1]].push(attemptData);
+      _data['factData'][operation][inputs[0]][inputs[1]].push(attemptData);
     }
   });
   updateStoredFactData();
@@ -175,12 +175,12 @@ var fetchFactData = function() {
       var data = factData[operation];
       newFactData[operation] = (data == null) ? [] : data;
     });
-    _factData = newFactData;
+    _data['factData'] = newFactData;
   });
 };
 
 var updateStoredFactData = function() {
-  AsyncStorage.setItem(createKey('factData'), JSON.stringify(_factData)).done();
+  AsyncStorage.setItem(createKey('factData'), JSON.stringify(_data['factData'])).done();
 };
 
 // Clear all data
@@ -224,23 +224,23 @@ var MathFactStore = assign({}, EventEmitter.prototype, {
   },
 
   getAll: function() {
-    return _factData;
+    return _data['factData'];
   },
 
   getPoints: function() {
-    return _points;
+    return _data['points'];
   },
 
   getScores: function() {
-    return _scores;
+    return _data['scores'];
   },
 
   getUser: function() {
-    return _userList[_activeUser];
+    return _data['userList'][_data['activeUser']];
   },
 
   getUserList: function() {
-    return _userList;
+    return _data['userList'];
   },
 
   emitChange: function() {
