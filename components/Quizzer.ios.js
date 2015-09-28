@@ -203,8 +203,6 @@ var Quizzer = React.createClass({
       });
     });
 
-    console.log('questionSeeds', questionSeeds)
-
     var shuffle = function(arr) {
       // Modified from: http://stackoverflow.com/a/6274381
       for (var j, x, i = arr.length; i; i--) {
@@ -255,10 +253,6 @@ var Quizzer = React.createClass({
       }
     });
 
-    console.log('fluentFacts', fluentFacts)
-    console.log('nonFluentFacts', nonFluentFacts)
-    console.log('unknownFacts', unknownFacts)
-
     // TODO: update quizzesData on the fly so we can have the most up-to-date
     // view of which facts are fluent/not
 
@@ -307,7 +301,6 @@ var Quizzer = React.createClass({
       inputList = inputList.concat(shuffle(fluentFacts));
     }
 
-    console.log('inputList', inputList)
     return inputList;
   },
   initializeInputList: function(quizzesData) {

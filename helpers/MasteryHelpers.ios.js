@@ -53,10 +53,6 @@ var getLearnerTypingTime = function(quizzesData, operation) {
       });
     });
   });
-  console.log('oneDigitTimes');
-  console.log(oneDigitTimes);
-  console.log('twoDigitTimes');
-  console.log(twoDigitTimes);
 
   // Find bottom quartile of each set
   function median(values) {
@@ -74,8 +70,6 @@ var getLearnerTypingTime = function(quizzesData, operation) {
   }
   var lowerQuartileOneDigit = median(oneDigitTimes.slice(0, median(oneDigitTimes)));
   var lowerQuartileTwoDigit = median(twoDigitTimes.slice(0, median(twoDigitTimes)));
-  console.log('one', lowerQuartileOneDigit);
-  console.log('two', lowerQuartileTwoDigit);
   if (n > 10) {
     return [lowerQuartileOneDigit, lowerQuartileTwoDigit - lowerQuartileOneDigit];
   }
