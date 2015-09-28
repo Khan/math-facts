@@ -318,10 +318,10 @@ var MathFactsApp = React.createClass({
     );
   },
   render: function() {
-    var content = this.state.loaded       ? this._renderLoading() :
-                  this.state.playing      ? this._renderQuizzer() :
-                  this.state.showStats    ? this._renderStats() :
-                  this.state.showSettings ? this._renderSettings() :
+    var content = !this.state.loaded       ? this._renderLoading() :
+                   this.state.playing      ? this._renderQuizzer() :
+                   this.state.showStats    ? this._renderStats() :
+                   this.state.showSettings ? this._renderSettings() :
                                             this._renderHomeScreen();
     return (
       <View style={styles.appWrapper}>

@@ -208,7 +208,7 @@ var fetchStoredData = function() {
       fetchFactData(),
     ]);
   }).then(() => {
-    _loaded = true;
+    _isLoaded = true;
     MathFactStore.emitChange();
   }).done();
 };
