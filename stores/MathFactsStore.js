@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('underscore');
 var assign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
