@@ -526,7 +526,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $CONFIGURATION = Release ]\nthen\n    ./node_modules/.bin/react-native bundle\nfi";
+			shellScript = "if [ $CONFIGURATION = Release ]\nthen\n    $NODE ./node_modules/.bin/react-native bundle\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
