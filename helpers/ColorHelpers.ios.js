@@ -1,18 +1,6 @@
 'use strict';
 
-var _ = require('underscore');
-
-var React = require('react-native');
-var {
-  AppRegistry,
-  StyleSheet,
-  TouchableHighlight,
-  Text,
-  View,
-} = React;
-
 // From /webapp/stylesheets/shared-package/variables.less
-
 var KAColors = {
   mathDomainColor: '#1c758a',
   mathSubjectColor: '#46a8bf',

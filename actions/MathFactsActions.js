@@ -1,5 +1,5 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var MathFactsConstants = require('../constants/MathFactsConstants');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import MathFactsConstants from '../constants/MathFactsConstants';
 
 var MathFactsActions = {
 

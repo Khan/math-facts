@@ -1,31 +1,33 @@
 'use strict';
 
-var _ = require('underscore');
+import _ from 'underscore';
 
-var React = require('react-native');
-var {
+import React from 'react-native';
+import {
   ScrollView,
   StatusBarIOS,
   StyleSheet,
   TextInput,
   TouchableHighlight,
   View,
-} = React;
+} from 'react-native';
 
-var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
+import { Provider } from 'react-redux/native';
 
-var MathFactsStore = require('../stores/MathFactsStore');
-var MathFactsActions = require('../actions/MathFactsActions');
+import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-var StateFromStoreMixin = require('../lib/state-from-store-mixin.js');
+import MathFactsStore from '../stores/MathFactsStore';
+import MathFactsActions from '../actions/MathFactsActions';
 
-var Quizzer = require('../components/Quizzer.ios');
-var Stats = require('../components/Stats.ios');
+import StateFromStoreMixin from '../lib/state-from-store-mixin.js';
 
-var Grid = require('../components/Grid.ios');
+import Quizzer from '../components/Quizzer.ios';
+import Stats from '../components/Stats.ios';
 
-var Button = require('../components/Button.ios');
-var BackButton = require('../components/BackButton.ios');
+import Grid from '../components/Grid.ios';
+
+import Button from '../components/Button.ios';
+import BackButton from '../components/BackButton.ios';
 
 StatusBarIOS.setHidden(true, 'slide');
 

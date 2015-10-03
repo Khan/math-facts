@@ -1,8 +1,8 @@
 'use strict';
 
-var _ = require('underscore');
+import _ from 'underscore';
 
-var React = require('react-native');
+import React from 'react-native';
 var {
   StyleSheet,
   TouchableHighlight,
@@ -10,19 +10,19 @@ var {
   View,
 } = React;
 
-var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
+import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-var ColorHelpers = require('../helpers/ColorHelpers.ios');
-var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
-var OperationHelper = require('../helpers/OperationHelpers.ios');
-var randomIntBetween = require('../helpers/Helpers.ios').randomIntBetween;
+import ColorHelpers from '../helpers/ColorHelpers.ios';
+import MasteryHelpers from '../helpers/MasteryHelpers.ios';
+import OperationHelper from '../helpers/OperationHelpers.ios';
+import { randomIntBetween } from '../helpers/Helpers.ios';
 
-var NumPad = require('../components/NumPad.ios');
-var AdditionHint = require('../components/AdditionHint.ios');
-var Button = require('../components/Button.ios');
-var Circle = require('../components/Circle.ios');
+import NumPad from '../components/NumPad.ios';
+import AdditionHint from '../components/AdditionHint.ios';
+import Button from '../components/Button.ios';
+import Circle from '../components/Circle.ios';
 
-var BackButton = require('../components/BackButton.ios');
+import BackButton from '../components/BackButton.ios';
 
 var QuizzerScreen = React.createClass({
   render: function() {

@@ -1,8 +1,6 @@
 'use strict';
 
-var _ = require('underscore');
-
-var React = require('react-native');
+import React from 'react-native';
 var {
   StyleSheet,
   TouchableHighlight,
@@ -10,7 +8,7 @@ var {
   View,
 } = React;
 
-var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
+import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
 var Button = React.createClass({
   defaultProps: {

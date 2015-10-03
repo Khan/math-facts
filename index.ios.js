@@ -3,11 +3,11 @@
  */
 'use strict';
 
-var React = require('react-native');
+import React from 'react-native';
 var {
   AppRegistry,
 } = React;
 
-var MathFactsApp = require('./components/MathFactsApp.ios')
+import MathFactsApp from './components/MathFactsApp.ios';
 
 AppRegistry.registerComponent('MathFacts', () => MathFactsApp);

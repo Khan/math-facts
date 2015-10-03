@@ -1,8 +1,8 @@
 'use strict';
 
-var _ = require('underscore');
+import _ from 'underscore';
 
-var React = require('react-native');
+import React from 'react-native';
 var {
   StyleSheet,
   TouchableHighlight,
@@ -10,9 +10,9 @@ var {
   View,
 } = React;
 
-var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
+import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-var Circle = require('../components/Circle.ios')
+import Circle from '../components/Circle.ios';
 
 var AdditionHint = React.createClass({
   render: function() {

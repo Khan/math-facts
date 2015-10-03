@@ -1,17 +1,17 @@
 'use strict';
 
-var _ = require('underscore');
-var assign = require('object-assign');
-var EventEmitter = require('events').EventEmitter;
-var Firebase = require('firebase');
-var React = require('react-native');
-var UuidGenerator = require('uuid');
+import _ from 'underscore';
+import assign from 'object-assign';
+import { EventEmitter } from 'events';
+import Firebase from 'firebase';
+import React from 'react-native';
+import UuidGenerator from 'uuid';
 
 var AsyncStorage = React.AsyncStorage;
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var firebaseURL = require('../firebase-url.js');
-var MathFactsConstants = require('../constants/MathFactsConstants');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import firebaseURL from '../firebase-url.js';
+import MathFactsConstants from '../constants/MathFactsConstants';
 
 var CHANGE_EVENT = 'change';
 

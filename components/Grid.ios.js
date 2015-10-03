@@ -1,18 +1,18 @@
 'use strict';
 
-var _ = require('underscore');
+import _ from 'underscore';
 
-var React = require('react-native');
-var {
+import React from 'react-native';
+import {
   StyleSheet,
   TouchableHighlight,
   View,
-} = React;
+} from 'react-native';
 
-var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
+import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
-var OperationHelper = require('../helpers/OperationHelpers.ios');
+import MasteryHelpers from '../helpers/MasteryHelpers.ios';
+import OperationHelper from '../helpers/OperationHelpers.ios';
 
 var GridCell = React.createClass({
   defaultProps: {

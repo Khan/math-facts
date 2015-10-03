@@ -1,22 +1,22 @@
 'use strict';
 
-var _ = require('underscore');
+import _ from 'underscore';
 
-var React = require('react-native');
+import React from 'react-native';
 var {
   StyleSheet,
   TouchableHighlight,
   View,
 } = React;
 
-var { AppText, AppTextBold, AppTextThin } = require('./AppText.ios');
+import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-var MasteryHelpers = require('../helpers/MasteryHelpers.ios');
-var OperationHelper = require('../helpers/OperationHelpers.ios');
+import MasteryHelpers from '../helpers/MasteryHelpers.ios';
+import OperationHelper from '../helpers/OperationHelpers.ios';
 
-var BackButton = require('../components/BackButton.ios');
+import BackButton from '../components/BackButton.ios';
 
-var Grid = require('../components/Grid.ios');
+import Grid from '../components/Grid.ios';
 
 var Stats = React.createClass({
   propTypes: {

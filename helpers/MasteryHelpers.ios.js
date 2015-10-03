@@ -1,9 +1,9 @@
 'use strict';
 
-var _ = require('underscore');
+import _ from 'underscore';
 
-var ColorHelpers = require('../helpers/ColorHelpers.ios');
-var OperationHelpers = require('../helpers/OperationHelpers.ios');
+import ColorHelpers from '../helpers/ColorHelpers.ios';
+import OperationHelpers from '../helpers/OperationHelpers.ios';
 
 // The time to recall a fact from memory should be less than 800ms
 var MEMORY_TIME = 800;
