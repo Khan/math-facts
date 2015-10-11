@@ -217,6 +217,9 @@ var Quizzer = React.createClass({
     var softShuffle = function(arr, blockSize, offset) {
       // Takes an array and shuffles blocks of values so things don't move too
       // far from their original location.
+      blockSize = blockSize || arr.length;
+      offset = offset || 0;
+
       var newArr = [];
       for (var i = offset; i < arr.length; i += blockSize) {
         var arrayBlock = arr.slice(i, i + blockSize);
@@ -267,7 +270,10 @@ var Quizzer = React.createClass({
             shuffle(fluentFacts).slice(0, 10 - unknownFacts.length)
         )));
       } else {
-        inputList = inputList.concat(shuffle(unknownFacts));
+        // If we're pullling from pretty much all the facts, give the easier
+        // facts first. The blockSize comes from figuring out approximately
+        // where the facts go from being easy to hard.
+        inputList = inputList.concat(softShuffle(unknownFacts, 60));
       }
     } else if (nonFluentFacts.length > 0) {
       // We know whether this learner is fluent or not fluent in each fact.
