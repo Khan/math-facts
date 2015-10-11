@@ -313,15 +313,6 @@ var MathFactsApp = React.createClass({
             />
           </View>
           <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Clear your progress</AppText>
-            <Button
-              text='Clear data'
-              color='#fa573c'
-              small={true}
-              onPress={MathFactsActions.clearData}
-            />
-          </View>
-          <View style={styles.settingsSection}>
             <AppText style={styles.uuidText}>
               {this.state.uuid}
             </AppText>
