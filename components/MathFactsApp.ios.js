@@ -12,8 +12,6 @@ import {
   View,
 } from 'react-native';
 
-import { Provider } from 'react-redux/native';
-
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
 import MathFactsStore from '../stores/MathFactsStore';
@@ -196,7 +194,7 @@ var MathFactsApp = React.createClass({
         playAgain={this.playAgain}
         quizzesData={this.state.quizzesData[operation]}
         mode={'time'}
-        seconds={20}
+        seconds={60}
         count={10}/>
     );
   },
