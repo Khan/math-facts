@@ -169,7 +169,9 @@ var MathFactsApp = React.createClass({
             operation={operation}
             onPress={this.showStats} />}
           <View>
-            <AppText style={styles.gridCaption}>My Progress</AppText>
+            <AppTextBold style={styles.gridCaption}>
+              {operation.charAt(0).toUpperCase() + operation.slice(1)}
+            </AppTextBold>
           </View>
         </View>
         <Button
@@ -365,13 +367,13 @@ var styles = StyleSheet.create({
 
   gridWrapper: {
     alignItems: 'center',
-    height: 200
+    height: 200,
+    marginBottom: 10,
   },
   gridCaption: {
     color: '#999',
-    fontSize: 12,
-    marginTop: 5,
-    marginBottom: 10,
+    fontSize: 16,
+    lineHeight: 32,
   },
 
   points: {
