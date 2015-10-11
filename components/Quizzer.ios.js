@@ -188,6 +188,11 @@ var Quizzer = React.createClass({
 
     var questionSeeds = [];
 
+    var learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
+      this.props.timeData,
+      operation
+    );
+
     // Populate question seeder with data about facts that have already been
     // practiced
     _.each(_.range(0, max + 1), (row) => {
@@ -198,7 +203,8 @@ var Quizzer = React.createClass({
       _.each(_.range(0, max + 1), (col) => {
         var timeData = quizzesData[row][col];
         var answer = OperationHelper[operation].getAnswer([row, col]);
-        var factStatus = MasteryHelpers.getFactStatus(answer, timeData);
+        var factStatus = MasteryHelpers.getFactStatus(answer, timeData,
+          learnerTypingTimes);
         questionSeeds[row][col] = factStatus;
       });
     });

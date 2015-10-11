@@ -73,19 +73,19 @@ var getLearnerTypingTime = function(quizzesData, operation) {
   if (n > 10) {
     return [lowerQuartileOneDigit, lowerQuartileTwoDigit - lowerQuartileOneDigit];
   }
-  // without enough data, assume their typing speed is 1s for now
+  // without enough data, assume their typing speed is some random numbers:
   return [800, 300];
 };
 
-var getTypingTime = function(number) {
+var getTypingTime = function(number, learnerTypingTimes) {
   // For a given number estimate the time in ms it takes this learner to
   // type it.
 
   // TODO: Customize times per user using and average of their fastest times as
   // the floor on their typing time.
   var numberLength = number.toString().length;
-  var oneDigitTime = 800;
-  var typingTime = oneDigitTime + 300 * numberLength;
+  var oneDigitTime = learnerTypingTimes[0];
+  var typingTime = oneDigitTime + learnerTypingTimes[1] * numberLength;
   return typingTime;
 };
 
@@ -93,7 +93,7 @@ var getTypingTime = function(number) {
  * Given data about a particular math fact, determine the fact's mastery level
  *
  */
-var getFactStatus = function(number, times) {
+var getFactStatus = function(number, times, learnerTypingTimes) {
   // times is an array of the learner's time data for this fact in the form:
   // [ {time: 1200, date: 19346832, hintUsed: true},
   //   {time: 1000, date: 19346832, hintUsed: false},
@@ -145,7 +145,7 @@ var getFactStatus = function(number, times) {
     // retention.
 
     // TODO: Maybe add another level of "quick but not fluent"?
-    if (time < getTypingTime(number) + MEMORY_TIME) {
+    if (time < getTypingTime(number, learnerTypingTimes) + MEMORY_TIME) {
       fluent++;
     } else {
       nonFluent++;

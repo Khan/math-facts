@@ -112,7 +112,12 @@ var Grid = React.createClass({
                   var times = this.props.timeData[row + 1][col + 1];
                   var timesAnswered = times.length;
                   var bestTime = Math.min.apply(Math, times);
-                  var factStatus = MasteryHelpers.getFactStatus(answer, times);
+                  var learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
+                    this.props.timeData,
+                    operation
+                  );
+                  var factStatus = MasteryHelpers.getFactStatus(answer, times,
+                    learnerTypingTimes);
                   var masteryColor = MasteryHelpers.masteryColors[factStatus];
                   var masteryColorText = MasteryHelpers.masteryTextColors[
                     factStatus
