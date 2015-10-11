@@ -411,16 +411,23 @@ var Quizzer = React.createClass({
 
   getColor: function() {
     var colors = [
-      ColorHelpers.hslToRgb([0, 0.7, 0.6]), // red
-      ColorHelpers.hslToRgb([0.06, 0.7, 0.6]), // orange
-      ColorHelpers.hslToRgb([0.1, 0.75, 0.58]), // yellow
-      ColorHelpers.hslToRgb([0.2, 0.5, 0.5]), // light green
       ColorHelpers.hslToRgb([0.35, 0.4, 0.55]), // green
+      ColorHelpers.hslToRgb([0.40, 0.5, 0.5]), // green-teal
       ColorHelpers.hslToRgb([0.45, 0.6, 0.5]), // teal
-      ColorHelpers.hslToRgb([0.55, 0.5, 0.5]), // blue
+      ColorHelpers.hslToRgb([0.50, 0.5, 0.5]), // teal-blue
+      ColorHelpers.hslToRgb([0.55, 0.5, 0.55]), // blue
+      ColorHelpers.hslToRgb([0.63, 0.6, 0.65]), // blue-purple
       ColorHelpers.hslToRgb([0.7, 0.6, 0.65]), // purple
       ColorHelpers.hslToRgb([0.8, 0.6, 0.65]), // purple-pink
       ColorHelpers.hslToRgb([0.9, 0.6, 0.65]), // pink
+      ColorHelpers.hslToRgb([0.95, 0.6, 0.65]), // pink-red
+      ColorHelpers.hslToRgb([0, 0.7, 0.6]), // red
+      ColorHelpers.hslToRgb([0.03, 0.7, 0.6]), // red-orange
+      ColorHelpers.hslToRgb([0.06, 0.8, 0.6]), // orange
+      ColorHelpers.hslToRgb([0.08, 0.7, 0.6]), // orange-yellow
+      ColorHelpers.hslToRgb([0.1, 0.75, 0.58]), // yellow
+      ColorHelpers.hslToRgb([0.2, 0.5, 0.5]), // light green
+      ColorHelpers.hslToRgb([0.3, 0.5, 0.5]), // light green-green
     ];
     return colors[this.state.colorHue % colors.length];
   },
