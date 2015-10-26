@@ -439,21 +439,21 @@ var Quizzer = React.createClass({
   },
 
   _renderProgressBar: function() {
+    var elapsedSeconds = Math.ceil(this.state.totalTimeElapsed / 1000);
+    var totalSeconds = this.props.seconds;
+    if (elapsedSeconds > totalSeconds) {
+      elapsedSeconds = totalSeconds;
+    }
     return (
       <View style={styles.progressBar}>
-        {_.map(_.range(0, this.props.seconds), (value) => {
-          var opacity = value + 1 < this.state.totalTimeElapsed/1000 ? 1 : 0.2;
-          var notchStyles = {
-            backgroundColor: 'rgba(255, 255, 255, ' + opacity + ')'
-          };
-          return (
-            <View
-              key={'notch-' + value}
-              style={[styles.progressBarNotch, notchStyles]}>
-            </View>
-          );
-        })
-      }
+        <View style={[styles.progressBarSegment, {
+          flex: elapsedSeconds / totalSeconds,
+          backgroundColor: 'rgba(255, 255, 255, 1)',
+        }]} />
+        <View style={[styles.progressBarSegment, {
+          flex: 1 - elapsedSeconds / totalSeconds,
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        }]} />
       </View>
     );
   },
@@ -644,8 +644,7 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'stretch'
   },
-  progressBarNotch: {
-    flex: 1,
+  progressBarSegment: {
     height: 7
   },
 
