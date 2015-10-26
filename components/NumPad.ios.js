@@ -11,17 +11,15 @@ var {
 } = React;
 
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import Keyboard from './Keyboard.ios.js';
 
 var NumPadButton = React.createClass({
   render: function() {
     return (
-      <TouchableHighlight
-          key={'numpad-' + this.props.key}
+      <Keyboard.Key
           style={styles.button}
-          onPress={this.props.onPress}
-          delayPressIn={0}
-          underlayColor='transparent'
-          activeOpacity={0.2}>
+          highlightStyle={styles.highlightedButton}
+          onPress={this.props.onPress}>
         <View>
           <AppText style={
             [styles.buttonText, this.props.control && styles.controlButtonText]
@@ -29,7 +27,7 @@ var NumPadButton = React.createClass({
             {this.props.content}
           </AppText>
         </View>
-      </TouchableHighlight>
+      </Keyboard.Key>
     );
   }
 });
@@ -73,20 +71,22 @@ var NumPad = React.createClass({
     }
 
     return (
-      <View style={styles.buttons}>
-        <View style={styles.buttonRow}>
-          {buttons.slice(0, 3)}
+      <Keyboard>
+        <View style={styles.buttons}>
+          <View style={styles.buttonRow}>
+            {buttons.slice(0, 3)}
+          </View>
+          <View style={styles.buttonRow}>
+            {buttons.slice(3, 6)}
+          </View>
+          <View style={styles.buttonRow}>
+            {buttons.slice(6, 9)}
+          </View>
+          <View style={styles.buttonRow}>
+            {buttons.slice(9, 12)}
+          </View>
         </View>
-        <View style={styles.buttonRow}>
-          {buttons.slice(3, 6)}
-        </View>
-        <View style={styles.buttonRow}>
-          {buttons.slice(6, 9)}
-        </View>
-        <View style={styles.buttonRow}>
-          {buttons.slice(9, 12)}
-        </View>
-      </View>
+      </Keyboard>
     );
   },
 });
@@ -110,6 +110,9 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     margin: 2
+  },
+  highlightedButton: {
+    backgroundColor: 'rgba(0, 0, 0, 0.15)',
   },
   buttonText: {
     fontSize: 30,
