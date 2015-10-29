@@ -18,10 +18,13 @@ var GridCell = React.createClass({
   propTypes: {
     active: React.PropTypes.bool,
     color: React.PropTypes.string,
-    content: React.PropTypes.string,
+    content: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number]
+    ),
     key: React.PropTypes.string.isRequired,
     onPress: React.PropTypes.func,
-    small: React.PropTypes.small,
+    small: React.PropTypes.bool,
     textColor: React.PropTypes.string,
   },
   defaultProps: {

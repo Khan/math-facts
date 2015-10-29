@@ -21,11 +21,11 @@ import StateFromStoreMixin from '../lib/state-from-store-mixin.js';
 
 import Quizzer from '../components/Quizzer.ios';
 import Stats from '../components/Stats.ios';
+import Settings from '../components/Settings.ios';
 
 import Grid from '../components/Grid.ios';
 
 import Button from '../components/Button.ios';
-import BackButton from '../components/BackButton.ios';
 
 if (Platform.OS === 'ios') {
   React.StatusBarIOS.setHidden(true, 'slide');
@@ -134,11 +134,8 @@ var MathFactsApp = React.createClass({
   componentDidMount: function() {
     MathFactsActions.initializeData();
   },
-  setAdditionoperation: function() {
-    this.setState({operation: 'addition'});
-  },
-  setMultiplicationoperation: function() {
-    this.setState({operation: 'multiplication'});
+  setOperation: function(operation) {
+    this.setState({operation: operation});
   },
   _renderHomeScreen: function() {
     var operation = this.state.operation;
@@ -236,93 +233,17 @@ var MathFactsApp = React.createClass({
     );
   },
   _renderSettings: function() {
-    var operation = this.state.operation;
-
-    var userList = _.map(this.state.userList, (user) => {
-      var activeStyles = this.state.user.id === user.id ?
-                            styles.activeSettingsButton : '';
-      return (
-        <Button
-          key={user.id}
-          text={user.name}
-          small={true}
-          style={[styles.settingsButton, activeStyles]}
-          onPress={() => {
-            MathFactsActions.changeActiveUser(user.id);
-          }}/>
-      );
-    });
-
     return (
-      <ScrollView ref='scrollView' contentContainerStyle={styles.scrollView}>
-        <View style={styles.topRow}>
-          <BackButton onPress={this.showMenu} />
-        </View>
-        <View style={styles.content}>
-          <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Mode</AppText>
-            <View style={styles.toggleButtons}>
-              <Button
-                text='Addition'
-                color={operation === 'addition' ? null : '#ddd'}
-                small={true}
-                wrapperStyle={styles.toggleButtonWrapper}
-                onPress={this.setAdditionoperation}/>
-              <Button
-                text='Multiplication'
-                color={operation === 'multiplication' ? null : '#ddd'}
-                small={true}
-                wrapperStyle={styles.toggleButtonWrapper}
-                onPress={this.setMultiplicationoperation}/>
-            </View>
-          </View>
-          <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Change User</AppText>
-            {userList}
-          </View>
-          <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Change Nickname</AppText>
-            <TextInput
-              autoCapitalize='words'
-              returnKeyType='done'
-              style={styles.input}
-              value={this.state.user.name}
-              onChangeText={(text) => {
-                var user = _.clone(this.state.user);
-                user.name = text;
-                this.setState({
-                  user: user
-                });
-              }}
-              ref='input'
-              onFocus={() => {
-                this.refs.scrollView.scrollResponderScrollNativeHandleToKeyboard(
-                  React.findNodeHandle(this.refs.input)
-                );
-              }}
-              onSubmitEditing={(event) => {
-                MathFactsActions.changeName(this.state.user.name);
-              }}
-            />
-          </View>
-          <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Add New User</AppText>
-            <TextInput
-              autoCapitalize='words'
-              returnKeyType='done'
-              style={styles.input}
-              onSubmitEditing={(event) => {
-                MathFactsActions.addUser(event.nativeEvent.text);
-              }}
-            />
-          </View>
-          <View style={styles.settingsSection}>
-            <AppText style={styles.uuidText}>
-              {this.state.uuid}
-            </AppText>
-          </View>
-        </View>
-      </ScrollView>
+      <Settings
+        addUser={MathFactsActions.addUser}
+        changeActiveUser={MathFactsActions.changeActiveUser}
+        changeUserName={MathFactsActions.changeName}
+        goBack={this.showMenu}
+        operation={this.state.operation}
+        setOperation={this.setOperation}
+        user={this.state.user}
+        userList={this.state.userList}
+        uuid={this.state.uuid} />
     );
   },
   render: function() {
@@ -348,17 +269,6 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center'
-  },
-
-  topRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    alignSelf: 'stretch',
-  },
-
-  content: {
-    flex: 1
   },
 
   loadingScreen: {
@@ -389,55 +299,6 @@ var styles = StyleSheet.create({
   pointsTextEmphasis: {
     color: '#555'
   },
-
-  toggleButtons: {
-    flexDirection: 'row',
-    alignSelf: 'stretch'
-  },
-  toggleButtonWrapper: {
-    flex: 1
-  },
-
-  // Settings
-  scrollView: {
-    // Leave space for the keyboard
-    paddingBottom: 270
-  },
-  settingsSection: {
-    marginBottom: 20,
-  },
-  heading: {
-    textAlign: 'center',
-    margin: 10,
-    marginTop: 0,
-    fontSize: 20,
-  },
-  input: {
-    height: 40,
-    paddingRight: 10,
-    paddingLeft: 10,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    textAlign: 'center'
-  },
-  settingsButton: {
-    borderColor: '#fff',
-    borderWidth: 2,
-    marginTop: 0,
-    marginBottom: 0,
-    marginLeft: 2,
-    marginRight: 2,
-    padding: 10,
-  },
-  activeSettingsButton: {
-    borderColor: 'rgba(0, 0, 0, 0.5)'
-  },
-  uuidText: {
-    color: '#aaa',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-
 });
 
 module.exports = MathFactsApp;
