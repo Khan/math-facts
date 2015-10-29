@@ -15,35 +15,48 @@ import MasteryHelpers from '../helpers/MasteryHelpers.ios';
 import OperationHelper from '../helpers/OperationHelpers.ios';
 
 var GridCell = React.createClass({
-  defaultProps: {
-    content: React.PropTypes.string,
+  propTypes: {
+    active: React.PropTypes.bool,
     color: React.PropTypes.string,
-    textColor: React.PropTypes.string,
+    content: React.PropTypes.string,
     key: React.PropTypes.string.isRequired,
     onPress: React.PropTypes.func,
-    active: React.PropTypes.bool,
     small: React.PropTypes.small,
+    textColor: React.PropTypes.string,
+  },
+  defaultProps: {
+    color: '#ddd',
+    onPress: null,
+    textColor: '#222',
   },
   render: function() {
-    var onPress = this.props.onPress || null;
-    var color = this.props.color || '#ddd';
-    var textColor = this.props.textColor || '#222';
-    var gridCellStyles = [
+    const {
+      active,
+      color,
+      content,
+      key,
+      onPress,
+      small,
+      textColor,
+    } = this.props;
+
+    const gridCellStyles = [
       styles.gridCell,
-      {backgroundColor: color},
-      this.props.active && { borderWidth: 1, borderColor: textColor },
-      this.props.small && { height: 15, width: 15 }
+      { backgroundColor: color },
+      active && { borderWidth: 1, borderColor: textColor },
+      small && { height: 15, width: 15 }
     ];
-    var cellContent = !this.props.small && (
-      <AppText style={[styles.gridCellText, {color: textColor}]}>
-        {this.props.content}
+
+    const cellContent = !small && (
+      <AppText style={[styles.gridCellText, { color: textColor }]}>
+        {content}
       </AppText>
     );
 
     if (onPress != null) {
       return (
         <TouchableHighlight
-            key={this.props.key}
+            key={key}
             style={gridCellStyles}
             underlayColor='transparent'
             onPress={onPress}>
@@ -55,7 +68,7 @@ var GridCell = React.createClass({
     } else {
       return (
         <View
-            key={this.props.key}
+            key={key}
             style={gridCellStyles}>
           {cellContent}
         </View>
