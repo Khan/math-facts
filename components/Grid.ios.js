@@ -12,7 +12,7 @@ import {
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
 import MasteryHelpers from '../helpers/MasteryHelpers.ios';
-import OperationHelper from '../helpers/OperationHelpers.ios';
+import OperationHelpers from '../helpers/OperationHelpers.ios';
 
 var GridCell = React.createClass({
   propTypes: {
@@ -79,78 +79,103 @@ var GridCell = React.createClass({
 
 var Grid = React.createClass({
   defaultProps: {
-    // The time data as a 2D array of time values: {time: ..., date: ..., ...}
-    timeData: React.PropTypes.array,
-    operation: React.PropTypes.string,
-    onPress: React.PropTypes.func,
     // The active cell as inputs: [row, col]
     activeCell: React.PropTypes.array,
-    // size
-    small: React.PropTypes.bool
+    onPress: React.PropTypes.func,
+    operation: React.PropTypes.string,
+    // Size of each cell in the grid: small or not-small.
+    small: React.PropTypes.bool,
+    // The time data as a 2D array of time values: {time: ..., date: ..., ...}
+    timeData: React.PropTypes.array,
   },
   render: function() {
-    var operation = this.props.operation;
-    var sign = OperationHelper[operation].getSign();
+    const {
+      activeCell,
+      onPress,
+      operation,
+      small,
+      timeData,
+    } = this.props;
+
+    const OperationHelper = OperationHelpers[operation];
+    const sign = OperationHelper.getSign();
+    // TODO: abstract this maxVal somewhere else
+    const maxVal = 10;
+    const cellRange = _.range(1, maxVal + 1);
+
+    const headerCellColor = '#eee';
+    const operationCellColor = '#ddd';
+
     return (
       <View style={styles.grid}>
+        {/* Render the top row of cells */}
         <View
             style={styles.gridRow}
             key={'header-row'}>
-          <GridCell content={sign}
-                    color='#ddd'
-                    key='cell-sign'
-                    small={this.props.small} />
-          {_.map(_.range(0, 10), (col) => {
+          {/* Render the operation cell in the top left corner */}
+          <GridCell
+            content={sign}
+            color={operationCellColor}
+            key='cell-sign'
+            small={small} />
+          {/* Render the top row of numeric header cells */}
+          {_.map(cellRange, (col) => {
             return (
               <GridCell
-                content={col + 1}
-                color='#eee'
-                small={this.props.small}
+                content={col}
+                color={headerCellColor}
+                small={small}
                 key={'cell-col-header-' + col}/>
             );
           })}
         </View>
-        {_.map(_.range(0, 10), (row) => {
+
+        {/* Render the answer cells */}
+        {_.map(cellRange, (row) => {
+
+          {/* Render a row of answer cells */}
           return (
-              <View style={styles.gridRow} key={'row-' + row}>
-                  <GridCell
-                    content={row + 1}
-                    color='#eee'
-                    small={this.props.small}
-                    key={'cell-row-header-' + row}/>
-                {_.map(_.range(0, 10), (col) => {
-                  var answer = OperationHelper[operation].getAnswer(
-                    [row + 1, col + 1]
-                  );
-                  var times = this.props.timeData[row + 1][col + 1];
+              <View
+                  key={'row-' + row}
+                  style={styles.gridRow}>
+                {/* Render left column of numeric header cells, one per row */}
+                <GridCell
+                  color={headerCellColor}
+                  content={row}
+                  key={'cell-row-header-' + row}
+                  small={small} />
+
+                {/* Render the answer cells for this row */}
+                {_.map(cellRange, (col) => {
+                  var answer = OperationHelper.getAnswer([row, col]);
+                  var times = timeData[row][col];
                   var timesAnswered = times.length;
                   var bestTime = Math.min.apply(Math, times);
                   var learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
-                    this.props.timeData,
+                    timeData,
                     operation
                   );
+
                   var factStatus = MasteryHelpers.getFactStatus(answer, times,
                     learnerTypingTimes);
+
                   var masteryColor = MasteryHelpers.masteryColors[factStatus];
                   var masteryColorText = MasteryHelpers.masteryTextColors[
                     factStatus
                   ];
 
-                  var activeCell = this.props.activeCell;
                   var active = activeCell != null &&
-                               activeCell[0] === row + 1 &&
-                               activeCell[1] === col + 1;
+                               activeCell[0] === row &&
+                               activeCell[1] === col;
 
                   return (<GridCell
-                    content={answer}
                     active={active}
                     color={masteryColor}
-                    textColor={masteryColorText}
+                    content={answer}
                     key={'cell-' + row + '-' + col}
-                    small={this.props.small}
-                    onPress={() => {
-                      this.props.onPress([row + 1, col + 1]);
-                    }}/>
+                    onPress={() => onPress([row, col])}
+                    small={small}
+                    textColor={masteryColorText} />
                   );
                 })}
               </View>
@@ -170,12 +195,12 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
   },
   gridCell: {
-    height: 29, // 34 for iPhone 6
-    width: 29,
+    alignItems: 'center',
     backgroundColor: '#face01',
     flexDirection: 'column',
+    height: 29, // 34 for iPhone 6
     justifyContent: 'center',
-    alignItems: 'center'
+    width: 29,
   },
   gridCellText: {
     fontSize: 14, // 16 for iPhone 6
