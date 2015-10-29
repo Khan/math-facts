@@ -12,10 +12,10 @@ var {
 
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-import ColorHelpers from '../helpers/ColorHelpers.ios';
-import MasteryHelpers from '../helpers/MasteryHelpers.ios';
-import OperationHelper from '../helpers/OperationHelpers.ios';
-import { randomIntBetween } from '../helpers/Helpers.ios';
+import ColorHelpers from '../helpers/color-helpers';
+import MasteryHelpers from '../helpers/mastery-helpers';
+import OperationHelper from '../helpers/operation-helpers';
+import { randomIntBetween } from '../helpers/helpers';
 
 import NumPad from '../components/NumPad.ios';
 import AdditionHint from '../components/AdditionHint.ios';
