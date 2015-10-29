@@ -18,13 +18,10 @@ import MathFactsActions from '../actions/MathFactsActions';
 
 import StateFromStoreMixin from '../lib/state-from-store-mixin.js';
 
+import HomeScreen from '../components/HomeScreen.ios';
 import Quizzer from '../components/Quizzer.ios';
 import Stats from '../components/Stats.ios';
 import Settings from '../components/Settings.ios';
-
-import Grid from '../components/Grid.ios';
-
-import Button from '../components/Button.ios';
 
 if (React.StatusBarIOS) {
   React.StatusBarIOS.setHidden(true, 'slide');
@@ -137,51 +134,21 @@ var MathFactsApp = React.createClass({
     this.setState({operation: operation});
   },
   _renderHomeScreen: function() {
-    var operation = this.state.operation;
-    var quizzesData = this.state.quizzesData[operation];
+    const operation = this.state.operation;
+    const quizzesData = this.state.quizzesData[operation];
+    const timeData = quizzesData ?
+      this.parseQuizzesDataIntoTimeData(quizzesData) : null;
 
     return (
-      <View style={styles.container}>
-        <View style={styles.points}>
-          <AppText style={styles.pointsText}>
-            {'Hi '}
-            <AppTextBold style={styles.pointsTextEmphasis}>
-              {this.state.user.name}
-            </AppTextBold>
-            {'!'}
-          </AppText>
-        </View>
-        <View style={styles.points}>
-          <AppText style={styles.pointsText}>
-            {'You have '}
-            <AppTextBold style={styles.pointsTextEmphasis}>
-              {this.state.points}
-            </AppTextBold>
-            {' points'}
-          </AppText>
-        </View>
-        <View style={styles.gridWrapper}>
-          {quizzesData && <Grid
-            small={true}
-            timeData={this.parseQuizzesDataIntoTimeData(quizzesData)}
-            operation={operation}
-            onPress={this.showStats} />}
-          <View>
-            <AppTextBold style={styles.gridCaption}>
-              {operation.charAt(0).toUpperCase() + operation.slice(1)}
-            </AppTextBold>
-          </View>
-        </View>
-        <Button
-          text='Play'
-          color='#29abca'
-          onPress={this.startGame} />
-        <Button
-          text='Settings'
-          color='#bbb'
-          small={true}
-          onPress={this.showSettings}/>
-      </View>
+      <HomeScreen
+        operation={operation}
+        points={this.state.points}
+        showSettings={this.showSettings}
+        showStats={this.showStats}
+        startGame={this.startGame}
+        timeData={timeData}
+        userName={this.state.user.name}
+      />
     );
   },
   _renderQuizzer: function() {
@@ -265,39 +232,12 @@ var styles = StyleSheet.create({
     backgroundColor: '#fafafa'
   },
 
-  container: {
-    flex: 1,
-    justifyContent: 'center'
-  },
-
   loadingScreen: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
 
-  gridWrapper: {
-    alignItems: 'center',
-    height: 200,
-    marginBottom: 10,
-  },
-  gridCaption: {
-    color: '#999',
-    fontSize: 16,
-    lineHeight: 32,
-  },
-
-  points: {
-    alignItems: 'center',
-    paddingBottom: 10,
-  },
-  pointsText: {
-    fontSize: 20,
-    color: '#999'
-  },
-  pointsTextEmphasis: {
-    color: '#555'
-  },
 });
 
 module.exports = MathFactsApp;
