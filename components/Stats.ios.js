@@ -11,8 +11,8 @@ var {
 
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-import MasteryHelpers from '../helpers/MasteryHelpers.ios';
-import OperationHelper from '../helpers/OperationHelpers.ios';
+import MasteryHelpers from '../helpers/mastery-helpers';
+import OperationHelper from '../helpers/operation-helpers';
 
 import BackButton from '../components/BackButton.ios';
 

@@ -2,8 +2,8 @@
 
 import _ from 'underscore';
 
-import ColorHelpers from '../helpers/ColorHelpers.ios';
-import OperationHelpers from '../helpers/OperationHelpers.ios';
+import ColorHelpers from '../helpers/color-helpers';
+import OperationHelpers from '../helpers/operation-helpers';
 
 // The time to recall a fact from memory should be less than 800ms
 var MEMORY_TIME = 800;

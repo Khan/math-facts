@@ -11,8 +11,8 @@ import {
 
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-import MasteryHelpers from '../helpers/MasteryHelpers.ios';
-import OperationHelpers from '../helpers/OperationHelpers.ios';
+import MasteryHelpers from '../helpers/mastery-helpers';
+import OperationHelpers from '../helpers/operation-helpers';
 
 var GridCell = React.createClass({
   propTypes: {
