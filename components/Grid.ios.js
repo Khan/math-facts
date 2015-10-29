@@ -78,7 +78,7 @@ var GridCell = React.createClass({
 });
 
 var Grid = React.createClass({
-  defaultProps: {
+  propTypes: {
     // The active cell as inputs: [row, col]
     activeCell: React.PropTypes.array,
     onPress: React.PropTypes.func,
@@ -188,7 +188,7 @@ var Grid = React.createClass({
 
 var styles = StyleSheet.create({
   grid: {
-    flex: 0
+    flex: 0,
   },
   gridRow: {
     flex: 1,
@@ -204,7 +204,7 @@ var styles = StyleSheet.create({
   },
   gridCellText: {
     fontSize: 14, // 16 for iPhone 6
-    fontWeight: '400'
+    fontWeight: '400',
   }
 });
 
