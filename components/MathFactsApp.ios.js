@@ -157,16 +157,18 @@ var MathFactsApp = React.createClass({
     );
   },
   _renderQuizzer: function() {
-    var operation = this.state.operation;
-    var quizzesData = this.state.quizzesData;
+    const operation = this.state.operation;
+    const quizzesData = this.state.quizzesData[operation];
+    const timeData = quizzesData ?
+      this.parseQuizzesDataIntoTimeData(quizzesData) : null;
     return (
       <Quizzer
         operation={operation}
         back={this.showMenu}
         finish={this.finish}
         playAgain={this.playAgain}
-        quizzesData={quizzesData[operation]}
-        timeData={this.parseQuizzesDataIntoTimeData(quizzesData[operation])}
+        quizzesData={quizzesData}
+        timeData={timeData}
         mode={'time'}
         seconds={60}
         count={10}/>
