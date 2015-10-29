@@ -4,8 +4,8 @@ import _ from 'underscore';
 
 import React from 'react-native';
 import {
+  Platform,
   ScrollView,
-  StatusBarIOS,
   StyleSheet,
   TextInput,
   TouchableHighlight,
@@ -27,7 +27,9 @@ import Grid from '../components/Grid.ios';
 import Button from '../components/Button.ios';
 import BackButton from '../components/BackButton.ios';
 
-StatusBarIOS.setHidden(true, 'slide');
+if (Platform.OS === 'ios') {
+  React.StatusBarIOS.setHidden(true, 'slide');
+}
 
 var MathFactsApp = React.createClass({
   mixins: [
