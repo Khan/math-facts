@@ -15,9 +15,9 @@ const Button = React.createClass({
     color: React.PropTypes.string,
     onPress: React.PropTypes.func.isRequired,
     small: React.PropTypes.bool,
-    style: React.PropTypes.style,
+    style: React.PropTypes.array,
     text: React.PropTypes.string,
-    wrapperStyle: React.PropTypes.style,
+    wrapperStyle: React.PropTypes.array,
   },
   getDefaultProps: function() {
     return {

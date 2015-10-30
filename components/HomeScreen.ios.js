@@ -71,7 +71,6 @@ const HomeScreen = React.createClass({
         </View>
         <Button
           text='Play'
-          color='#29abca'
           onPress={startGame} />
         <Button
           text='Settings'
