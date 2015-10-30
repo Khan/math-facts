@@ -122,7 +122,7 @@ const Navigation = React.createClass({
       return (
         <Stats
           operation={operation}
-          back={this.showMenu}
+          goBack={this.showMenu}
           timeData={timeData}
         />
       );
