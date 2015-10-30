@@ -5,7 +5,6 @@ import _ from 'underscore';
 import React from 'react-native';
 const {
   StyleSheet,
-  TouchableHighlight,
   View,
 } = React;
 
@@ -20,12 +19,20 @@ import Grid from '../components/Grid.ios';
 
 const Stats = React.createClass({
   propTypes: {
-
+    back: React.PropTypes.func.isRequired,
+    operation: React.PropTypes.string.isRequired,
+    timeData: React.PropTypes.array.isRequired,
   },
   getInitialState: function() {
     return {
       active: [1, 1]
     };
+  },
+
+  updateActiveCell: function(active) {
+    this.setState({
+      active: active
+    });
   },
 
   render: function() {
@@ -40,11 +47,8 @@ const Stats = React.createClass({
       timeData={this.props.timeData}
       operation={operation}
       activeCell={this.state.active}
-      onPress={(active) => {
-        this.setState({
-          active: active
-        });
-      }} />
+      onPress={this.updateActiveCell}
+    />;
 
     const activeRow = this.state.active[0];
     const activeCol = this.state.active[1];
@@ -69,7 +73,6 @@ const Stats = React.createClass({
 
     const infoStatTextStyle = styles.infoStatText;
     const color = {color: masteryColorText};
-
 
     const printTime = (time) => {
       return parseFloat(time/1000).toFixed(2).toString() + 's';
