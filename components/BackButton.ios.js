@@ -10,7 +10,7 @@ const {
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
 const BackButton = React.createClass({
-  defaultProps: {
+  propTypes: {
     onPress: React.PropTypes.func
   },
   render: function() {
