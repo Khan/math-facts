@@ -74,13 +74,13 @@ const Settings = React.createClass({
                 text='Addition'
                 color={operation === 'addition' ? undefined : '#ddd'}
                 small={true}
-                wrapperStyle={styles.toggleButtonWrapper}
+                wrapperStyle={[styles.toggleButtonWrapper]}
                 onPress={() => setOperation('addition')} />
               <Button
                 text='Multiplication'
                 color={operation === 'multiplication' ? undefined : '#ddd'}
                 small={true}
-                wrapperStyle={styles.toggleButtonWrapper}
+                wrapperStyle={[styles.toggleButtonWrapper]}
                 onPress={() => setOperation('multiplication')} />
             </View>
           </View>
