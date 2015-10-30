@@ -13,6 +13,8 @@ import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 
+import Chart from '../components/Chart.ios';
+
 const StatInfo = React.createClass({
   propTypes: {
     inputs: React.PropTypes.array.isRequired,

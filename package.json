@@ -6,6 +6,7 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
+    "art": "^0.10.0",
     "es6-promise": "^2.1.1",
     "events": "^1.0.2",
     "firebase": "^2.3.0",
