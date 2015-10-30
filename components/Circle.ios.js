@@ -1,14 +1,14 @@
 'use strict';
 
 import React from 'react-native';
-var {
+const {
   View,
 } = React;
 
-var Circle = React.createClass({
+const Circle = React.createClass({
   render: function() {
-    var size = this.props.size || 20;
-    var color = this.props.color || '#527fe4';
+    const size = this.props.size || 20;
+    const color = this.props.color || '#527fe4';
     return (
       <View
         style={{

@@ -7,20 +7,20 @@ import Firebase from 'firebase';
 import React from 'react-native';
 import UuidGenerator from 'uuid';
 
-var AsyncStorage = React.AsyncStorage;
+const AsyncStorage = React.AsyncStorage;
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import firebaseURL from '../firebase-url.js';
 import MathFactsConstants from '../constants/MathFactsConstants';
 
-var CHANGE_EVENT = 'change';
+const CHANGE_EVENT = 'change';
 
 
 /*
  * Default Data
  */
 
-var _isLoaded = false;
+let _isLoaded = false;
 /*
  * _data['factData'] = {
  *  'multiplication': [
@@ -38,7 +38,7 @@ var _isLoaded = false;
  *  ]
  *
  */
-var defaultFactData = {
+const defaultFactData = {
   'multiplication': null,
   'addition': null,
   'typing': null,
@@ -48,7 +48,7 @@ var defaultFactData = {
  * Users are stored as an object with their id (int) and their name (string).
  * The UserList is an array of user objects
  */
-var makeUser = function(userId, userName) {
+const makeUser = function(userId, userName) {
   return {
     id: userId,
     name: userName,
@@ -56,11 +56,11 @@ var makeUser = function(userId, userName) {
   };
 };
 
-var makeDefaultUser = function() {
+const makeDefaultUser = function() {
   return makeUser(0, 'Player');
 };
 
-var _data = {
+let _data = {
   /*
    * Each Installation of the app has a uuid that (hopefully) makes it unique.
    *
@@ -81,33 +81,33 @@ var _data = {
 /*
  * Users
  */
-var createKey = function(input) {
-  var key = _data['activeUser'] + '-' + input;
+const createKey = function(input) {
+  const key = _data['activeUser'] + '-' + input;
   return key;
 };
 
-var addUser = function(userName) {
-  var userId = _data['userList'].length;
-  var newUser = makeUser(userId, userName);
+const addUser = function(userName) {
+  const userId = _data['userList'].length;
+  const newUser = makeUser(userId, userName);
   _data['userList'].push(newUser);
   changeActiveUser(userId);
   MathFactStore.emitChange();
   updateUserData().done();
 };
 
-var changeUserName = function(userName) {
+const changeUserName = function(userName) {
   _data['userList'][_data['activeUser']].name = userName;
   MathFactStore.emitChange();
   updateUserData().done();
 };
 
-var changeActiveUser = function(id) {
+const changeActiveUser = function(id) {
   _data['activeUser'] = id;
   _isLoaded = false;
   updateUserData().then(fetchStoredData).done();
 };
 
-var updateUserData = function() {
+const updateUserData = function() {
   return Promise.all([
     AsyncStorage.setItem('activeUser', _data['activeUser'].toString()),
     AsyncStorage.setItem('userList', JSON.stringify(_data['userList'])),
@@ -118,14 +118,14 @@ var updateUserData = function() {
 /*
  * Points
  */
-var addPoints = function(amount) {
+const addPoints = function(amount) {
   _data['points'] += amount;
   _data['scores'].push(amount);
   MathFactStore.emitChange();
   updateStoredPoints();
 };
 
-var updateStoredPoints = function() {
+const updateStoredPoints = function() {
   Promise.all([
     AsyncStorage.setItem(createKey('points'), _data['points'].toString()),
     AsyncStorage.setItem(createKey('scores'), JSON.stringify(_data['scores'])),
@@ -141,10 +141,10 @@ var updateStoredPoints = function() {
  * [{inputs: [1, 2], data: {...}}, {inputs: [7, 4], data: {...}}]
  *
  */
-var addAttempts = function(operation, data) {
+const addAttempts = function(operation, data) {
   _.each(data, (attempt) => {
-    var inputs = attempt.inputs;
-    var attemptData = attempt.data;
+    const inputs = attempt.inputs;
+    const attemptData = attempt.data;
 
     // Initialize the row if it's empty
     if (_data['factData'][operation][inputs[0]] == null) {
@@ -165,9 +165,9 @@ var addAttempts = function(operation, data) {
   updateStoredFactData();
 };
 
-var updateStoredFactData = function() {
-  var key = createKey('factData');
-  var value = JSON.stringify(_data['factData']);
+const updateStoredFactData = function() {
+  const key = createKey('factData');
+  const value = JSON.stringify(_data['factData']);
   AsyncStorage.setItem(key, value).then(() => {
     updateRemoteStore();
   }).done();
@@ -177,12 +177,12 @@ var updateStoredFactData = function() {
 /*
  * Update remate firebase storage
  */
-var updateRemoteStore = function() {
-  var uuid = _data['uuid'];
+const updateRemoteStore = function() {
+  const uuid = _data['uuid'];
   if (firebaseURL && firebaseURL.length && uuid) {
-    var firebaseRef = new Firebase(firebaseURL);
+    const firebaseRef = new Firebase(firebaseURL);
 
-    var userRef = firebaseRef.child(uuid).child(_data['activeUser']);
+    const userRef = firebaseRef.child(uuid).child(_data['activeUser']);
     userRef.update({
       user: _data['userList'][_data['activeUser']],
       points: _data['points'],
@@ -194,7 +194,7 @@ var updateRemoteStore = function() {
 
 
 // Clear all data
-var clearData = function() {
+const clearData = function() {
   return Promise.all([
     AsyncStorage.removeItem(createKey('factData')),
     AsyncStorage.removeItem(createKey('points')),
@@ -213,7 +213,7 @@ var clearData = function() {
 /*
  * Fetch data from AsyncStorage and load it into _data
  */
-var fetchUserData = function() {
+const fetchUserData = function() {
   return Promise.all([
     AsyncStorage.getItem('uuid').then((storedUuid) => {
       // If we already have a uuid in _data then we don't need to do anything
@@ -240,7 +240,7 @@ var fetchUserData = function() {
   ]);
 };
 
-var fetchPoints = function() {
+const fetchPoints = function() {
   return Promise.all([
     AsyncStorage.getItem(createKey('points')).then((points) => {
       _data['points'] = (points == null) ? 0 : parseInt(points);
@@ -251,22 +251,22 @@ var fetchPoints = function() {
   ]);
 };
 
-var fetchFactData = function() {
+const fetchFactData = function() {
   return AsyncStorage.getItem(createKey('factData')).then((factData) => {
-    var newFactData = {};
-    var factData = JSON.parse(factData);
+    const newFactData = {};
+    factData = JSON.parse(factData);
     if (factData == null) {
       factData = defaultFactData;
     }
     _.each(defaultFactData, (defaultData, operation) => {
-      var data = factData[operation];
+      const data = factData[operation];
       newFactData[operation] = (data == null) ? [] : data;
     });
     _data['factData'] = newFactData;
   });
 };
 
-var fetchStoredData = function() {
+const fetchStoredData = function() {
   return fetchUserData().then(() => {
     return Promise.all([
       fetchPoints(),
@@ -282,7 +282,7 @@ var fetchStoredData = function() {
 /*
  * Math Facts Store
  */
-var MathFactStore = assign({}, EventEmitter.prototype, {
+const MathFactStore = assign({}, EventEmitter.prototype, {
 
   /**
    * Get the entire database of Math Facts
@@ -346,15 +346,15 @@ AppDispatcher.register(function(action) {
       break;
 
     case MathFactsConstants.FACT_DATA_ADD:
-      var operation = action.operation;
-      var data = action.data;
+      const operation = action.operation;
+      const data = action.data;
       if (!_.isEmpty(data)) {
         addAttempts(operation, data);
       }
       break;
 
     case MathFactsConstants.POINTS_ADD:
-      var amount = action.amount;
+      const amount = action.amount;
       addPoints(amount);
       break;
 
@@ -363,17 +363,17 @@ AppDispatcher.register(function(action) {
       break;
 
     case MathFactsConstants.USERS_ADD:
-      var newUserName = action.name;
-      addUser(newUserName);
+      const name = action.name;
+      addUser(name);
       break;
 
     case MathFactsConstants.USERS_CHANGE_NAME:
-      var newUserName = action.name;
+      const newUserName = action.name;
       changeUserName(newUserName);
       break;
 
     case MathFactsConstants.USERS_CHANGE_ACTIVE_USER:
-      var id = action.id;
+      const id = action.id;
       changeActiveUser(id);
       break;
 

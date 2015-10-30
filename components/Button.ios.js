@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react-native';
-var {
+const {
   StyleSheet,
   TouchableHighlight,
   Text,
@@ -10,7 +10,7 @@ var {
 
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-var Button = React.createClass({
+const Button = React.createClass({
   defaultProps: {
     small: React.PropTypes.bool,
     color: React.PropTypes.string,
@@ -19,11 +19,11 @@ var Button = React.createClass({
     wrapperStyle: React.PropTypes.style,
   },
   render: function() {
-    var color = this.props.color ? this.props.color : '#29abca';
-    var style = this.props.style ? this.props.style : null;
-    var wrapperStyle = this.props.wrapperStyle ? this.props.wrapperStyle : null;
+    const color = this.props.color ? this.props.color : '#29abca';
+    const style = this.props.style ? this.props.style : null;
+    const wrapperStyle = this.props.wrapperStyle ? this.props.wrapperStyle : null;
 
-    var buttonTextStyle = styles.buttonText;
+    let buttonTextStyle = styles.buttonText;
     if (this.props.small) {
       buttonTextStyle = [buttonTextStyle, { fontSize: 16 }];
     }
@@ -42,7 +42,7 @@ var Button = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   button: {
     flex: 1,
     alignItems: 'center',

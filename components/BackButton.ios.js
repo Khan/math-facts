@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react-native';
-var {
+const {
   StyleSheet,
   TouchableHighlight,
   View,
@@ -9,7 +9,7 @@ var {
 
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
-var BackButton = React.createClass({
+const BackButton = React.createClass({
   defaultProps: {
     onPress: React.PropTypes.func
   },
@@ -28,8 +28,7 @@ var BackButton = React.createClass({
   }
 });
 
-
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   backButton: {
     alignSelf: 'flex-start',
     padding: 15

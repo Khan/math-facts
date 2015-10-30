@@ -13,7 +13,7 @@ var {
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 import Keyboard from './Keyboard.ios.js';
 
-var NumPadButton = React.createClass({
+const NumPadButton = React.createClass({
   render: function() {
     return (
       <Keyboard.Key
@@ -32,11 +32,11 @@ var NumPadButton = React.createClass({
   }
 });
 
-var NumPad = React.createClass({
+const NumPad = React.createClass({
 
   render: function() {
 
-    var buttons = _.map(_.range(1, 10), (value, index) => {
+    const buttons = _.map(_.range(1, 10), (value, index) => {
       return (
         <NumPadButton
           onPress={() => {this.props.addDigit(value)}}

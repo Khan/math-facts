@@ -16,7 +16,7 @@ import Grid from '../components/Grid.ios';
 import Button from '../components/Button.ios';
 import BackButton from '../components/BackButton.ios';
 
-var HomeScreen = React.createClass({
+const HomeScreen = React.createClass({
   propTypes: {
     operation: React.PropTypes.string.isRequired,
     points: React.PropTypes.number.isRequired,

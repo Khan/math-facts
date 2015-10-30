@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react-native';
-var {
+const {
   View,
 } = React;
 
@@ -25,9 +25,9 @@ var {
  * have your fingers down.
  */
 
-var idCounter = 1;
+let idCounter = 1;
 
-var KeyboardKey = React.createClass({
+const KeyboardKey = React.createClass({
   getInitialState: function() {
     return {
       highlighted: false,
@@ -35,7 +35,7 @@ var KeyboardKey = React.createClass({
     };
   },
   render: function() {
-    var {style, highlightStyle, children} = this.props;
+    const {style, highlightStyle, children} = this.props;
     return (
       <View
         ref="root"
@@ -64,7 +64,7 @@ var KeyboardKey = React.createClass({
   },
 });
 
-var Keyboard = React.createClass({
+const Keyboard = React.createClass({
   statics: {
     Key: KeyboardKey,
   },
@@ -92,7 +92,7 @@ var Keyboard = React.createClass({
     return {keyboard: this};
   },
   _measureAllKeys: function() {
-    for (var k in this._keys) {
+    for (let k in this._keys) {
       this._measureKey(k);
     }
   },
@@ -112,12 +112,12 @@ var Keyboard = React.createClass({
     }
   },
   _updateHighlightedKeys: function() {
-    var oldHighlight = this._highlightedKeyId;
-    var newHighlight = null;
-    var touch = this._currentTouch;
+    const oldHighlight = this._highlightedKeyId;
+    let newHighlight = null;
+    const touch = this._currentTouch;
     if (touch) {
-      for (var k in this._keyLayouts) {
-        var key = this._keyLayouts[k];
+      for (let k in this._keyLayouts) {
+        const key = this._keyLayouts[k];
         if (key.pageX <= touch.pageX &&
             touch.pageX <= key.pageX + key.width &&
             key.pageY <= touch.pageY &&
@@ -129,7 +129,7 @@ var Keyboard = React.createClass({
     }
     if (oldHighlight !== newHighlight) {
       if (oldHighlight) {
-        var oldKey = this._keys[oldHighlight];
+        const oldKey = this._keys[oldHighlight];
         if (oldKey) {
           oldKey.setHighlighted(false);
         }
@@ -144,19 +144,19 @@ var Keyboard = React.createClass({
     return true;
   },
   _handleResponderGrant: function(event) {
-    var touch = event.nativeEvent.changedTouches[0];
+    const touch = event.nativeEvent.changedTouches[0];
     this._currentTouch = touch;
     this._measureAllKeys();
   },
   _handleResponderStart: function(event) {
     // If a new touch comes in, trigger a press then switch to it.
     this._triggerKeyPress();
-    var touch = event.nativeEvent.changedTouches[0];
+    const touch = event.nativeEvent.changedTouches[0];
     this._currentTouch = touch;
     this._updateHighlightedKeys();
   },
   _handleResponderMove: function(event) {
-    var currentTouchId = this._currentTouch && this._currentTouch.identifier;
+    const currentTouchId = this._currentTouch && this._currentTouch.identifier;
     event.nativeEvent.changedTouches.forEach(function(touch) {
       if (touch.identifier === currentTouchId) {
         this._currentTouch = touch;
@@ -166,7 +166,7 @@ var Keyboard = React.createClass({
   },
   _handleResponderRelease: function(event) {
     // When a touch is lifted: trigger a press and remove the highlight
-    var currentTouchId = this._currentTouch && this._currentTouch.identifier;
+    const currentTouchId = this._currentTouch && this._currentTouch.identifier;
     event.nativeEvent.changedTouches.forEach(function(touch) {
       if (touch.identifier === currentTouchId) {
         this._triggerKeyPress();
@@ -177,7 +177,7 @@ var Keyboard = React.createClass({
   },
   _handleResponderTerminate: function(event) {
     // When a touch is canceled: remove the highlight but don't trigger a press
-    var currentTouchId = this._currentTouch && this._currentTouch.identifier;
+    const currentTouchId = this._currentTouch && this._currentTouch.identifier;
     event.nativeEvent.changedTouches.forEach(function(touch) {
       if (touch.identifier === currentTouchId) {
         this._currentTouch = null;

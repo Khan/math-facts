@@ -3,7 +3,7 @@
 import _ from 'underscore';
 
 import React from 'react-native';
-var {
+const {
   StyleSheet,
   TouchableHighlight,
   View,
@@ -18,7 +18,7 @@ import BackButton from '../components/BackButton.ios';
 
 import Grid from '../components/Grid.ios';
 
-var Stats = React.createClass({
+const Stats = React.createClass({
   propTypes: {
 
   },
@@ -55,14 +55,14 @@ var Stats = React.createClass({
     );
   },
   renderStats: function() {
-    var operation = this.props.operation;
+    const operation = this.props.operation;
 
-    var learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
+    const learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
       this.props.timeData,
       operation
     );
 
-    var grid = <Grid
+    const grid = <Grid
       timeData={this.state.timeData}
       operation={operation}
       activeCell={this.state.active}
@@ -72,36 +72,36 @@ var Stats = React.createClass({
         });
       }} />
 
-    var activeRow = this.state.active[0];
-    var activeCol = this.state.active[1];
+    const activeRow = this.state.active[0];
+    const activeCol = this.state.active[1];
 
-    var times = this.state.timeData[activeRow][activeCol];
-    var timesAnswered = times.length;
-    var bestTime = null;
+    const times = this.state.timeData[activeRow][activeCol];
+    const timesAnswered = times.length;
+    const bestTime = null;
     _.each(times, (data) => {
       if (data != null && (bestTime == null || data.time < bestTime)) {
         bestTime = data.time;
       }
     });
 
-    var inputs = [activeRow, activeCol];
-    var expression = OperationHelper[operation].getExpression(inputs);
-    var answer = OperationHelper[operation].getAnswer(inputs);
+    const inputs = [activeRow, activeCol];
+    const expression = OperationHelper[operation].getExpression(inputs);
+    const answer = OperationHelper[operation].getAnswer(inputs);
 
-    var factStatus = MasteryHelpers.getFactStatus(answer, times, learnerTypingTimes);
-    var masteryColor = MasteryHelpers.masteryColors[factStatus];
-    var masteryColorText = MasteryHelpers.masteryTextColors[factStatus];
-    var masteryDescription  = MasteryHelpers.masteryDescription[factStatus];
+    const factStatus = MasteryHelpers.getFactStatus(answer, times, learnerTypingTimes);
+    const masteryColor = MasteryHelpers.masteryColors[factStatus];
+    const masteryColorText = MasteryHelpers.masteryTextColors[factStatus];
+    const masteryDescription  = MasteryHelpers.masteryDescription[factStatus];
 
-    var infoStatTextStyle = styles.infoStatText;
-    var color = {color: masteryColorText};
+    const infoStatTextStyle = styles.infoStatText;
+    const color = {color: masteryColorText};
 
 
-    var printTime = (time) => {
+    const printTime = (time) => {
       return parseFloat(time/1000).toFixed(2).toString() + 's';
     };
 
-    var info = (
+    const info = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
         <AppText style={[styles.infoQuestion, color]}>
           {expression}
@@ -131,16 +131,16 @@ var Stats = React.createClass({
     );
 
 
-    var timesArr = [];
+    const timesArr = [];
     _.each(times, (data) => {
       timesArr.push(data.time);
     });
 
-    var findAverage = (arr) => {
+    const findAverage = (arr) => {
       if (arr.length === 0) {
         return null;
       }
-      var sum = arr.reduce((a, b) => {
+      const sum = arr.reduce((a, b) => {
         return a + b;
       }, 0);
       return sum / arr.length;
@@ -148,27 +148,26 @@ var Stats = React.createClass({
 
     // TODO: Reject outliers from these stats (e.g. times > 20 seconds because
     // they got distracted or something)
-    var avg = findAverage(timesArr);
+    const avg = findAverage(timesArr);
 
     // Calculate standard deviation
-    var squareDifferences = timesArr.map((time) => {
-      var difference = time - avg;
+    const squareDifferences = timesArr.map((time) => {
+      const difference = time - avg;
       return difference * difference;
     });
 
-    var stdDev = Math.sqrt(findAverage(squareDifferences));
+    const stdDev = Math.sqrt(findAverage(squareDifferences));
 
-    var n = 0;
-    var lotsOfInfo = (
+    const lotsOfInfo = (
       <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
         <AppText style={[styles.infoQuestion, color]}>
           {expression}
         </AppText>
         {timesArr.length > 0 && <View>
           <View style={styles.infoStatsGroup}>
-            {_.map(timesArr, (time) => {
+            {_.map(timesArr, (time, idx) => {
               return (
-                <View style={styles.infoStat} key={'time-' + (n++)}>
+                <View style={styles.infoStat} key={'time-' + idx}>
                   <AppText style={styles.infoStatText}>
                     {printTime(time)}
                   </AppText>
@@ -201,7 +200,7 @@ var Stats = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
