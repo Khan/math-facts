@@ -1,23 +1,23 @@
 'use strict';
 
 import React from 'react-native';
-var {
+const {
   StyleSheet,
   Text,
 } = React;
 
-var AppText = React.createClass({
+const AppText = React.createClass({
   render: function() {
-    var { style, ...other } = this.props;
+    const { style, ...other } = this.props;
     return (
       <Text {...other} style={[styles.baseText, style]}>
         {this.props.children}
       </Text>);
   }
 });
-var AppTextBold = React.createClass({
+const AppTextBold = React.createClass({
   render: function() {
-    var { style, ...other } = this.props;
+    const { style, ...other } = this.props;
     return (
       <Text {...other} style={[styles.baseText, styles.boldText, style]}>
         {this.props.children}
@@ -25,9 +25,9 @@ var AppTextBold = React.createClass({
   }
 });
 
-var AppTextThin = React.createClass({
+const AppTextThin = React.createClass({
   render: function() {
-    var { style, ...other } = this.props;
+    const { style, ...other } = this.props;
     return (
       <Text {...other} style={[styles.baseText, styles.thinText, style]}>
         {this.props.children}
@@ -35,7 +35,7 @@ var AppTextThin = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   baseText: {
     fontFamily: 'Avenir-Medium'
   },

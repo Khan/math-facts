@@ -1,7 +1,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import MathFactsConstants from '../constants/MathFactsConstants';
 
-var MathFactsActions = {
+const MathFactsActions = {
 
   initializeData: function() {
     AppDispatcher.dispatch({

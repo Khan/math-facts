@@ -14,7 +14,7 @@ import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 
-var GridCell = React.createClass({
+const GridCell = React.createClass({
   propTypes: {
     active: React.PropTypes.bool,
     color: React.PropTypes.string,
@@ -76,7 +76,7 @@ var GridCell = React.createClass({
   }
 });
 
-var Grid = React.createClass({
+const Grid = React.createClass({
   propTypes: {
     // The active cell as inputs: [row, col]
     activeCell: React.PropTypes.array,
@@ -146,24 +146,24 @@ var Grid = React.createClass({
 
                 {/* Render the answer cells for this row */}
                 {_.map(cellRange, (col) => {
-                  var answer = OperationHelper.getAnswer([row, col]);
-                  var times = timeData[row][col];
-                  var timesAnswered = times.length;
-                  var bestTime = Math.min.apply(Math, times);
-                  var learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
+                  const answer = OperationHelper.getAnswer([row, col]);
+                  const times = timeData[row][col];
+                  const timesAnswered = times.length;
+                  const bestTime = Math.min.apply(Math, times);
+                  const learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
                     timeData,
                     operation
                   );
 
-                  var factStatus = MasteryHelpers.getFactStatus(answer, times,
+                  const factStatus = MasteryHelpers.getFactStatus(answer, times,
                     learnerTypingTimes);
 
-                  var masteryColor = MasteryHelpers.masteryColors[factStatus];
-                  var masteryColorText = MasteryHelpers.masteryTextColors[
+                  const masteryColor = MasteryHelpers.masteryColors[factStatus];
+                  const masteryColorText = MasteryHelpers.masteryTextColors[
                     factStatus
                   ];
 
-                  var active = activeCell != null &&
+                  const active = activeCell != null &&
                                activeCell[0] === row &&
                                activeCell[1] === col;
 
@@ -185,7 +185,7 @@ var Grid = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   grid: {
     flex: 0,
   },

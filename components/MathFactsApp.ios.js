@@ -32,7 +32,7 @@ if (Platform.OS === 'ios') {
   React.StatusBarIOS.setHidden(true, 'slide');
 }
 
-var MathFactsApp = React.createClass({
+const MathFactsApp = React.createClass({
   mixins: [
     StateFromStoreMixin({
       loaded: {
@@ -110,8 +110,8 @@ var MathFactsApp = React.createClass({
     });
   },
   finish: function(quizData, points, playAgain) {
-    playAgain = playAgain ? playAgain : false;
-    var operation = this.state.operation;
+    const operation = this.state.operation;
+
     _.each(quizData, (questionData) => {
       MathFactsActions.addAttempts(operation, [questionData]);
     });
@@ -129,7 +129,7 @@ var MathFactsApp = React.createClass({
     this.finish(quizData, points, true);
   },
   addFactAttempt: function() {
-    var newData = _.clone(this.state.data);
+    const newData = _.clone(this.state.data);
 
   },
   componentDidMount: function() {
@@ -185,11 +185,10 @@ var MathFactsApp = React.createClass({
     });
   },
   _renderStats: function() {
-    var operation = this.state.operation;
-    var quizzesData = this.state.quizzesData[operation];
-
-    // Size must be larger than the max size of the values that are added
-    var timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
+    const operation = this.state.operation;
+    const quizzesData = this.state.quizzesData[operation];
+    const timeData = quizzesData ?
+      this.parseQuizzesDataIntoTimeData(quizzesData) : null;
 
     return (
       <Stats
@@ -220,11 +219,11 @@ var MathFactsApp = React.createClass({
     );
   },
   render: function() {
-    var content = !this.state.loaded       ? this._renderLoading() :
-                   this.state.playing      ? this._renderQuizzer() :
-                   this.state.showStats    ? this._renderStats() :
-                   this.state.showSettings ? this._renderSettings() :
-                                            this._renderHomeScreen();
+    const content = !this.state.loaded       ? this._renderLoading() :
+                     this.state.playing      ? this._renderQuizzer() :
+                     this.state.showStats    ? this._renderStats() :
+                     this.state.showSettings ? this._renderSettings() :
+                                               this._renderHomeScreen();
     return (
       <View style={styles.appWrapper}>
         {content}
@@ -233,7 +232,7 @@ var MathFactsApp = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   appWrapper: {
     flex: 1,
     backgroundColor: '#fafafa'
