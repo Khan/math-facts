@@ -1,28 +1,17 @@
 'use strict';
 
-import _ from 'underscore';
-
 import React from 'react-native';
 import {
   Platform,
-  ScrollView,
   StyleSheet,
-  TextInput,
-  TouchableHighlight,
   View,
 } from 'react-native';
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
-
 import MathFactsStore from '../stores/MathFactsStore';
-import MathFactsActions from '../actions/MathFactsActions';
 
 import StateFromStoreMixin from '../lib/state-from-store-mixin.js';
 
-import HomeScreen from '../components/HomeScreen.ios';
-import Quizzer from '../components/Quizzer.ios';
-import Stats from '../components/Stats.ios';
-import Settings from '../components/Settings.ios';
+import Navigation from './Navigation.ios';
 
 import Grid from '../components/Grid.ios';
 
@@ -31,6 +20,7 @@ import Button from '../components/Button.ios';
 if (Platform.OS === 'ios') {
   React.StatusBarIOS.setHidden(true, 'slide');
 }
+
 
 const MathFactsApp = React.createClass({
   mixins: [
@@ -43,149 +33,10 @@ const MathFactsApp = React.createClass({
       },
     })
   ],
-  getInitialState: function() {
-    console.log('--------------------------------------------------------')
-    return {
-      playing: false,
-      showStats: false,
-      showSettings: false,
-      operation: 'multiplication'
-    };
-  },
-  startGame: function() {
-    this.setState({
-      playing: true
-    });
-  },
-  showStats: function() {
-    this.setState({
-      showStats: true
-    });
-  },
-  showSettings: function() {
-    this.setState({
-      showSettings: true
-    });
-  },
-  showMenu: function() {
-    this.setState({
-      playing: false,
-      showStats: false,
-      showSettings: false,
-    });
-  },
-  finish: function(quizData, points, playAgain) {
-    const operation = this.state.operation;
-
-    _.each(quizData, (questionData) => {
-      MathFactsActions.addAttempts(operation, [questionData]);
-    });
-    MathFactsActions.addPoints(points);
-
-    this.setState({
-      playing: false,
-    }, () => {
-      if (playAgain) {
-        this.startGame();
-      }
-    });
-  },
-  playAgain: function(quizData, points) {
-    this.finish(quizData, points, true);
-  },
-  componentDidMount: function() {
-    MathFactsActions.initializeData();
-  },
-  setOperation: function(operation) {
-    this.setState({operation: operation});
-  },
-  parseQuizzesDataIntoTimeData: function(quizzesData) {
-    return _.map(_.range(0, 12), (left) => {
-      return _.map(_.range(0, 12), (right) => {
-        if (quizzesData[left] != null && quizzesData[left][right] != null) {
-          return quizzesData[left][right];
-        }
-        return [];
-      });
-    });
-  },
-  _renderHomeScreen: function() {
-    const operation = this.state.operation;
-    const quizzesData = this.state.data.factData[operation];
-    const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
-
-    return (
-      <HomeScreen
-        operation={operation}
-        points={this.state.data.points}
-        showSettings={this.showSettings}
-        showStats={this.showStats}
-        startGame={this.startGame}
-        timeData={timeData}
-        userName={this.state.data.user.name}
-      />
-    );
-  },
-  _renderQuizzer: function() {
-    const operation = this.state.operation;
-    const quizzesData = this.state.data.factData[operation];
-    const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
-
-    return (
-      <Quizzer
-        operation={operation}
-        back={this.showMenu}
-        finish={this.finish}
-        playAgain={this.playAgain}
-        quizzesData={quizzesData}
-        timeData={timeData}
-        mode={'time'}
-        seconds={60}
-        count={10}/>
-    );
-  },
-  _renderStats: function() {
-    const operation = this.state.operation;
-    const quizzesData = this.state.data.factData[operation];
-    const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
-
-    return (
-      <Stats
-        operation={operation}
-        back={this.showMenu}
-        timeData={timeData}/>
-    );
-  },
-  _renderLoading: function() {
-    return (
-      <View style={styles.loadingScreen}>
-        <AppText>Loading...</AppText>
-      </View>
-    );
-  },
-  _renderSettings: function() {
-    return (
-      <Settings
-        addUser={MathFactsActions.addUser}
-        changeActiveUser={MathFactsActions.changeActiveUser}
-        changeUserName={MathFactsActions.changeName}
-        goBack={this.showMenu}
-        operation={this.state.operation}
-        setOperation={this.setOperation}
-        user={this.state.data.user}
-        userList={this.state.data.userList}
-        uuid={this.state.data.uuid} />
-    );
-  },
   render: function() {
-    const content = !this.state.data.isLoaded       ? this._renderLoading() :
-                     this.state.playing      ? this._renderQuizzer() :
-                     this.state.showStats    ? this._renderStats() :
-                     this.state.showSettings ? this._renderSettings() :
-                                               this._renderHomeScreen();
     return (
       <View style={styles.appWrapper}>
-        {content}
+        <Navigation {...this.state.data} />
       </View>
     );
   }
@@ -196,13 +47,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fafafa'
   },
-
-  loadingScreen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
 });
 
 module.exports = MathFactsApp;
