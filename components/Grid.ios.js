@@ -26,10 +26,11 @@ const GridCell = React.createClass({
     small: React.PropTypes.bool,
     textColor: React.PropTypes.string,
   },
-  defaultProps: {
-    color: '#ddd',
-    onPress: null,
-    textColor: '#222',
+  getDefaultProps: function () {
+    return {
+      color: '#ddd',
+      textColor: '#222',
+    };
   },
   render: function() {
     const {

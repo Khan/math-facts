@@ -46,14 +46,15 @@ const Settings = React.createClass({
     } = this.props;
 
     const userSelection = _.map(userList, (curUser) => {
-      const activeStyles = curUser.id === user.id ?
-                            styles.activeSettingsButton : '';
       return (
         <Button
           key={curUser.id}
           text={curUser.name}
           small={true}
-          style={[styles.settingsButton, activeStyles]}
+          style={[
+            styles.settingsButton,
+            (curUser.id === user.id) && styles.activeSettingsButton
+          ]}
           onPress={() => {
             changeActiveUser(curUser.id);
           }}/>
@@ -71,13 +72,13 @@ const Settings = React.createClass({
             <View style={styles.toggleButtons}>
               <Button
                 text='Addition'
-                color={operation === 'addition' ? null : '#ddd'}
+                color={operation === 'addition' ? undefined : '#ddd'}
                 small={true}
                 wrapperStyle={styles.toggleButtonWrapper}
                 onPress={() => setOperation('addition')} />
               <Button
                 text='Multiplication'
-                color={operation === 'multiplication' ? null : '#ddd'}
+                color={operation === 'multiplication' ? undefined : '#ddd'}
                 small={true}
                 wrapperStyle={styles.toggleButtonWrapper}
                 onPress={() => setOperation('multiplication')} />

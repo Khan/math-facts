@@ -11,31 +11,42 @@ const {
 import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
 const Button = React.createClass({
-  defaultProps: {
-    small: React.PropTypes.bool,
+  propTypes: {
     color: React.PropTypes.string,
-    text: React.PropTypes.string,
+    onPress: React.PropTypes.func.isRequired,
+    small: React.PropTypes.bool,
     style: React.PropTypes.style,
+    text: React.PropTypes.string,
     wrapperStyle: React.PropTypes.style,
   },
+  getDefaultProps: function() {
+    return {
+      color: '#29abca',
+      style: null,
+      wrapperStyle: null,
+    };
+  },
   render: function() {
-    const color = this.props.color ? this.props.color : '#29abca';
-    const style = this.props.style ? this.props.style : null;
-    const wrapperStyle = this.props.wrapperStyle ? this.props.wrapperStyle : null;
+    const {
+      color,
+      onPress,
+      small,
+      style,
+      text,
+      wrapperStyle,
+    } = this.props;
 
-    let buttonTextStyle = styles.buttonText;
-    if (this.props.small) {
-      buttonTextStyle = [buttonTextStyle, { fontSize: 16 }];
-    }
+    const buttonTextStyle = [styles.buttonText, small && styles.buttonTextSmall];
 
     return (
       <TouchableHighlight
-        onPress={this.props.onPress}
+        onPress={onPress}
         underlayColor='transparent'
         style={wrapperStyle}
-        activeOpacity={0.5}>
-        <View style={[styles.button, { backgroundColor: color }, style]}>
-          <AppText style={buttonTextStyle}>{this.props.text}</AppText>
+        activeOpacity={0.5}
+      >
+        <View style={[styles.button, { backgroundColor: color }, this.props.style]}>
+          <AppText style={buttonTextStyle}>{text}</AppText>
         </View>
       </TouchableHighlight>
     );
@@ -54,6 +65,9 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 30,
     color: '#fff'
+  },
+  buttonTextSmall: {
+    fontSize: 16,
   },
 
   toggleButtons: {

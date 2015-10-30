@@ -46,7 +46,7 @@ var QuizzerScreen = React.createClass({
 });
 
 var Quizzer = React.createClass({
-  defaultProps: {
+  propTypes: {
 
   },
   getInitialState: function() {
