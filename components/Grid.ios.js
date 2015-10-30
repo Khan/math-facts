@@ -22,7 +22,6 @@ var GridCell = React.createClass({
       React.PropTypes.string,
       React.PropTypes.number]
     ),
-    key: React.PropTypes.string.isRequired,
     onPress: React.PropTypes.func,
     small: React.PropTypes.bool,
     textColor: React.PropTypes.string,
@@ -37,7 +36,6 @@ var GridCell = React.createClass({
       active,
       color,
       content,
-      key,
       onPress,
       small,
       textColor,
@@ -59,7 +57,6 @@ var GridCell = React.createClass({
     if (onPress != null) {
       return (
         <TouchableHighlight
-            key={key}
             style={gridCellStyles}
             underlayColor='transparent'
             onPress={onPress}>
@@ -71,7 +68,6 @@ var GridCell = React.createClass({
     } else {
       return (
         <View
-            key={key}
             style={gridCellStyles}>
           {cellContent}
         </View>
