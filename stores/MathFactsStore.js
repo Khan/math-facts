@@ -20,7 +20,6 @@ const CHANGE_EVENT = 'change';
  * Default Data
  */
 
-let _isLoaded = false;
 /*
  * _data['factData'] = {
  *  'multiplication': [
@@ -61,6 +60,7 @@ const makeDefaultUser = function() {
 };
 
 let _data = {
+  isLoaded: false,
   /*
    * Each Installation of the app has a uuid that (hopefully) makes it unique.
    *
@@ -103,7 +103,7 @@ const changeUserName = function(userName) {
 
 const changeActiveUser = function(id) {
   _data['activeUser'] = id;
-  _isLoaded = false;
+  _data['_isLoaded'] = false;
   updateUserData().then(fetchStoredData).done();
 };
 
@@ -273,7 +273,7 @@ const fetchStoredData = function() {
       fetchFactData(),
     ]);
   }).then(() => {
-    _isLoaded = true;
+    _data['isLoaded'] = true;
     MathFactStore.emitChange();
   }).done();
 };
@@ -284,36 +284,10 @@ const fetchStoredData = function() {
  */
 const MathFactStore = assign({}, EventEmitter.prototype, {
 
-  /**
-   * Get the entire database of Math Facts
-   * @return {object}
-   */
-  isLoaded: function() {
-    return _isLoaded;
-  },
-
-  getAll: function() {
-    return _data['factData'];
-  },
-
-  getPoints: function() {
-    return _data['points'];
-  },
-
-  getScores: function() {
-    return _data['scores'];
-  },
-
-  getUuid: function() {
-    return _data['uuid'];
-  },
-
-  getUser: function() {
-    return _data['userList'][_data['activeUser']];
-  },
-
-  getUserList: function() {
-    return _data['userList'];
+  getStoreData: function() {
+    const data = _.clone(_data);
+    data['user'] = _data['userList'][_data['activeUser']];
+    return data;
   },
 
   emitChange: function() {
