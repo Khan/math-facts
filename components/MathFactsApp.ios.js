@@ -30,51 +30,16 @@ if (React.StatusBarIOS) {
 const MathFactsApp = React.createClass({
   mixins: [
     StateFromStoreMixin({
-      loaded: {
+      data: {
         store: MathFactsStore,
         fetch: (store) => {
-          return store.isLoaded();
+          return store.getStoreData();
         }
       },
-      quizzesData: {
-        store: MathFactsStore,
-        fetch: (store) => {
-          return store.getAll();
-        }
-      },
-      points: {
-        store: MathFactsStore,
-        fetch: (store) => {
-          return store.getPoints();
-        }
-      },
-      scores: {
-        store: MathFactsStore,
-        fetch: (store) => {
-          return store.getScores();
-        }
-      },
-      uuid: {
-        store: MathFactsStore,
-        fetch: (store) => {
-          return store.getUuid();
-        }
-      },
-      user: {
-        store: MathFactsStore,
-        fetch: (store) => {
-          return store.getUser();
-        }
-      },
-      userList: {
-        store: MathFactsStore,
-        fetch: (store) => {
-          return store.getUserList();
-        }
-      }
     })
   ],
   getInitialState: function() {
+    console.log('--------------------------------------------------------')
     return {
       playing: false,
       showStats: false,
@@ -123,39 +88,44 @@ const MathFactsApp = React.createClass({
   playAgain: function(quizData, points) {
     this.finish(quizData, points, true);
   },
-  addFactAttempt: function() {
-    const newData = _.clone(this.state.data);
-
-  },
   componentDidMount: function() {
     MathFactsActions.initializeData();
   },
   setOperation: function(operation) {
     this.setState({operation: operation});
   },
+  parseQuizzesDataIntoTimeData: function(quizzesData) {
+    return _.map(_.range(0, 12), (left) => {
+      return _.map(_.range(0, 12), (right) => {
+        if (quizzesData[left] != null && quizzesData[left][right] != null) {
+          return quizzesData[left][right];
+        }
+        return [];
+      });
+    });
+  },
   _renderHomeScreen: function() {
     const operation = this.state.operation;
-    const quizzesData = this.state.quizzesData[operation];
-    const timeData = quizzesData ?
-      this.parseQuizzesDataIntoTimeData(quizzesData) : null;
+    const quizzesData = this.state.data.factData[operation];
+    const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
 
     return (
       <HomeScreen
         operation={operation}
-        points={this.state.points}
+        points={this.state.data.points}
         showSettings={this.showSettings}
         showStats={this.showStats}
         startGame={this.startGame}
         timeData={timeData}
-        userName={this.state.user.name}
+        userName={this.state.data.user.name}
       />
     );
   },
   _renderQuizzer: function() {
     const operation = this.state.operation;
-    const quizzesData = this.state.quizzesData[operation];
-    const timeData = quizzesData ?
-      this.parseQuizzesDataIntoTimeData(quizzesData) : null;
+    const quizzesData = this.state.data.factData[operation];
+    const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
+
     return (
       <Quizzer
         operation={operation}
@@ -169,21 +139,10 @@ const MathFactsApp = React.createClass({
         count={10}/>
     );
   },
-  parseQuizzesDataIntoTimeData: function(quizzesData) {
-    return _.map(_.range(0, 12), (left) => {
-      return _.map(_.range(0, 12), (right) => {
-        if (quizzesData[left] != null && quizzesData[left][right] != null) {
-          return quizzesData[left][right];
-        }
-        return [];
-      });
-    });
-  },
   _renderStats: function() {
     const operation = this.state.operation;
-    const quizzesData = this.state.quizzesData[operation];
-    const timeData = quizzesData ?
-      this.parseQuizzesDataIntoTimeData(quizzesData) : null;
+    const quizzesData = this.state.data.factData[operation];
+    const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
 
     return (
       <Stats
@@ -208,13 +167,13 @@ const MathFactsApp = React.createClass({
         goBack={this.showMenu}
         operation={this.state.operation}
         setOperation={this.setOperation}
-        user={this.state.user}
-        userList={this.state.userList}
-        uuid={this.state.uuid} />
+        user={this.state.data.user}
+        userList={this.state.data.userList}
+        uuid={this.state.data.uuid} />
     );
   },
   render: function() {
-    const content = !this.state.loaded       ? this._renderLoading() :
+    const content = !this.state.data.isLoaded       ? this._renderLoading() :
                      this.state.playing      ? this._renderQuizzer() :
                      this.state.showStats    ? this._renderStats() :
                      this.state.showSettings ? this._renderSettings() :

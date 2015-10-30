@@ -24,37 +24,11 @@ const Stats = React.createClass({
   },
   getInitialState: function() {
     return {
-      timeData: [],
       active: [1, 1]
     };
   },
-  componentDidMount: function() {
-    if (this.props.timeData != null) {
-      this.loadTimeData(this.props.timeData);
-    }
-  },
-  componentWillReceiveProps: function(newProps) {
-    if (this.state.timeData.length === 0 && newProps.timeData != null) {
-      this.loadTimeData(newProps.timeData);
-    }
-  },
-  loadTimeData: function (timeData) {
-    this.setState({
-      timeData: timeData,
-      loaded: true
-    });
-  },
+
   render: function() {
-    if (this.state.loaded) {
-      return this.renderStats();
-    }
-    return (
-      <View style={styles.loading}>
-        <AppText>Loading...</AppText>
-      </View>
-    );
-  },
-  renderStats: function() {
     const operation = this.props.operation;
 
     const learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
@@ -63,7 +37,7 @@ const Stats = React.createClass({
     );
 
     const grid = <Grid
-      timeData={this.state.timeData}
+      timeData={this.props.timeData}
       operation={operation}
       activeCell={this.state.active}
       onPress={(active) => {
@@ -75,7 +49,7 @@ const Stats = React.createClass({
     const activeRow = this.state.active[0];
     const activeCol = this.state.active[1];
 
-    const times = this.state.timeData[activeRow][activeCol];
+    const times = this.props.timeData[activeRow][activeCol];
     const timesAnswered = times.length;
     const bestTime = null;
     _.each(times, (data) => {
