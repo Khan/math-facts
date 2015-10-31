@@ -417,23 +417,23 @@ var Quizzer = React.createClass({
 
   getColor: function() {
     var colors = [
-      ColorHelpers.hslToRgb([0.35, 0.4, 0.55]), // green
-      ColorHelpers.hslToRgb([0.40, 0.5, 0.5]), // green-teal
-      ColorHelpers.hslToRgb([0.45, 0.6, 0.5]), // teal
-      ColorHelpers.hslToRgb([0.50, 0.5, 0.5]), // teal-blue
-      ColorHelpers.hslToRgb([0.55, 0.5, 0.55]), // blue
-      ColorHelpers.hslToRgb([0.63, 0.6, 0.65]), // blue-purple
-      ColorHelpers.hslToRgb([0.7, 0.6, 0.65]), // purple
-      ColorHelpers.hslToRgb([0.8, 0.6, 0.65]), // purple-pink
-      ColorHelpers.hslToRgb([0.9, 0.6, 0.65]), // pink
-      ColorHelpers.hslToRgb([0.95, 0.6, 0.65]), // pink-red
-      ColorHelpers.hslToRgb([0, 0.7, 0.6]), // red
-      ColorHelpers.hslToRgb([0.03, 0.7, 0.6]), // red-orange
-      ColorHelpers.hslToRgb([0.06, 0.8, 0.6]), // orange
-      ColorHelpers.hslToRgb([0.08, 0.7, 0.6]), // orange-yellow
-      ColorHelpers.hslToRgb([0.1, 0.75, 0.58]), // yellow
-      ColorHelpers.hslToRgb([0.2, 0.5, 0.5]), // light green
-      ColorHelpers.hslToRgb([0.3, 0.5, 0.5]), // light green-green
+      ColorHelpers.hslToRgb([0.35, 0.39, 0.46]), // green
+      ColorHelpers.hslToRgb([0.41, 0.69, 0.38]), // green-teal
+      ColorHelpers.hslToRgb([0.46, 1.00, 0.33]), // teal
+      ColorHelpers.hslToRgb([0.50, 0.87, 0.34]), // teal-blue
+      ColorHelpers.hslToRgb([0.54, 0.68, 0.46]), // blue
+      ColorHelpers.hslToRgb([0.63, 0.63, 0.67]), // blue-purple
+      ColorHelpers.hslToRgb([0.70, 0.75, 0.72]), // purple
+      ColorHelpers.hslToRgb([0.80, 0.58, 0.64]), // purple-pink
+      ColorHelpers.hslToRgb([0.90, 0.57, 0.63]), // pink
+      ColorHelpers.hslToRgb([0.95, 0.58, 0.64]), // pink-red
+      ColorHelpers.hslToRgb([0.00, 0.84, 0.66]), // red
+      ColorHelpers.hslToRgb([0.03, 0.72, 0.61]), // red-orange
+      ColorHelpers.hslToRgb([0.06, 0.69, 0.55]), // orange
+      ColorHelpers.hslToRgb([0.08, 0.56, 0.51]), // orange-yellow
+      ColorHelpers.hslToRgb([0.10, 0.68, 0.45]), // yellow
+      ColorHelpers.hslToRgb([0.20, 0.73, 0.35]), // light green
+      ColorHelpers.hslToRgb([0.30, 0.55, 0.42]), // light green-green
     ];
     return colors[this.state.colorHue % colors.length];
   },
