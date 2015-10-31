@@ -13,6 +13,8 @@ import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
 import Grid from '../components/Grid.ios';
 
+import Egg from '../components/graphics/Egg.ios'
+
 import Button from '../components/Button.ios';
 import BackButton from '../components/BackButton.ios';
 
@@ -48,6 +50,7 @@ const HomeScreen = React.createClass({
             {'!'}
           </AppText>
         </View>
+        <Egg />
         <View style={styles.points}>
           <AppText style={styles.pointsText}>
             {'You have '}
@@ -86,7 +89,6 @@ const styles = StyleSheet.create({
 
   gridWrapper: {
     alignItems: 'center',
-    height: 200,
     marginBottom: 10,
   },
   gridCaption: {
