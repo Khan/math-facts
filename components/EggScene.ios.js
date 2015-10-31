@@ -18,6 +18,28 @@ const {
 } = ReactART;
 
 const EggScene = React.createClass({
+  getInitialState: function() {
+    return {
+      eggRotation: 0,
+    };
+  },
+  componentDidMount: function() {
+    this.tick = 0;
+    this.interval = setInterval(this.animate, 500);
+  },
+  componentDidUnmount: function() {
+    clearInterval(this.interval);
+  },
+  animate: function() {
+    this.setState({
+      eggRotation:
+        (this.state.eggRotation == 0) &&
+        (this.tick % 9 == 8) ?
+        5 :
+        0,
+    });
+    this.tick++;
+  },
   render: function() {
     const surfaceHeight = 130;
     const surfaceWidth = 500;
@@ -51,7 +73,13 @@ const EggScene = React.createClass({
           <Group x={0} y={35} scale={0.5}>
             <Hay />
           </Group>
-          <Group x={40} y={0} scale={0.5}>
+          <Group
+              x={38}
+              y={0}
+              scale={0.5}
+              rotation={this.state.eggRotation}
+              originX={35}
+              originY={60}>
             <Egg />
           </Group>
         </Group>
