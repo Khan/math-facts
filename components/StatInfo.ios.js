@@ -32,6 +32,7 @@ const StatInfo = React.createClass({
     } = this.props;
 
     const times = timeData[inputs[0]][inputs[1]];
+
     const timesAnswered = times.length;
     let bestTime = null;
     _.each(times, (data) => {
@@ -120,6 +121,9 @@ const StatInfo = React.createClass({
         <AppText style={[styles.infoQuestion, color]}>
           {expression}
         </AppText>
+
+        <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
+
         {timesArr.length > 0 && <View>
           <View style={styles.infoStatsGroup}>
             {_.map(timesArr, (time, idx) => {
