@@ -27,7 +27,7 @@ const EggScene = React.createClass({
     this.tick = 0;
     this.interval = setInterval(this.animate, 500);
   },
-  componentDidUnmount: function() {
+  componentWillUnmount: function() {
     clearInterval(this.interval);
   },
   animate: function() {

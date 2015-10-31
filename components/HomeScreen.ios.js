@@ -13,7 +13,8 @@ import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
 import Grid from '../components/Grid.ios';
 
-import EggScene from '../components/EggScene.ios'
+import EggScene from '../components/EggScene.ios';
+import CogIcon from '../components/graphics/Cog.ios';
 
 import Button from '../components/Button.ios';
 import BackButton from '../components/BackButton.ios';
@@ -75,6 +76,7 @@ const HomeScreen = React.createClass({
         <Button
           text='Play'
           onPress={startGame} />
+        <CogIcon color='#bbb' />
         <Button
           text='Settings'
           color='#bbb'
