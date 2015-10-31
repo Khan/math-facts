@@ -20,8 +20,8 @@ const GridCell = React.createClass({
     color: React.PropTypes.string,
     content: React.PropTypes.oneOfType([
       React.PropTypes.string,
-      React.PropTypes.number]
-    ),
+      React.PropTypes.number,
+    ]),
     onPress: React.PropTypes.func,
     small: React.PropTypes.bool,
     textColor: React.PropTypes.string,
