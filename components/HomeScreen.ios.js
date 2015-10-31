@@ -13,7 +13,7 @@ import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
 
 import Grid from '../components/Grid.ios';
 
-import Egg from '../components/graphics/Egg.ios'
+import EggScene from '../components/EggScene.ios'
 
 import Button from '../components/Button.ios';
 import BackButton from '../components/BackButton.ios';
@@ -50,7 +50,6 @@ const HomeScreen = React.createClass({
             {'!'}
           </AppText>
         </View>
-        <Egg />
         <View style={styles.points}>
           <AppText style={styles.pointsText}>
             {'You have '}
@@ -72,6 +71,7 @@ const HomeScreen = React.createClass({
             </AppTextBold>
           </View>
         </View>
+        <EggScene />
         <Button
           text='Play'
           onPress={startGame} />
