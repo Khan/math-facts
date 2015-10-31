@@ -6,6 +6,7 @@ import React from 'react-native';
 import {
   StyleSheet,
   TextInput,
+  TouchableHighlight,
   View,
 } from 'react-native';
 
@@ -76,12 +77,15 @@ const HomeScreen = React.createClass({
         <Button
           text='Play'
           onPress={startGame} />
-        <CogIcon color='#bbb' size={20} />
-        <Button
-          text='Settings'
-          color='#bbb'
-          small={true}
-          onPress={showSettings}/>
+        <TouchableHighlight
+          onPress={showSettings}
+          underlayColor='transparent'
+          activeOpacity={0.5}
+        >
+          <View>
+            <CogIcon color='#bbb' size={20} />
+          </View>
+        </TouchableHighlight>
       </View>
     );
   },
