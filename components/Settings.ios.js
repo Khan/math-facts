@@ -30,7 +30,14 @@ const Settings = React.createClass({
   getInitialState: function() {
     return {
       userName: this.props.user.name,
+      newUserName: '',
     };
+  },
+  handleSubmitEditing: function() {
+    this.props.addUser(this.state.newUserName);
+    this.setState({
+      newUserName: '',
+    });
   },
   render: function () {
     const {
@@ -57,6 +64,9 @@ const Settings = React.createClass({
           ]}
           onPress={() => {
             changeActiveUser(curUser.id);
+            this.setState({
+              userName: curUser.name
+            });
           }}/>
       );
     });
@@ -85,7 +95,7 @@ const Settings = React.createClass({
             </View>
           </View>
           <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Change User</AppText>
+            <AppText style={styles.heading}>Switch Players</AppText>
             {userSelection}
           </View>
           <View style={styles.settingsSection}>
@@ -97,7 +107,7 @@ const Settings = React.createClass({
               value={this.state.userName}
               onChangeText={(text) => {
                 this.setState({
-                  userName: text
+                  userName: text,
                 });
               }}
               ref='input'
@@ -106,20 +116,36 @@ const Settings = React.createClass({
                   React.findNodeHandle(this.refs.input)
                 );
               }}
-              onSubmitEditing={(event) => {
+              onSubmitEditing={() => {
+                changeUserName(this.state.userName);
+              }}
+            />
+            <Button
+              text="Change my nickname!"
+              small={true}
+              onPress={() => {
                 changeUserName(this.state.userName);
               }}
             />
           </View>
           <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Add New User</AppText>
+            <AppText style={styles.heading}>Add a New Player</AppText>
             <TextInput
               autoCapitalize='words'
               returnKeyType='done'
               style={styles.input}
-              onSubmitEditing={(event) => {
-                addUser(event.nativeEvent.text);
+              value={this.state.newUserName}
+              onChangeText={(text) => {
+                this.setState({
+                  newUserName: text,
+                });
               }}
+              onSubmitEditing={this.handleSubmitEditing}
+            />
+            <Button
+              text="Add this player!"
+              small={true}
+              onPress={this.handleSubmitEditing}
             />
           </View>
           <View style={styles.settingsSection}>
