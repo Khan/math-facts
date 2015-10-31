@@ -29,7 +29,9 @@ const Egg = React.createClass({
     }[this.props.color];
     return (
       <Group>
-        <Shape fill={color.light} stroke="#ffffff" strokeWidth="2" strokeMiterlimit="10" d="M39.2,145.1c50.2,15.3,76.4-18.1,80-49.5
+        <Shape fill={color.light}
+        // stroke="#ffffff" strokeWidth="2" strokeMiterlimit="10"
+        d="M39.2,145.1c50.2,15.3,76.4-18.1,80-49.5
         c4.2-36.3-9.1-82.8-40-92.6C54.4-4.9,20.6,37.3,7.1,71.9C-8.6,111.9,15,137.7,39.2,145.1z"/>
         <Shape opacity="0.5" fill={color.dark} d="M56.9,24.4c2.8-1.6,10.5,4.8,10.3,7s-7,13.2-12.3,12s-12.8-3.5-12.2-8S55.1,25.4,56.9,24.4z"
         />

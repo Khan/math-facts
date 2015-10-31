@@ -50,18 +50,7 @@ const EggScene = React.createClass({
         height={surfaceHeight}
         style={styles.surface}>
         <Shape
-          stroke="#724030" strokeWidth="1"
-          fill='#8C533F'
-          d={new Path()
-            .moveTo(0, surfaceHeight)
-            .lineTo(surfaceWidth, surfaceHeight)
-            .lineTo(surfaceWidth, surfaceHeight - backgroundHeight)
-            .lineTo(0, surfaceHeight - backgroundHeight)
-            .close()}
-        />
-        <Shape
-          stroke="#724030" strokeWidth="1"
-          fill='#8C533F'
+          fill='#704121'
           d={new Path()
             .moveTo(0, surfaceHeight)
             .lineTo(surfaceWidth, surfaceHeight)
@@ -90,7 +79,7 @@ const EggScene = React.createClass({
 
 const styles = StyleSheet.create({
   surface: {
-    backgroundColor: '#9cdceb',
+    backgroundColor: '#935D38',
     alignSelf: 'center',
     marginBottom: 10,
   }
