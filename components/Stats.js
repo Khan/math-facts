@@ -8,14 +8,14 @@ const {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import MasteryHelpers from '../helpers/mastery-helpers';
 
-import BackButton from '../components/BackButton.ios';
+import BackButton from '../components/BackButton';
 
-import Grid from '../components/Grid.ios';
-import StatInfo from '../components/StatInfo.ios';
+import Grid from '../components/Grid';
+import StatInfo from '../components/StatInfo';
 
 const Stats = React.createClass({
   propTypes: {

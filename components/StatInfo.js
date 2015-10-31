@@ -8,12 +8,12 @@ const {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 
-import Chart from '../components/Chart.ios';
+import Chart from '../components/Chart';
 
 const StatInfo = React.createClass({
   propTypes: {

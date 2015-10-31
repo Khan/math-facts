@@ -11,11 +11,11 @@ import MathFactsStore from '../stores/MathFactsStore';
 
 import StateFromStoreMixin from '../lib/state-from-store-mixin.js';
 
-import Navigation from './Navigation.ios';
+import Navigation from './Navigation';
 
-import Grid from '../components/Grid.ios';
+import Grid from '../components/Grid';
 
-import Button from '../components/Button.ios';
+import Button from '../components/Button';
 
 if (Platform.OS === 'ios') {
   React.StatusBarIOS.setHidden(true, 'slide');

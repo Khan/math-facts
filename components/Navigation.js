@@ -8,14 +8,14 @@ import {
   View,
 } from 'react-native';
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import MathFactsActions from '../actions/MathFactsActions';
 
-import HomeScreen from '../components/HomeScreen.ios';
-import Quizzer from '../components/Quizzer.ios';
-import Stats from '../components/Stats.ios';
-import Settings from '../components/Settings.ios';
+import HomeScreen from '../components/HomeScreen';
+import Quizzer from '../components/Quizzer';
+import Stats from '../components/Stats';
+import Settings from '../components/Settings';
 
 if (React.StatusBarIOS) {
   React.StatusBarIOS.setHidden(true, 'slide');

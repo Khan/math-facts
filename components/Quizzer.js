@@ -10,19 +10,19 @@ var {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import ColorHelpers from '../helpers/color-helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelper from '../helpers/operation-helpers';
 import { randomIntBetween } from '../helpers/helpers';
 
-import NumPad from '../components/NumPad.ios';
-import AdditionHint from '../components/AdditionHint.ios';
-import Button from '../components/Button.ios';
-import Circle from '../components/Circle.ios';
+import NumPad from '../components/NumPad';
+import AdditionHint from '../components/AdditionHint';
+import Button from '../components/Button';
+import Circle from '../components/Circle';
 
-import BackButton from '../components/BackButton.ios';
+import BackButton from '../components/BackButton';
 
 var QuizzerScreen = React.createClass({
   render: function() {

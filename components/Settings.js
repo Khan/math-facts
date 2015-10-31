@@ -10,10 +10,10 @@ import {
   View,
 } from 'react-native';
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import { AppText, AppTextBold, AppTextThin } from './AppText';
 
-import Button from '../components/Button.ios';
-import BackButton from '../components/BackButton.ios';
+import Button from '../components/Button';
+import BackButton from '../components/BackButton';
 
 const Settings = React.createClass({
   propTypes: {

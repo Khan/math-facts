@@ -10,9 +10,9 @@ var {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import { AppText, AppTextBold, AppTextThin } from './AppText';
 
-import Circle from '../components/Circle.ios';
+import Circle from '../components/Circle';
 
 var AdditionHint = React.createClass({
   render: function() {

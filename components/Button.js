@@ -8,7 +8,7 @@ const {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 const Button = React.createClass({
   propTypes: {

@@ -9,15 +9,15 @@ import {
   View,
 } from 'react-native';
 
-import { AppText, AppTextBold, AppTextThin } from './AppText.ios';
+import { AppText, AppTextBold, AppTextThin } from './AppText';
 
-import Grid from '../components/Grid.ios';
+import Grid from '../components/Grid';
 
-import EggScene from '../components/EggScene.ios';
-import CogIcon from '../components/CogIcon.ios';
+import EggScene from '../components/EggScene';
+import CogIcon from '../components/CogIcon';
 
-import Button from '../components/Button.ios';
-import BackButton from '../components/BackButton.ios';
+import Button from '../components/Button';
+import BackButton from '../components/BackButton';
 
 const HomeScreen = React.createClass({
   propTypes: {

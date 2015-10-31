@@ -3,8 +3,8 @@
 import React from 'react-native';
 import ReactART from 'ReactNativeART';
 
-import Egg from '../components/graphics/Egg.ios'
-import Hay from '../components/graphics/Hay.ios'
+import Egg from '../components/graphics/Egg'
+import Hay from '../components/graphics/Hay'
 
 const {
   StyleSheet,

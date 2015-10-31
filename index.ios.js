@@ -8,6 +8,6 @@ var {
   AppRegistry,
 } = React;
 
-import MathFactsApp from './components/MathFactsApp.ios';
+import MathFactsApp from './components/MathFactsApp';
 
 AppRegistry.registerComponent('MathFacts', () => MathFactsApp);
