@@ -25,7 +25,7 @@ const Navigation = React.createClass({
   getInitialState: function() {
     return {
       playing: false,
-      showStats: true,
+      showStats: false,
       showSettings: false,
       operation: 'multiplication'
     };
