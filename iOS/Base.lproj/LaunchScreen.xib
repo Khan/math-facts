@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="461" height="588"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="Cxd-zS-daT">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="math-facts-icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Cxd-zS-daT">
                     <rect key="frame" x="179" y="163" width="121" height="102"/>
                     <animations/>
                     <constraints>
@@ -50,6 +50,6 @@
         </view>
     </objects>
     <resources>
-        <image name="logo.png" width="506" height="506"/>
+        <image name="math-facts-icon.png" width="506" height="506"/>
     </resources>
 </document>
