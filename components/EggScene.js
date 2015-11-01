@@ -41,7 +41,7 @@ const EggScene = React.createClass({
     this.tick++;
   },
   render: function() {
-    const surfaceHeight = 130;
+    const surfaceHeight = 200;
     const surfaceWidth = 500;
     const backgroundHeight = 60;
     return (
@@ -58,7 +58,7 @@ const EggScene = React.createClass({
             .lineTo(0, surfaceHeight - backgroundHeight)
             .close()}
         />
-        <Group y={15} x={185}>
+        <Group y={85} x={185}>
           <Group x={0} y={35} scale={0.5}>
             <Hay />
           </Group>

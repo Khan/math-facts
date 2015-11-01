@@ -46,7 +46,7 @@ const GridCell = React.createClass({
       styles.gridCell,
       { backgroundColor: color },
       active && { borderWidth: 1, borderColor: textColor },
-      small && { height: 10, width: 10 }
+      small && { height: 6, width: 6 }
     ];
 
     const cellContent = !small && (

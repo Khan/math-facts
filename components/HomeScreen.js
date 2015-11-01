@@ -15,7 +15,7 @@ import { AppText, AppTextBold, AppTextThin } from './AppText';
 import Grid from '../components/Grid';
 
 import EggScene from '../components/EggScene';
-import CogIcon from '../components/CogIcon';
+import Icon from '../components/Icon';
 
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
@@ -52,6 +52,7 @@ const HomeScreen = React.createClass({
             {'!'}
           </AppText>
         </View>
+
         <View style={styles.points}>
           <AppText style={styles.pointsText}>
             {'You have '}
@@ -61,46 +62,108 @@ const HomeScreen = React.createClass({
             {' points'}
           </AppText>
         </View>
-        <View style={styles.gridWrapper}>
-          {timeData && <Grid
-            small={true}
-            timeData={timeData}
-            operation={operation}
-            onPress={showStats} />}
-          <View>
-            <AppTextBold style={styles.gridCaption}>
-              {operation.charAt(0).toUpperCase() + operation.slice(1)}
-            </AppTextBold>
+
+        <View style={styles.eggScene}>
+          <EggScene />
+        </View>
+
+        <View style={styles.actions}>
+          <View style={styles.action}>
+            <View style={styles.gridWrapper}>
+              <Grid
+                small={true}
+                timeData={timeData}
+                operation={operation}
+                onPress={showStats} />
+            </View>
+            <View>
+              <AppTextBold style={styles.actionCaption}>
+                My Progress
+              </AppTextBold>
+            </View>
+          </View>
+
+          <View style={styles.action}>
+            <TouchableHighlight
+              onPress={startGame}
+              underlayColor='transparent'
+              activeOpacity={0.5}
+            >
+              <View style={styles.action}>
+                <Icon
+                  type='play'
+                  backgroundType='circle'
+                  color='#fff'
+                  backgroundColor='#29abca'
+                  size={90} />
+                <View>
+                  <AppTextBold
+                    style={[
+                      styles.actionCaption,
+                      styles.actionCaptionLarge
+                    ]}
+                  >
+                    PLAY!
+                  </AppTextBold>
+                </View>
+              </View>
+            </TouchableHighlight>
+          </View>
+
+          <View style={styles.action}>
+            <TouchableHighlight
+              onPress={showSettings}
+              underlayColor='transparent'
+              activeOpacity={0.5}
+            >
+              <View style={styles.action}>
+                <Icon
+                  type='cog'
+                  backgroundType='square'
+                  backgroundColor='#eee'
+                  color='#bbb'
+                  size={68} />
+                <View>
+                  <AppTextBold style={styles.actionCaption}>
+                    Settings
+                  </AppTextBold>
+                </View>
+              </View>
+            </TouchableHighlight>
           </View>
         </View>
-        <EggScene />
-        <Button
-          text='Play'
-          onPress={startGame} />
-        <TouchableHighlight
-          onPress={showSettings}
-          underlayColor='transparent'
-          activeOpacity={0.5}
-        >
-          <View>
-            <CogIcon color='#bbb' size={20} />
-          </View>
-        </TouchableHighlight>
       </View>
     );
   },
 });
 
 const styles = StyleSheet.create({
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  action: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  actionCaption: {
+    color: '#999',
+    fontSize: 12,
+    lineHeight: 22,
+  },
+  actionCaptionLarge: {
+    color: '#29abca',
+    fontSize: 18,
+    lineHeight: 26,
+  },
+
+  eggScene: {
+    marginBottom: 20,
+    marginTop: 20,
+  },
 
   gridWrapper: {
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  gridCaption: {
-    color: '#999',
-    fontSize: 16,
-    lineHeight: 32,
+    margin: 3,
   },
 
   points: {
