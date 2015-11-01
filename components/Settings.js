@@ -15,6 +15,168 @@ import { AppText, AppTextBold, AppTextThin } from './AppText';
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
 
+const ModeSelection = React.createClass({
+  propTypes: {
+    operation: React.PropTypes.string.isRequired,
+    setOperation: React.PropTypes.func.isRequired,
+  },
+
+  render: function () {
+    const {
+      operation,
+      setOperation,
+    } = this.props;
+
+    return (
+      <View style={styles.toggleButtons}>
+        <Button
+          text='Addition'
+          color={operation === 'addition' ? undefined : '#ddd'}
+          small={true}
+          wrapperStyle={[styles.toggleButtonWrapper]}
+          onPress={() => setOperation('addition')} />
+        <Button
+          text='Multiplication'
+          color={operation === 'multiplication' ? undefined : '#ddd'}
+          small={true}
+          wrapperStyle={[styles.toggleButtonWrapper]}
+          onPress={() => setOperation('multiplication')} />
+      </View>
+    );
+  },
+});
+
+const NewUser = React.createClass({
+  propTypes: {
+    addUser: React.PropTypes.func.isRequired,
+  },
+
+  getInitialState: function() {
+    return {
+      newUserName: '',
+    };
+  },
+  handleSubmitEditing: function() {
+    this.props.addUser(this.state.newUserName);
+    this.setState({
+      newUserName: '',
+    });
+  },
+  render: function () {
+    return (
+      <View>
+        <TextInput
+          autoCapitalize='words'
+          returnKeyType='done'
+          style={styles.input}
+          value={this.state.newUserName}
+          onChangeText={(text) => {
+            this.setState({
+              newUserName: text,
+            });
+          }}
+          onSubmitEditing={this.handleSubmitEditing}
+        />
+        <Button
+          text="Add this player!"
+          small={true}
+          onPress={this.handleSubmitEditing}
+        />
+      </View>
+    );
+  },
+});
+
+const ChangeUserName = React.createClass({
+  propTypes: {
+    changeUserName: React.PropTypes.func.isRequired,
+    user: React.PropTypes.object.isRequired,
+  },
+
+  getInitialState: function() {
+    return {
+      userName: this.props.user.name,
+    };
+  },
+  componentWillReceiveProps: function(newProps) {
+    this.setState({
+      userName: newProps.user.name,
+    });
+  },
+  handleSubmitEditing: function() {
+    this.props.changeUserName(this.state.userName);
+  },
+  render: function () {
+    return (
+      <View>
+        <TextInput
+          autoCapitalize='words'
+          returnKeyType='done'
+          style={styles.input}
+          value={this.state.userName}
+          onChangeText={(text) => {
+            this.setState({
+              userName: text,
+            });
+          }}
+          ref='input'
+          onSubmitEditing={this.handleSubmitEditing}
+        />
+        <Button
+          text="Change my nickname!"
+          small={true}
+          onPress={this.handleSubmitEditing}
+        />
+      </View>
+    );
+  },
+});
+
+const UserSelection = React.createClass({
+  propTypes: {
+    addUser: React.PropTypes.func.isRequired,
+    changeActiveUser: React.PropTypes.func.isRequired,
+    user: React.PropTypes.object.isRequired,
+    userList: React.PropTypes.array.isRequired,
+  },
+
+  render: function () {
+    const {
+      addUser,
+      changeActiveUser,
+      user,
+      userList,
+    } = this.props;
+
+    return (
+      <View>
+        <View style={styles.settingsSection}>
+          <AppText style={styles.heading}>Switch Players</AppText>
+          {_.map(userList, (curUser) => {
+            return (
+              <Button
+                key={curUser.id}
+                text={curUser.name}
+                small={true}
+                style={[
+                  styles.settingsButton,
+                  (curUser.id === user.id) && styles.activeSettingsButton
+                ]}
+                onPress={() => {
+                  changeActiveUser(curUser.id);
+                }}/>
+            )
+          })}
+        </View>
+        <View style={styles.settingsSection}>
+          <AppText style={styles.heading}>Add a New Player</AppText>
+          <NewUser addUser={addUser} />
+        </View>
+      </View>
+    );
+  },
+});
+
 const Settings = React.createClass({
   propTypes: {
     addUser: React.PropTypes.func.isRequired,
@@ -27,18 +189,7 @@ const Settings = React.createClass({
     userList: React.PropTypes.array.isRequired,
     uuid: React.PropTypes.string.isRequired,
   },
-  getInitialState: function() {
-    return {
-      userName: this.props.user.name,
-      newUserName: '',
-    };
-  },
-  handleSubmitEditing: function() {
-    this.props.addUser(this.state.newUserName);
-    this.setState({
-      newUserName: '',
-    });
-  },
+
   render: function () {
     const {
       addUser,
@@ -52,107 +203,36 @@ const Settings = React.createClass({
       uuid,
     } = this.props;
 
-    const userSelection = _.map(userList, (curUser) => {
-      return (
-        <Button
-          key={curUser.id}
-          text={curUser.name}
-          small={true}
-          style={[
-            styles.settingsButton,
-            (curUser.id === user.id) && styles.activeSettingsButton
-          ]}
-          onPress={() => {
-            changeActiveUser(curUser.id);
-            this.setState({
-              userName: curUser.name
-            });
-          }}/>
-      );
-    });
-
     return (
       <ScrollView ref='scrollView' contentContainerStyle={styles.scrollView}>
+
         <View style={styles.topRow}>
           <BackButton onPress={goBack} />
         </View>
+
         <View style={styles.content}>
           <View style={styles.settingsSection}>
             <AppText style={styles.heading}>Mode</AppText>
-            <View style={styles.toggleButtons}>
-              <Button
-                text='Addition'
-                color={operation === 'addition' ? undefined : '#ddd'}
-                small={true}
-                wrapperStyle={[styles.toggleButtonWrapper]}
-                onPress={() => setOperation('addition')} />
-              <Button
-                text='Multiplication'
-                color={operation === 'multiplication' ? undefined : '#ddd'}
-                small={true}
-                wrapperStyle={[styles.toggleButtonWrapper]}
-                onPress={() => setOperation('multiplication')} />
-            </View>
+            <ModeSelection operation={operation} setOperation={setOperation} />
           </View>
-          <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Switch Players</AppText>
-            {userSelection}
-          </View>
+
+          <UserSelection
+            addUser={addUser}
+            user={user}
+            userList={userList}
+            changeActiveUser={changeActiveUser} />
+
           <View style={styles.settingsSection}>
             <AppText style={styles.heading}>Change Nickname</AppText>
-            <TextInput
-              autoCapitalize='words'
-              returnKeyType='done'
-              style={styles.input}
-              value={this.state.userName}
-              onChangeText={(text) => {
-                this.setState({
-                  userName: text,
-                });
-              }}
-              ref='input'
-              onFocus={() => {
-                this.refs.scrollView.scrollResponderScrollNativeHandleToKeyboard(
-                  React.findNodeHandle(this.refs.input)
-                );
-              }}
-              onSubmitEditing={() => {
-                changeUserName(this.state.userName);
-              }}
-            />
-            <Button
-              text="Change my nickname!"
-              small={true}
-              onPress={() => {
-                changeUserName(this.state.userName);
-              }}
-            />
+            <ChangeUserName user={user} changeUserName={changeUserName} />
           </View>
-          <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Add a New Player</AppText>
-            <TextInput
-              autoCapitalize='words'
-              returnKeyType='done'
-              style={styles.input}
-              value={this.state.newUserName}
-              onChangeText={(text) => {
-                this.setState({
-                  newUserName: text,
-                });
-              }}
-              onSubmitEditing={this.handleSubmitEditing}
-            />
-            <Button
-              text="Add this player!"
-              small={true}
-              onPress={this.handleSubmitEditing}
-            />
-          </View>
+
           <View style={styles.settingsSection}>
             <AppText style={styles.uuidText}>
               {uuid}
             </AppText>
           </View>
+
         </View>
       </ScrollView>
     );
