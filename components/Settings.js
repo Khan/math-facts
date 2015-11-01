@@ -195,6 +195,7 @@ const UserSelection = React.createClass({
                 ]}
                 onPress={() => {
                   changeActiveUser(curUser.id);
+                  goBack();
                 }}/>
             )
           })}
@@ -373,6 +374,9 @@ const styles = StyleSheet.create({
     marginRight: 2,
     marginBottom: 2,
     padding: 10,
+  },
+  activeSettingsButton: {
+    backgroundColor: '#999',
   },
   uuidText: {
     color: '#aaa',
