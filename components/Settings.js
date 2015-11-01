@@ -181,13 +181,13 @@ const UserSelection = React.createClass({
     } = this.props;
 
     return (
-      <View>
+      <View style={styles.scrollViewContainer}>
         <View style={styles.topRow}>
           <BackButton onPress={goBack} />
         </View>
 
-        <View style={styles.settingsSection}>
-          <AppText style={styles.heading}>Switch Players</AppText>
+        <AppText style={styles.heading}>Who are you?</AppText>
+        <ScrollView>
           {_.map(userList, (curUser) => {
             return (
               <Button
@@ -203,12 +203,7 @@ const UserSelection = React.createClass({
                 }}/>
             )
           })}
-        </View>
-
-        <View style={styles.settingsSection}>
-          <AppText style={styles.heading}>Add a New Player</AppText>
-          <NewUser addUser={addUser} />
-        </View>
+        </ScrollView>
 
       </View>
     );
@@ -238,7 +233,7 @@ const SettingsHome = React.createClass({
     } = this.props;
 
     return (
-      <ScrollView ref='scrollView' contentContainerStyle={styles.scrollView}>
+      <View>
 
         <View style={styles.topRow}>
           <BackButton onPress={goBack} />
@@ -263,7 +258,7 @@ const SettingsHome = React.createClass({
           </AppText>
         </View>
 
-      </ScrollView>
+      </View>
     );
   }
 });
@@ -356,9 +351,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
 
-  scrollView: {
-    // Leave space for the keyboard
-    paddingBottom: 270
+  scrollViewContainer: {
+    flex: 1,
   },
   settingsSection: {
     marginBottom: 20,
@@ -378,16 +372,12 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   settingsButton: {
-    borderColor: '#fff',
-    borderWidth: 2,
+    flex: 1,
     marginTop: 0,
-    marginBottom: 0,
     marginLeft: 2,
     marginRight: 2,
+    marginBottom: 2,
     padding: 10,
-  },
-  activeSettingsButton: {
-    borderColor: 'rgba(0, 0, 0, 0.5)'
   },
   uuidText: {
     color: '#aaa',
