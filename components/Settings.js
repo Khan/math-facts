@@ -17,30 +17,43 @@ import BackButton from '../components/BackButton';
 
 const ModeSelection = React.createClass({
   propTypes: {
+    goBack: React.PropTypes.func.isRequired,
     operation: React.PropTypes.string.isRequired,
     setOperation: React.PropTypes.func.isRequired,
   },
 
+  setOperation: function(operation) {
+    return () => {
+      this.props.setOperation(operation);
+      this.props.goBack();
+    };
+  },
   render: function () {
     const {
+      goBack,
       operation,
-      setOperation,
     } = this.props;
 
     return (
-      <View style={styles.toggleButtons}>
-        <Button
-          text='Addition'
-          color={operation === 'addition' ? undefined : '#ddd'}
-          small={true}
-          wrapperStyle={[styles.toggleButtonWrapper]}
-          onPress={() => setOperation('addition')} />
-        <Button
-          text='Multiplication'
-          color={operation === 'multiplication' ? undefined : '#ddd'}
-          small={true}
-          wrapperStyle={[styles.toggleButtonWrapper]}
-          onPress={() => setOperation('multiplication')} />
+      <View>
+        <View style={styles.topRow}>
+          <BackButton onPress={goBack} />
+        </View>
+
+        <View style={styles.toggleButtons}>
+          <Button
+            text='Addition'
+            color={operation === 'addition' ? undefined : '#ddd'}
+            small={true}
+            wrapperStyle={[styles.toggleButtonWrapper]}
+            onPress={this.setOperation('addition')} />
+          <Button
+            text='Multiplication'
+            color={operation === 'multiplication' ? undefined : '#ddd'}
+            small={true}
+            wrapperStyle={[styles.toggleButtonWrapper]}
+            onPress={this.setOperation('multiplication')} />
+        </View>
       </View>
     );
   },
@@ -49,6 +62,7 @@ const ModeSelection = React.createClass({
 const NewUser = React.createClass({
   propTypes: {
     addUser: React.PropTypes.func.isRequired,
+    goBack: React.PropTypes.func.isRequired,
   },
 
   getInitialState: function() {
@@ -58,13 +72,19 @@ const NewUser = React.createClass({
   },
   handleSubmitEditing: function() {
     this.props.addUser(this.state.newUserName);
-    this.setState({
-      newUserName: '',
-    });
+    this.props.goBack();
   },
   render: function () {
+    const {
+      goBack,
+    } = this.props;
+
     return (
       <View>
+        <View style={styles.topRow}>
+          <BackButton onPress={goBack} />
+        </View>
+
         <TextInput
           autoCapitalize='words'
           returnKeyType='done'
@@ -90,6 +110,7 @@ const NewUser = React.createClass({
 const ChangeUserName = React.createClass({
   propTypes: {
     changeUserName: React.PropTypes.func.isRequired,
+    goBack: React.PropTypes.func.isRequired,
     user: React.PropTypes.object.isRequired,
   },
 
@@ -105,10 +126,19 @@ const ChangeUserName = React.createClass({
   },
   handleSubmitEditing: function() {
     this.props.changeUserName(this.state.userName);
+    this.props.goBack();
   },
   render: function () {
+    const {
+      goBack,
+    } = this.props;
+
     return (
       <View>
+        <View style={styles.topRow}>
+          <BackButton onPress={goBack} />
+        </View>
+
         <TextInput
           autoCapitalize='words'
           returnKeyType='done'
@@ -136,6 +166,7 @@ const UserSelection = React.createClass({
   propTypes: {
     addUser: React.PropTypes.func.isRequired,
     changeActiveUser: React.PropTypes.func.isRequired,
+    goBack: React.PropTypes.func.isRequired,
     user: React.PropTypes.object.isRequired,
     userList: React.PropTypes.array.isRequired,
   },
@@ -144,12 +175,17 @@ const UserSelection = React.createClass({
     const {
       addUser,
       changeActiveUser,
+      goBack,
       user,
       userList,
     } = this.props;
 
     return (
       <View>
+        <View style={styles.topRow}>
+          <BackButton onPress={goBack} />
+        </View>
+
         <View style={styles.settingsSection}>
           <AppText style={styles.heading}>Switch Players</AppText>
           {_.map(userList, (curUser) => {
@@ -168,13 +204,68 @@ const UserSelection = React.createClass({
             )
           })}
         </View>
+
         <View style={styles.settingsSection}>
           <AppText style={styles.heading}>Add a New Player</AppText>
           <NewUser addUser={addUser} />
         </View>
+
       </View>
     );
   },
+});
+
+const SettingsHome = React.createClass({
+  propTypes: {
+    goBack: React.PropTypes.func.isRequired,
+    operation: React.PropTypes.string.isRequired,
+    showChangeUserName: React.PropTypes.func.isRequired,
+    showModeSelection: React.PropTypes.func.isRequired,
+    showUserSelection: React.PropTypes.func.isRequired,
+    user: React.PropTypes.object.isRequired,
+    uuid: React.PropTypes.string.isRequired,
+  },
+
+  render: function () {
+    const {
+      goBack,
+      operation,
+      showChangeUserName,
+      showModeSelection,
+      showUserSelection,
+      user,
+      uuid,
+    } = this.props;
+
+    return (
+      <ScrollView ref='scrollView' contentContainerStyle={styles.scrollView}>
+
+        <View style={styles.topRow}>
+          <BackButton onPress={goBack} />
+        </View>
+
+        <Button
+          onPress={showChangeUserName}
+          text='Change Nickname' />
+
+        <Button
+          onPress={showUserSelection}
+          text='Switch users' />
+
+        <Button
+          onPress={showModeSelection}
+          text='Change Mode' />
+
+
+        <View style={styles.settingsSection}>
+          <AppText style={styles.uuidText}>
+            {uuid}
+          </AppText>
+        </View>
+
+      </ScrollView>
+    );
+  }
 });
 
 const Settings = React.createClass({
@@ -190,7 +281,24 @@ const Settings = React.createClass({
     uuid: React.PropTypes.string.isRequired,
   },
 
-  render: function () {
+  getInitialState: function() {
+    return {
+      currentScreen: 'home',
+    };
+  },
+  showScreen: function(screen) {
+    this.setState({
+      currentScreen: screen,
+    });
+  },
+  showSettingsHome: function(screen) {
+    this.showScreen('home');
+  },
+  render: function() {
+    const {
+      currentScreen
+    } = this.state;
+
     const {
       addUser,
       changeActiveUser,
@@ -203,38 +311,39 @@ const Settings = React.createClass({
       uuid,
     } = this.props;
 
+    if (currentScreen === 'userSelection') {
+      return <UserSelection
+        addUser={addUser}
+        goBack={this.showSettingsHome}
+        user={user}
+        userList={userList}
+        changeActiveUser={changeActiveUser} />
+    }
+    if (currentScreen === 'modeSelection') {
+      return <ModeSelection
+        goBack={this.showSettingsHome}
+        operation={operation}
+        setOperation={setOperation} />
+    }
+    if (currentScreen === 'changeUserName') {
+      return <ChangeUserName
+        changeUserName={changeUserName}
+        goBack={this.showSettingsHome}
+        user={user} />
+    }
+    if (currentScreen === 'addNewUser') {
+
+    }
+
     return (
-      <ScrollView ref='scrollView' contentContainerStyle={styles.scrollView}>
-
-        <View style={styles.topRow}>
-          <BackButton onPress={goBack} />
-        </View>
-
-        <View style={styles.content}>
-          <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Mode</AppText>
-            <ModeSelection operation={operation} setOperation={setOperation} />
-          </View>
-
-          <UserSelection
-            addUser={addUser}
-            user={user}
-            userList={userList}
-            changeActiveUser={changeActiveUser} />
-
-          <View style={styles.settingsSection}>
-            <AppText style={styles.heading}>Change Nickname</AppText>
-            <ChangeUserName user={user} changeUserName={changeUserName} />
-          </View>
-
-          <View style={styles.settingsSection}>
-            <AppText style={styles.uuidText}>
-              {uuid}
-            </AppText>
-          </View>
-
-        </View>
-      </ScrollView>
+      <SettingsHome
+        goBack={goBack}
+        operation={operation}
+        showUserSelection={() => {this.showScreen('userSelection');}}
+        showModeSelection={() => {this.showScreen('modeSelection');}}
+        showChangeUserName={() => {this.showScreen('changeUserName');}}
+        user={user}
+        uuid={uuid} />
     );
   }
 });
