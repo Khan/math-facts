@@ -44,13 +44,11 @@ const ModeSelection = React.createClass({
           <Button
             text='Addition'
             color={operation === 'addition' ? undefined : '#ddd'}
-            small={true}
             wrapperStyle={[styles.toggleButtonWrapper]}
             onPress={this.setOperation('addition')} />
           <Button
             text='Multiplication'
             color={operation === 'multiplication' ? undefined : '#ddd'}
-            small={true}
             wrapperStyle={[styles.toggleButtonWrapper]}
             onPress={this.setOperation('multiplication')} />
         </View>
@@ -99,7 +97,6 @@ const NewUser = React.createClass({
         />
         <Button
           text="Add this player!"
-          small={true}
           onPress={this.handleSubmitEditing}
         />
       </View>
@@ -154,7 +151,6 @@ const ChangeUserName = React.createClass({
         />
         <Button
           text="Change my nickname!"
-          small={true}
           onPress={this.handleSubmitEditing}
         />
       </View>
@@ -193,7 +189,6 @@ const UserSelection = React.createClass({
               <Button
                 key={curUser.id}
                 text={curUser.name}
-                small={true}
                 style={[
                   styles.settingsButton,
                   (curUser.id === user.id) && styles.activeSettingsButton

@@ -14,7 +14,6 @@ const Button = React.createClass({
   propTypes: {
     color: React.PropTypes.string,
     onPress: React.PropTypes.func.isRequired,
-    small: React.PropTypes.bool,
     style: React.PropTypes.array,
     text: React.PropTypes.string,
     wrapperStyle: React.PropTypes.array,
@@ -30,13 +29,10 @@ const Button = React.createClass({
     const {
       color,
       onPress,
-      small,
       style,
       text,
       wrapperStyle,
     } = this.props;
-
-    const buttonTextStyle = [styles.buttonText, small && styles.buttonTextSmall];
 
     return (
       <TouchableHighlight
@@ -46,7 +42,7 @@ const Button = React.createClass({
         activeOpacity={0.5}
       >
         <View style={[styles.button, { backgroundColor: color }, this.props.style]}>
-          <AppText style={buttonTextStyle}>{text}</AppText>
+          <AppText style={styles.buttonText}>{text}</AppText>
         </View>
       </TouchableHighlight>
     );
@@ -58,16 +54,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#89dacc',
-    padding: 20,
+    padding: 15,
     marginTop: 10,
     marginBottom: 10,
   },
   buttonText: {
-    fontSize: 30,
+    fontSize: 18,
     color: '#fff'
-  },
-  buttonTextSmall: {
-    fontSize: 16,
   },
 
   toggleButtons: {
