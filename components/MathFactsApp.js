@@ -9,8 +9,6 @@ import {
 import MathFactsStore from '../stores/MathFactsStore';
 import StateFromStoreMixin from '../lib/state-from-store-mixin.js';
 
-import Button from '../components/Button';
-import Grid from '../components/Grid';
 import Navigation from './Navigation';
 
 const MathFactsApp = React.createClass({
