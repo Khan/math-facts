@@ -117,7 +117,7 @@ const Keyboard = React.createClass({
     const touch = this._currentTouch;
     if (touch) {
       for (let k in this._keyLayouts) {
-        let key = this._keyLayouts[k];
+        const key = this._keyLayouts[k];
         if (key.pageX <= touch.pageX &&
             touch.pageX <= key.pageX + key.width &&
             key.pageY <= touch.pageY &&
