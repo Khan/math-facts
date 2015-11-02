@@ -190,6 +190,10 @@ const UserSelection = React.createClass({
 
         <AppText style={styles.headingText}>Who are you?</AppText>
 
+        <RowButton
+          onPress={showAddNewUser}
+          text={'I\'m a new player!'} />
+
         <ScrollView>
           {_.map(userList, (curUser) => {
             return (
@@ -207,10 +211,6 @@ const UserSelection = React.createClass({
             )
           })}
         </ScrollView>
-
-        <RowButton
-          onPress={showAddNewUser}
-          text={'I\'m a new player!'} />
 
       </View>
     );
