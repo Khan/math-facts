@@ -90,6 +90,7 @@ const AddNewUser = React.createClass({
         <AppText style={styles.headingText}>Hi! What's your name?</AppText>
         <TextInput
           autoCapitalize='words'
+          autoFocus={true}
           returnKeyType='done'
           style={styles.input}
           value={this.state.newUserName}
@@ -144,6 +145,7 @@ const ChangeUserName = React.createClass({
         <AppText style={styles.headingText}>What's your new name?</AppText>
         <TextInput
           autoCapitalize='words'
+          autoFocus={true}
           returnKeyType='done'
           style={styles.input}
           value={this.state.userName}
