@@ -66,12 +66,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#fff'
   },
-
-  toggleButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center'
-  }
-
 });
 
 module.exports = Button;
