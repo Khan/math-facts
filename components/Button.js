@@ -41,7 +41,11 @@ const Button = React.createClass({
         style={wrapperStyle}
         activeOpacity={0.5}
       >
-        <View style={[styles.button, { backgroundColor: color }, this.props.style]}>
+        <View
+          style={[
+            styles.button,
+            { backgroundColor: color },
+            this.props.style]}>
           <AppText style={styles.buttonText}>{text}</AppText>
         </View>
       </TouchableHighlight>

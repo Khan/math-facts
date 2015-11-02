@@ -57,7 +57,7 @@ const ModeSelection = React.createClass({
   },
 });
 
-const NewUser = React.createClass({
+const AddNewUser = React.createClass({
   propTypes: {
     addUser: React.PropTypes.func.isRequired,
     goBack: React.PropTypes.func.isRequired,
@@ -83,6 +83,7 @@ const NewUser = React.createClass({
           <BackButton onPress={goBack} />
         </View>
 
+        <AppText style={styles.heading}>Hi! What's your name?</AppText>
         <TextInput
           autoCapitalize='words'
           returnKeyType='done'
@@ -136,6 +137,7 @@ const ChangeUserName = React.createClass({
           <BackButton onPress={goBack} />
         </View>
 
+        <AppText style={styles.heading}>What's your new name?</AppText>
         <TextInput
           autoCapitalize='words'
           returnKeyType='done'
@@ -160,18 +162,18 @@ const ChangeUserName = React.createClass({
 
 const UserSelection = React.createClass({
   propTypes: {
-    addUser: React.PropTypes.func.isRequired,
     changeActiveUser: React.PropTypes.func.isRequired,
     goBack: React.PropTypes.func.isRequired,
+    showAddNewUser: React.PropTypes.func.isRequired,
     user: React.PropTypes.object.isRequired,
     userList: React.PropTypes.array.isRequired,
   },
 
   render: function () {
     const {
-      addUser,
       changeActiveUser,
       goBack,
+      showAddNewUser,
       user,
       userList,
     } = this.props;
@@ -183,6 +185,7 @@ const UserSelection = React.createClass({
         </View>
 
         <AppText style={styles.heading}>Who are you?</AppText>
+
         <ScrollView>
           {_.map(userList, (curUser) => {
             return (
@@ -200,6 +203,10 @@ const UserSelection = React.createClass({
             )
           })}
         </ScrollView>
+
+        <Button
+          onPress={showAddNewUser}
+          text={'I\'m a new player!'} />
 
       </View>
     );
@@ -285,6 +292,18 @@ const Settings = React.createClass({
   showSettingsHome: function(screen) {
     this.showScreen('home');
   },
+  showAddNewUser: function() {
+    this.showScreen('addNewUser');
+  },
+  showChangeUserName: function() {
+    this.showScreen('changeUserName');
+  },
+  showModeSelection: function() {
+    this.showScreen('modeSelection');
+  },
+  showUserSelection: function() {
+    this.showScreen('userSelection');
+  },
   render: function() {
     const {
       currentScreen
@@ -302,19 +321,10 @@ const Settings = React.createClass({
       uuid,
     } = this.props;
 
-    if (currentScreen === 'userSelection') {
-      return <UserSelection
+    if (currentScreen === 'addNewUser') {
+      return <AddNewUser
         addUser={addUser}
-        goBack={this.showSettingsHome}
-        user={user}
-        userList={userList}
-        changeActiveUser={changeActiveUser} />
-    }
-    if (currentScreen === 'modeSelection') {
-      return <ModeSelection
-        goBack={this.showSettingsHome}
-        operation={operation}
-        setOperation={setOperation} />
+        goBack={this.showSettingsHome} />
     }
     if (currentScreen === 'changeUserName') {
       return <ChangeUserName
@@ -322,17 +332,29 @@ const Settings = React.createClass({
         goBack={this.showSettingsHome}
         user={user} />
     }
-    if (currentScreen === 'addNewUser') {
-
+    if (currentScreen === 'modeSelection') {
+      return <ModeSelection
+        goBack={this.showSettingsHome}
+        operation={operation}
+        setOperation={setOperation} />
+    }
+    if (currentScreen === 'userSelection') {
+      return <UserSelection
+        changeActiveUser={changeActiveUser}
+        goBack={this.showSettingsHome}
+        showAddNewUser={this.showAddNewUser}
+        user={user}
+        userList={userList} />
     }
 
     return (
       <SettingsHome
         goBack={goBack}
         operation={operation}
-        showUserSelection={() => {this.showScreen('userSelection');}}
-        showModeSelection={() => {this.showScreen('modeSelection');}}
-        showChangeUserName={() => {this.showScreen('changeUserName');}}
+        showAddNewUser={this.showAddNewUser}
+        showChangeUserName={this.showChangeUserName}
+        showModeSelection={this.showModeSelection}
+        showUserSelection={this.showUserSelection}
         user={user}
         uuid={uuid} />
     );
