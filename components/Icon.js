@@ -46,7 +46,10 @@ const paths = {
         S6.7,4.3,6.4,3.9C6,3.6,5.6,3.4,5.1,3.4c-0.5,0-0.9,0.2-1.2,0.5C3.6,4.3,3.4,4.7,3.4,5.1S3.6,6,3.9,6.4c0.3,0.3,0.7,0.5,1.2,0.5
         C5.6,6.9,6,6.7,6.4,6.4z`,
   play: `M10.2,5.4L2.3,9.8c-0.1,0.1-0.2,0.1-0.2,0C2,9.8,2,9.7,2,9.6V0.8c0-0.1,0-0.2,0.1-0.2c0.1,0,0.1,0,0.2,0L10.2,5
-    c0.1,0.1,0.1,0.1,0.1,0.2C10.4,5.3,10.3,5.3,10.2,5.4z`,
+        c0.1,0.1,0.1,0.1,0.1,0.2C10.4,5.3,10.3,5.3,10.2,5.4z`,
+  chevronRight: `M9.7,5.7l-5,5c-0.1,0.1-0.2,0.1-0.3,0.1s-0.2,0-0.3-0.1L3,9.6C2.9,9.5,2.9,9.4,2.9,9.3C2.9,9.1,2.9,9,3,9l3.6-3.6L3,1.8
+        C2.9,1.8,2.9,1.7,2.9,1.5s0-0.2,0.1-0.3l1.1-1.1C4.2,0,4.3,0,4.4,0s0.2,0,0.3,0.1l5,5c0.1,0.1,0.1,0.2,0.1,0.3
+        C9.8,5.5,9.8,5.6,9.7,5.7z`,
 };
 
 const Icon = React.createClass({
@@ -55,7 +58,11 @@ const Icon = React.createClass({
     backgroundType: React.PropTypes.oneOf(['circle', 'square',]),
     color: React.PropTypes.string,
     size: React.PropTypes.number,
-    type: React.PropTypes.oneOf(['play', 'cog',]).isRequired,
+    type: React.PropTypes.oneOf([
+      'chevronRight',
+      'cog',
+      'play',
+    ]).isRequired,
   },
   getDefaultProps: function() {
     return {

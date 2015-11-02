@@ -14,6 +14,7 @@ import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
+import RowButton from '../components/RowButton';
 
 const ModeSelection = React.createClass({
   propTypes: {
@@ -40,6 +41,9 @@ const ModeSelection = React.createClass({
           <BackButton onPress={goBack} />
         </View>
 
+        <AppText style={styles.headingText}>
+          What do you want to practice?
+        </AppText>
         <View style={styles.toggleButtons}>
           <Button
             text='Addition'
@@ -193,8 +197,8 @@ const UserSelection = React.createClass({
                 key={curUser.id}
                 text={curUser.name}
                 style={[
-                  styles.settingsButton,
-                  (curUser.id === user.id) && styles.activeSettingsButton
+                  styles.userListButton,
+                  (curUser.id === user.id) && styles.activeUserListButton
                 ]}
                 onPress={() => {
                   changeActiveUser(curUser.id);
@@ -204,7 +208,7 @@ const UserSelection = React.createClass({
           })}
         </ScrollView>
 
-        <Button
+        <RowButton
           onPress={showAddNewUser}
           text={'I\'m a new player!'} />
 
@@ -235,6 +239,8 @@ const SettingsHome = React.createClass({
       uuid,
     } = this.props;
 
+    const printOperation = operation.slice(0, 1).toUpperCase() +
+      operation.slice(1);
     return (
       <View>
 
@@ -250,17 +256,17 @@ const SettingsHome = React.createClass({
           {'!'}
         </AppText>
 
-        <Button
+        <RowButton
           onPress={showChangeUserName}
           text='Change Nickname' />
 
-        <Button
+        <RowButton
           onPress={showUserSelection}
-          text='Switch users' />
+          text='Switch Player' />
 
-        <Button
+        <RowButton
           onPress={showModeSelection}
-          text='Change Mode' />
+          text={`Change Mode (${printOperation})`} />
 
 
         <View style={styles.settingsSection}>
@@ -395,14 +401,16 @@ const styles = StyleSheet.create({
   },
 
   input: {
+    backgroundColor: '#fff',
+    borderColor: '#ddd',
     height: 40,
     paddingRight: 10,
     paddingLeft: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
     textAlign: 'center'
   },
-  settingsButton: {
+
+  userListButton: {
     flex: 1,
     marginTop: 0,
     marginLeft: 2,
@@ -410,8 +418,8 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     padding: 10,
   },
-  activeSettingsButton: {
-    backgroundColor: '#999',
+  activeUserListButton: {
+    backgroundColor: '#555',
   },
   uuidText: {
     color: '#aaa',
