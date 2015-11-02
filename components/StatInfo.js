@@ -122,7 +122,9 @@ const StatInfo = React.createClass({
           {expression}
         </AppText>
 
+        {/*
         <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
+        */}
 
         {timesArr.length > 0 && <View>
           <View style={styles.infoStatsGroup}>
