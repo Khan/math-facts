@@ -2,7 +2,6 @@
 
 import React from 'react-native';
 import {
-  Platform,
   StyleSheet,
   View,
 } from 'react-native';
