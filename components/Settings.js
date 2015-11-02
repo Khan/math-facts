@@ -83,7 +83,7 @@ const AddNewUser = React.createClass({
           <BackButton onPress={goBack} />
         </View>
 
-        <AppText style={styles.heading}>Hi! What's your name?</AppText>
+        <AppText style={styles.headingText}>Hi! What's your name?</AppText>
         <TextInput
           autoCapitalize='words'
           returnKeyType='done'
@@ -137,7 +137,7 @@ const ChangeUserName = React.createClass({
           <BackButton onPress={goBack} />
         </View>
 
-        <AppText style={styles.heading}>What's your new name?</AppText>
+        <AppText style={styles.headingText}>What's your new name?</AppText>
         <TextInput
           autoCapitalize='words'
           returnKeyType='done'
@@ -184,7 +184,7 @@ const UserSelection = React.createClass({
           <BackButton onPress={goBack} />
         </View>
 
-        <AppText style={styles.heading}>Who are you?</AppText>
+        <AppText style={styles.headingText}>Who are you?</AppText>
 
         <ScrollView>
           {_.map(userList, (curUser) => {
@@ -241,6 +241,14 @@ const SettingsHome = React.createClass({
         <View style={styles.topRow}>
           <BackButton onPress={goBack} />
         </View>
+
+        <AppText style={styles.headingText}>
+          {'Hi '}
+          <AppTextBold style={styles.headingTextEmphasis}>
+            {user.name}
+          </AppTextBold>
+          {'!'}
+        </AppText>
 
         <Button
           onPress={showChangeUserName}
@@ -369,18 +377,23 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
   },
 
+  headingText: {
+    color: '#999',
+    fontSize: 20,
+    paddingBottom: 10,
+    textAlign: 'center',
+  },
+  headingTextEmphasis: {
+    color: '#555'
+  },
+
   scrollViewContainer: {
     flex: 1,
   },
   settingsSection: {
     marginBottom: 20,
   },
-  heading: {
-    textAlign: 'center',
-    margin: 10,
-    marginTop: 0,
-    fontSize: 20,
-  },
+
   input: {
     height: 40,
     paddingRight: 10,

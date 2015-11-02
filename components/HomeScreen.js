@@ -43,25 +43,22 @@ const HomeScreen = React.createClass({
 
     return (
       <View style={styles.container}>
-        <View style={styles.points}>
-          <AppText style={styles.pointsText}>
-            {'Hi '}
-            <AppTextBold style={styles.pointsTextEmphasis}>
-              {userName}
-            </AppTextBold>
-            {'!'}
-          </AppText>
-        </View>
 
-        <View style={styles.points}>
-          <AppText style={styles.pointsText}>
-            {'You have '}
-            <AppTextBold style={styles.pointsTextEmphasis}>
-              {points}
-            </AppTextBold>
-            {' points'}
-          </AppText>
-        </View>
+        <AppText style={styles.headingText}>
+          {'Hi '}
+          <AppTextBold style={styles.headingTextEmphasis}>
+            {userName}
+          </AppTextBold>
+          {'!'}
+        </AppText>
+
+        <AppText style={styles.headingText}>
+          {'You have '}
+          <AppTextBold style={styles.headingTextEmphasis}>
+            {points}
+          </AppTextBold>
+          {' points'}
+        </AppText>
 
         <View style={styles.eggScene}>
           <EggScene />
@@ -166,15 +163,13 @@ const styles = StyleSheet.create({
     margin: 3,
   },
 
-  points: {
-    alignItems: 'center',
-    paddingBottom: 10,
-  },
-  pointsText: {
+  headingText: {
+    color: '#999',
     fontSize: 20,
-    color: '#999'
+    paddingBottom: 10,
+    textAlign: 'center',
   },
-  pointsTextEmphasis: {
+  headingTextEmphasis: {
     color: '#555'
   },
 
