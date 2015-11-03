@@ -37,6 +37,8 @@ const ModeSelection = React.createClass({
 
     return (
       <View>
+        {/* TODO(clean code): Abstract the back button into a settings
+          * wrapper so there's less duplication. */}
         <View style={styles.topRow}>
           <BackButton onPress={goBack} />
         </View>
