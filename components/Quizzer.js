@@ -14,7 +14,7 @@ import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import ColorHelpers from '../helpers/color-helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';
-import OperationHelper from '../helpers/operation-helpers';
+import OperationHelpers from '../helpers/operation-helpers';
 import { randomIntBetween } from '../helpers/helpers';
 
 import NumPad from '../components/NumPad';
@@ -96,95 +96,10 @@ var Quizzer = React.createClass({
   },
   addToInputList: function(quizzesData) {
     var operation = this.props.operation;
+    var OperationHelper = OperationHelpers[operation];
 
-    // TODO: Move these to OperationHelper
-    var easiestFacts = [];
-    if (operation === 'addition') {
-      easiestFacts = [
-        // +1s
-        [1, 1],
-        [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [10, 1],
-
-        // +0s
-        // [0, 0], [1, 0],
-        // [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0],
-
-        // +2s
-        [2, 2],
-        [1, 2], [3, 2], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2], [9, 2], [10, 2],
-
-        // 5 + smalls
-        [5, 1], [5, 2], [5, 3], [5, 4],
-
-        // little doubles
-        [1, 1], [2, 2], [3, 3], [4, 4], [5, 5],
-
-        // 10+s
-        [10, 10],
-        [10, 2], [10, 3], [10, 4], [10, 5], [10, 6], [10, 7], [10, 8], [10, 9],
-
-        // pairs that make 10
-        [9, 1], [8, 2], [7, 3], [6, 4],
-
-        // pairs that make 11
-        [9, 2], [8, 3], [7, 4], [6, 5],
-
-        // big doubles
-        [6, 6], [7, 7], [8, 8], [9, 9], [10, 10],
-
-        // 9+s
-        [9, 2], [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8], [9, 9],
-
-        // leftovers
-        [4, 3], [6, 3], // the little ones
-
-        [8, 4], [8, 6], // even, even, even!
-        [6, 7], [7, 8], // the weird ones
-        [7, 5], [8, 5], // adding 5
-      ];
-
-      var min = 1;
-      var max = 10;
-    } else if (operation === 'multiplication') {
-      easiestFacts = [
-        // x1s
-        [1, 1],
-        [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [10, 1],
-
-        // x0s
-        // [0, 0], [1, 0], [2, 0],
-        // [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0],
-
-        // x2s
-        [2, 2],
-        [3, 2], [4, 2], [5, 2], [6, 2], [7, 2], [8, 2], [9, 2], [10, 2],
-
-        // x10s
-        [10, 10],
-        [10, 3], [10, 4], [10, 5], [10, 6], [10, 7], [10, 8], [10, 9],
-
-        // x5s
-        [5, 3], [5, 4], [5, 5], [5, 6], [5, 7], [5, 8], [5, 9],
-
-        // x9s
-        [9, 3], [9, 4], [9, 5], [9, 6], [9, 7], [9, 8], [9, 9],
-
-        // squares
-        [3, 3], [4, 4], [6, 6], [7, 7], [8, 8], [10, 10],
-
-        // x3s
-        [3, 4], [3, 6], [3, 7], [3, 8],
-
-        // x4s
-        [4, 6], [4, 7], [4, 8],
-
-        // leftovers
-        [6, 7], [6, 8], [7, 8],
-
-      ];
-      var min = 1;
-      var max = 10;
-    }
+    var easiestFacts = OperationHelper.getEasiestFactOrder();
+    var max = 10;
 
     var questionSeeds = [];
 
@@ -202,7 +117,7 @@ var Quizzer = React.createClass({
       }
       _.each(_.range(0, max + 1), (col) => {
         var timeData = quizzesData[row][col];
-        var answer = OperationHelper[operation].getAnswer([row, col]);
+        var answer = OperationHelper.getAnswer([row, col]);
         var factStatus = MasteryHelpers.getFactStatus(answer, timeData,
           learnerTypingTimes);
         questionSeeds[row][col] = factStatus;
@@ -362,7 +277,7 @@ var Quizzer = React.createClass({
   },
   check: function() {
     var inputs = this.getInputs();
-    var answer =  OperationHelper[this.props.operation].getAnswer(inputs);
+    var answer =  OperationHelpers[this.props.operation].getAnswer(inputs);
     if (parseInt(this.state.response) === parseInt(answer)) {
       var time = this.state.time;
       var hintUsed = this.state.hintUsed;
@@ -512,12 +427,12 @@ var Quizzer = React.createClass({
 
   _renderGame: function() {
     var inputs = this.getInputs();
-    var total = OperationHelper[this.props.operation].getAnswer(inputs);
+    var total = OperationHelpers[this.props.operation].getAnswer(inputs);
 
     var rgb = this.getColor();
     var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 
-    var question = OperationHelper[this.props.operation].getQuestion(inputs);
+    var question = OperationHelpers[this.props.operation].getQuestion(inputs);
 
     return (
       <QuizzerScreen
