@@ -2,7 +2,7 @@
 
 import _ from 'underscore';
 
-var Operations = {
+let Operations = {
   noop: {
     getSign: function() {
       return '';
@@ -23,21 +23,21 @@ var Operations = {
       return '+';
     },
     getAnswer: function(inputs): number {
-      var sum = 0;
+      let sum = 0;
       _.each(inputs, (input) => {
         sum += input;
       });
       return sum;
     },
     getQuestion: function(inputs) {
-      var expression = '';
+      let expression = '';
       _.each(inputs, (input) => {
         expression += input + ' ' + this.getSign() + ' ';
       });
       return expression.slice(0, -3);
     },
     getExpression: function(inputs) {
-      var expression = '';
+      let expression = '';
       _.each(inputs, (input) => {
         expression += input + ' ' + this.getSign() + ' ';
       });
@@ -99,21 +99,21 @@ var Operations = {
       return '×';
     },
     getAnswer: function(inputs): number {
-      var product = 1;
+      let product = 1;
       _.each(inputs, (input) => {
         product *= input;
       });
       return product;
     },
     getQuestion: function(inputs) {
-      var expression = '';
+      let expression = '';
       _.each(inputs, (input) => {
         expression += input + ' ' + this.getSign() + ' ';
       });
       return expression.slice(0, -3);
     },
     getExpression: function(inputs) {
-      var expression = '';
+      let expression = '';
       _.each(inputs, (input) => {
         expression += input + ' ' + this.getSign() + ' ';
       });

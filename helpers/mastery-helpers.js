@@ -6,10 +6,10 @@ import ColorHelpers from '../helpers/color-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 
 // The time to recall a fact from memory should be less than 800ms
-var MEMORY_TIME = 800;
+const MEMORY_TIME = 800;
 
 // From /webapp/stylesheets/shared-package/variables.less
-var masteryColors = {
+const masteryColors = {
   unknown: '#dddddd',
   struggling: '#c30202',
   introduced: '#9cdceb',
@@ -17,7 +17,7 @@ var masteryColors = {
   mastered: '#1c758a',
 };
 
-var masteryTextColors = {
+const masteryTextColors = {
   unknown: '#5d5d5d',
   struggling: '#ffdfdf',
   introduced: '#124653',
@@ -25,7 +25,7 @@ var masteryTextColors = {
   mastered: '#f7feff',
 };
 
-var masteryDescription = {
+const masteryDescription = {
   unknown: 'You haven\'t answered this fact yet.',
   struggling: 'You\'re having trouble with this fact.',
   introduced: 'You haven\'t answered this fact enough times.',
@@ -33,22 +33,22 @@ var masteryDescription = {
   mastered: 'You know this fact from memory.',
 };
 
-var getLearnerTypingTime = function(quizzesData, operation) {
-  var oneDigitTimes = [];
-  var twoDigitTimes = [];
-  var n = 0;
+const getLearnerTypingTime = function(quizzesData, operation) {
+  const oneDigitTimes = [];
+  const twoDigitTimes = [];
+  let count = 0;
   _.each(quizzesData, (rowData, row) => {
     _.each(rowData, (data, col) => {
-      var answer = OperationHelpers[operation].getAnswer([row, col]);
-      var numberLength = answer.toString().length;
+      const answer = OperationHelpers[operation].getAnswer([row, col]);
+      const numberLength = answer.toString().length;
       _.each(data, (timeData) => {
         // TODO: check if the data is recent (throw out really old times)
         if (numberLength === 1) {
           oneDigitTimes.push(timeData.time);
-          n++;
+          count++;
         } else if (numberLength === 2) {
           twoDigitTimes.push(timeData.time);
-          n++;
+          count++;
         }
       });
     });
@@ -59,7 +59,7 @@ var getLearnerTypingTime = function(quizzesData, operation) {
     values.sort((a,b) => {
       return a - b;
     });
-    var half = Math.floor(values.length/2);
+    const half = Math.floor(values.length/2);
 
     if (values.length % 2) {
       return values[half];
@@ -68,24 +68,29 @@ var getLearnerTypingTime = function(quizzesData, operation) {
       return (values[half - 1] + values[half]) / 2.0;
     }
   }
-  var lowerQuartileOneDigit = median(oneDigitTimes.slice(0, median(oneDigitTimes)));
-  var lowerQuartileTwoDigit = median(twoDigitTimes.slice(0, median(twoDigitTimes)));
-  if (n > 10) {
-    return [lowerQuartileOneDigit, lowerQuartileTwoDigit - lowerQuartileOneDigit];
+  const lowerQuartileOneDigit = median(
+    oneDigitTimes.slice(0, median(oneDigitTimes)));
+  const lowerQuartileTwoDigit = median(
+    twoDigitTimes.slice(0, median(twoDigitTimes)));
+  if (count > 10) {
+    return [
+      lowerQuartileOneDigit,
+      lowerQuartileTwoDigit - lowerQuartileOneDigit
+    ];
   }
   // without enough data, assume their typing speed is some random numbers:
   return [800, 300];
 };
 
-var getTypingTime = function(number, learnerTypingTimes) {
+const getTypingTime = function(number, learnerTypingTimes) {
   // For a given number estimate the time in ms it takes this learner to
   // type it.
 
-  // TODO: Customize times per user using and average of their fastest times as
-  // the floor on their typing time.
-  var numberLength = number.toString().length;
-  var oneDigitTime = learnerTypingTimes[0];
-  var typingTime = oneDigitTime + learnerTypingTimes[1] * numberLength;
+  // TODO: Customize times per user using and average of their fastest times
+  // as the floor on their typing time.
+  const numberLength = number.toString().length;
+  const oneDigitTime = learnerTypingTimes[0];
+  const typingTime = oneDigitTime + learnerTypingTimes[1] * numberLength;
   return typingTime;
 };
 
@@ -93,7 +98,7 @@ var getTypingTime = function(number, learnerTypingTimes) {
  * Given data about a particular math fact, determine the fact's mastery level
  *
  */
-var getFactStatus = function(number, times, learnerTypingTimes) {
+const getFactStatus = function(number, times, learnerTypingTimes) {
   // times is an array of the learner's time data for this fact in the form:
   // [ {time: 1200, date: 19346832, hintUsed: true},
   //   {time: 1000, date: 19346832, hintUsed: false},
@@ -129,17 +134,17 @@ var getFactStatus = function(number, times, learnerTypingTimes) {
   //         to attempt to work the fact into long-term memory.
   //         TODO: When does the fact become "fluent"?
 
-  var numTries = times != null ? times.length : 0;
+  const numTries = times != null ? times.length : 0;
 
   if (numTries === 0) {
     return 'unknown';
   }
 
-  var fluent = 0;
-  var nonFluent = 0;
+  let fluent = 0;
+  let nonFluent = 0;
 
   _.each(times, (timeData) => {
-    var time = timeData.time;
+    const time = timeData.time;
     // TODO: Only take into account the most recent times, but specifically
     // take into account times over the past few days to check for long-term
     // retention.

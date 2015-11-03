@@ -1,7 +1,7 @@
 'use strict';
 
 // From /webapp/stylesheets/shared-package/variables.less
-var KAColors = {
+const KAColors = {
   mathDomainColor: '#1c758a',
   mathSubjectColor: '#46a8bf',
   mathTopicColor: '#4fbad4',
@@ -19,7 +19,7 @@ var KAColors = {
   red: '#cf5044',
 };
 
-var masteryColors = {
+const masteryColors = {
   unknown: '#eeeeee',
   struggling: '#c30202',
   practiced: '#9cdceb',
@@ -34,26 +34,23 @@ var masteryColors = {
  * Assumes h, s, and l are contained in the set [0, 1] and
  * returns r, g, and b in the set [0, 255].
  *
- * From: http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+ * http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
  *
  * @param   Number  h       The hue
  * @param   Number  s       The saturation
  * @param   Number  l       The lightness
  * @return  Array           The RGB representation
  */
-var hslToRgb = function(hsl) {
-  var h = hsl[0];
-  var s = hsl[1];
-  var l = hsl[2];
-  var r, g, b;
-
-  // Allow h to roll over
-  h = h % 1;
+const hslToRgb = function(hsl) {
+  const h = hsl[0] % 1; // Allow h to roll over
+  const s = hsl[1];
+  const l = hsl[2];
+  let r, g, b;
 
   if (s == 0){
     r = g = b = l; // achromatic
   } else {
-    var hue2rgb = function hue2rgb(p, q, t) {
+    const hue2rgb = function hue2rgb(p, q, t) {
       if (t < 0) t += 1;
       if (t > 1) t -= 1;
       if (t < 1/6) return p + (q - p) * 6 * t;
@@ -62,8 +59,8 @@ var hslToRgb = function(hsl) {
       return p;
     }
 
-    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    var p = 2 * l - q;
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
     r = hue2rgb(p, q, h + 1/3);
     g = hue2rgb(p, q, h);
     b = hue2rgb(p, q, h - 1/3);
@@ -78,26 +75,26 @@ var hslToRgb = function(hsl) {
  * Assumes r, g, and b are contained in the set [0, 255] and
  * returns h, s, and l in the set [0, 1].
  *
- * From: http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+ * http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
  *
  * @param   Number  r       The red color value
  * @param   Number  g       The green color value
  * @param   Number  b       The blue color value
  * @return  Array           The HSL representation
  */
-var rgbToHsl = function(rgb) {
-  var r = rgb[0];
-  var g = rgb[1];
-  var b = rgb[2];
+const rgbToHsl = function(rgb) {
+  const r = rgb[0] / 255;
+  const g = rgb[1] / 255;
+  const b = rgb[2] / 255;
 
-  r /= 255, g /= 255, b /= 255;
-  var max = Math.max(r, g, b), min = Math.min(r, g, b);
-  var h, s, l = (max + min) / 2;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
 
   if (max == min) {
     h = s = 0; // achromatic
   } else {
-    var d = max - min;
+    const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
       case r: h = (g - b) / d + (g < b ? 6 : 0); break;
@@ -111,23 +108,23 @@ var rgbToHsl = function(rgb) {
   return [h, s, l];
 };
 
-var printRgb = function(rgb) {
+const printRgb = function(rgb) {
   return 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 };
 
-var printHsl = function(hsl) {
+const printHsl = function(hsl) {
   return 'hsl(' + hsl[0] + ',' + hsl[1] + ',' + hsl[2] + ')';
 };
 
 // From http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRgb(hex) {
   // Expand shorthand form (e.g. '03F') to full form (e.g. '0033FF')
-  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, function(m, r, g, b) {
       return r + r + g + g + b + b;
   });
 
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? [
     parseInt(result[1], 16),
     parseInt(result[2], 16),
@@ -137,9 +134,9 @@ function hexToRgb(hex) {
 
 // From http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function rgbToHex(rgb) {
-  var r = rgb[0];
-  var g = rgb[1];
-  var b = rgb[2];
+  const r = rgb[0];
+  const g = rgb[1];
+  const b = rgb[2];
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
