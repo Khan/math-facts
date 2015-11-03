@@ -1,33 +1,5 @@
 'use strict';
 
-// From /webapp/stylesheets/shared-package/variables.less
-const KAColors = {
-  mathDomainColor: '#1c758a',
-  mathSubjectColor: '#46a8bf',
-  mathTopicColor: '#4fbad4',
-  blueDark: '#2c3747',
-  blueDarkUnsaturated: '#3b414e',
-  blueDarkSaturated: '#1f3043',
-  blue: '#005a88',
-  blueLight: '#a9c0d1',
-  green: '#76a005',
-  greenLight: '#c6d1ad',
-  greenDark: '#356700',
-  yellowGreen: '#9db63b',
-  okGreen: '#a7cf5b',
-  orange: '#bf4f04',
-  red: '#cf5044',
-};
-
-const masteryColors = {
-  unknown: '#eeeeee',
-  struggling: '#c30202',
-  practiced: '#9cdceb',
-  levelOne: '#58c4dd',
-  levelTwo: '#29abca',
-  mastered: KAColors.mathDomainColor,
-};
-
 /**
  * Converts an HSL color value to RGB. Conversion formula
  * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
@@ -130,7 +102,7 @@ function hexToRgb(hex) {
     parseInt(result[2], 16),
     parseInt(result[3], 16),
   ] : null;
-}
+};
 
 // From http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function rgbToHex(rgb) {
@@ -138,9 +110,58 @@ function rgbToHex(rgb) {
   const g = rgb[1];
   const b = rgb[2];
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
+};
+
+// From /webapp/stylesheets/shared-package/variables.less
+const KAColors = {
+  mathDomainColor: '#1c758a',
+  mathSubjectColor: '#46a8bf',
+  mathTopicColor: '#4fbad4',
+  blueDark: '#2c3747',
+  blueDarkUnsaturated: '#3b414e',
+  blueDarkSaturated: '#1f3043',
+  blue: '#005a88',
+  blueLight: '#a9c0d1',
+  green: '#76a005',
+  greenLight: '#c6d1ad',
+  greenDark: '#356700',
+  yellowGreen: '#9db63b',
+  okGreen: '#a7cf5b',
+  orange: '#bf4f04',
+  red: '#cf5044',
+};
+
+const masteryColors = {
+  unknown: '#eeeeee',
+  struggling: '#c30202',
+  practiced: '#9cdceb',
+  levelOne: '#58c4dd',
+  levelTwo: '#29abca',
+  mastered: KAColors.mathDomainColor,
+};
+
+const backgroundColors = [
+  hslToRgb([0.35, 0.39, 0.46]), // green
+  hslToRgb([0.41, 0.69, 0.38]), // green-teal
+  hslToRgb([0.46, 1.00, 0.33]), // teal
+  hslToRgb([0.50, 0.87, 0.34]), // teal-blue
+  hslToRgb([0.54, 0.68, 0.46]), // blue
+  hslToRgb([0.63, 0.63, 0.67]), // blue-purple
+  hslToRgb([0.70, 0.75, 0.72]), // purple
+  hslToRgb([0.80, 0.58, 0.64]), // purple-pink
+  hslToRgb([0.90, 0.57, 0.63]), // pink
+  hslToRgb([0.95, 0.58, 0.64]), // pink-red
+  hslToRgb([0.00, 0.84, 0.66]), // red
+  hslToRgb([0.03, 0.72, 0.61]), // red-orange
+  hslToRgb([0.06, 0.69, 0.55]), // orange
+  hslToRgb([0.08, 0.56, 0.51]), // orange-yellow
+  hslToRgb([0.10, 0.68, 0.45]), // yellow
+  hslToRgb([0.20, 0.73, 0.35]), // light green
+  hslToRgb([0.30, 0.55, 0.42]), // light green-green
+];
 
 module.exports = {
+  backgroundColors: backgroundColors,
   hslToRgb: hslToRgb,
   rgbToHsl: rgbToHsl,
   printRgb: printRgb,

@@ -15,7 +15,7 @@ import { AppText, AppTextBold, AppTextThin } from './AppText';
 import ColorHelpers from '../helpers/color-helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
-import { randomIntBetween } from '../helpers/helpers';
+import Helpers from '../helpers/helpers';
 
 import NumPad from '../components/NumPad';
 import AdditionHint from '../components/AdditionHint';
@@ -25,21 +25,30 @@ import Circle from '../components/Circle';
 import BackButton from '../components/BackButton';
 
 var QuizzerScreen = React.createClass({
+  propTypes: {
+    color: React.PropTypes.arrayOf(React.PropTypes.number),
+    points: React.PropTypes.number,
+  },
   render: function() {
-    var rgb = this.props.color;
-    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+    const {
+      color,
+      points,
+      children,
+    } = this.props;
+    const rgb = color;
+    const mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>
         <View style={styles.topRow}>
           <BackButton onPress={this.props.back} />
-          {(this.props.points != null) && <View style={styles.points}>
+          {points != null && <View style={styles.points}>
             <AppText style={styles.pointsText}>
-              {this.props.points + ' points'}
+              {`${points} points`}
             </AppText>
           </View>}
         </View>
-        {this.props.children}
+        {children}
       </View>
     );
   },
@@ -124,32 +133,6 @@ var Quizzer = React.createClass({
       });
     });
 
-    var shuffle = function(arr) {
-      // Modified from: http://stackoverflow.com/a/6274381
-      for (var j, x, i = arr.length; i; i--) {
-        j = Math.floor(Math.random() * i);
-        x = arr[i - 1];
-        arr[i - 1] = arr[j];
-        arr[j] = x;
-      }
-      return arr;
-    };
-
-    var softShuffle = function(arr, blockSize, offset) {
-      // Takes an array and shuffles blocks of values so things don't move too
-      // far from their original location.
-      blockSize = blockSize || arr.length;
-      offset = offset || 0;
-
-      var newArr = [];
-      for (var i = offset; i < arr.length; i += blockSize) {
-        var arrayBlock = arr.slice(i, i + blockSize);
-        var shuffledBlock = shuffle(arr.slice(i, i + blockSize));
-        newArr = newArr.concat(shuffledBlock);
-      }
-      return newArr;
-    };
-
     var inputList = this.state.inputList;
 
     var fluentFacts = [];
@@ -194,7 +177,7 @@ var Quizzer = React.createClass({
         // If we're pullling from pretty much all the facts, give the easier
         // facts first. The blockSize comes from figuring out approximately
         // where the facts go from being easy to hard.
-        inputList = inputList.concat(softShuffle(unknownFacts, 60));
+        inputList = inputList.concat(Helpers.softShuffle(unknownFacts, 60));
       }
     } else if (nonFluentFacts.length > 0) {
       // We know whether this learner is fluent or not fluent in each fact.
@@ -218,7 +201,7 @@ var Quizzer = React.createClass({
       var spacer = this.state.spacer;
 
       inputList = inputList.concat([studyFact])
-                           .concat(shuffle(fluentFacts).slice(0, spacer));
+        .concat(Helpers.shuffle(fluentFacts).slice(0, spacer));
       this.setState({
         spacer: spacer + 1
       });
@@ -331,25 +314,7 @@ var Quizzer = React.createClass({
   },
 
   getColor: function() {
-    var colors = [
-      ColorHelpers.hslToRgb([0.35, 0.39, 0.46]), // green
-      ColorHelpers.hslToRgb([0.41, 0.69, 0.38]), // green-teal
-      ColorHelpers.hslToRgb([0.46, 1.00, 0.33]), // teal
-      ColorHelpers.hslToRgb([0.50, 0.87, 0.34]), // teal-blue
-      ColorHelpers.hslToRgb([0.54, 0.68, 0.46]), // blue
-      ColorHelpers.hslToRgb([0.63, 0.63, 0.67]), // blue-purple
-      ColorHelpers.hslToRgb([0.70, 0.75, 0.72]), // purple
-      ColorHelpers.hslToRgb([0.80, 0.58, 0.64]), // purple-pink
-      ColorHelpers.hslToRgb([0.90, 0.57, 0.63]), // pink
-      ColorHelpers.hslToRgb([0.95, 0.58, 0.64]), // pink-red
-      ColorHelpers.hslToRgb([0.00, 0.84, 0.66]), // red
-      ColorHelpers.hslToRgb([0.03, 0.72, 0.61]), // red-orange
-      ColorHelpers.hslToRgb([0.06, 0.69, 0.55]), // orange
-      ColorHelpers.hslToRgb([0.08, 0.56, 0.51]), // orange-yellow
-      ColorHelpers.hslToRgb([0.10, 0.68, 0.45]), // yellow
-      ColorHelpers.hslToRgb([0.20, 0.73, 0.35]), // light green
-      ColorHelpers.hslToRgb([0.30, 0.55, 0.42]), // light green-green
-    ];
+    var colors = ColorHelpers.backgroundColors;
     return colors[this.state.colorHue % colors.length];
   },
 
