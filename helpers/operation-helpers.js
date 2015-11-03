@@ -4,22 +4,22 @@ import _ from 'underscore';
 
 var Operations = {
   noop: {
-    getSign: function(): string {
+    getSign: function() {
       return '';
     },
     getAnswer: function(input): number {
       return input;
     },
-    getQuestion: function(input): string {
+    getQuestion: function(input) {
       return input.toString();
     },
-    getExpression: function(input): string {
+    getExpression: function(input) {
       return input.toString();
     }
   },
 
   addition: {
-    getSign: function(): string {
+    getSign: function() {
       return '+';
     },
     getAnswer: function(inputs): number {
@@ -29,14 +29,14 @@ var Operations = {
       });
       return sum;
     },
-    getQuestion: function(inputs): string {
+    getQuestion: function(inputs) {
       var expression = '';
       _.each(inputs, (input) => {
         expression += input + ' ' + this.getSign() + ' ';
       });
       return expression.slice(0, -3);
     },
-    getExpression: function(inputs): string {
+    getExpression: function(inputs) {
       var expression = '';
       _.each(inputs, (input) => {
         expression += input + ' ' + this.getSign() + ' ';
@@ -46,7 +46,7 @@ var Operations = {
   },
 
   multiplication: {
-    getSign: function(): string {
+    getSign: function() {
       return '×';
     },
     getAnswer: function(inputs): number {
@@ -56,14 +56,14 @@ var Operations = {
       });
       return product;
     },
-    getQuestion: function(inputs): string {
+    getQuestion: function(inputs) {
       var expression = '';
       _.each(inputs, (input) => {
         expression += input + ' ' + this.getSign() + ' ';
       });
       return expression.slice(0, -3);
     },
-    getExpression: function(inputs): string {
+    getExpression: function(inputs) {
       var expression = '';
       _.each(inputs, (input) => {
         expression += input + ' ' + this.getSign() + ' ';
