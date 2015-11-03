@@ -120,7 +120,8 @@ const updateUserData = function() {
  */
 const addPoints = function(amount) {
   _data['points'] += amount;
-  _data['scores'].push(amount);
+  const d = new Date();
+  _data['scores'].push({score: amount, date: d.getTime()});
   MathFactStore.emitChange();
   updateStoredPoints();
 };
@@ -175,7 +176,7 @@ const updateStoredFactData = function() {
 
 
 /*
- * Update remate firebase storage
+ * Update remote firebase storage
  */
 const updateRemoteStore = function() {
   const uuid = _data['uuid'];
