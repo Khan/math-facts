@@ -148,6 +148,7 @@ const Navigation = React.createClass({
       <HomeScreen
         operation={operation}
         points={this.props.points}
+        scores={this.props.scores}
         showSettings={this.showSettings}
         showStats={this.showStats}
         startGame={this.startGame}

@@ -24,13 +24,27 @@ const HomeScreen = React.createClass({
   propTypes: {
     operation: React.PropTypes.string.isRequired,
     points: React.PropTypes.number.isRequired,
+    scores: React.PropTypes.array.isRequired,
     showSettings: React.PropTypes.func.isRequired,
     showStats: React.PropTypes.func.isRequired,
     startGame: React.PropTypes.func.isRequired,
     timeData: React.PropTypes.array,
     userName: React.PropTypes.string.isRequired,
   },
-  render: function () {
+  getPointsToday: function() {
+    const scores = this.props.scores.slice();
+    let pointsToday = 0;
+    const d = new Date();
+    const now = d.getTime();
+    const oneDay = 60*60*24*1000;
+    scores.forEach((score) => {
+      if (score && score.date && score.date > now - oneDay && score.score) {
+        pointsToday += score.score;
+      }
+    });
+    return pointsToday;
+  },
+  render: function() {
     const {
       operation,
       points,
@@ -53,11 +67,27 @@ const HomeScreen = React.createClass({
         </AppText>
 
         <AppText style={styles.headingText}>
-          {'You have '}
+          {'Points today: '}
+          <AppTextBold style={styles.headingTextEmphasis}>
+            {this.getPointsToday()}
+          </AppTextBold>
+          {' / 500'}
+        </AppText>
+
+        <AppText style={[styles.headingText, styles.headingTextSmall]}>
+          {'(You have '}
           <AppTextBold style={styles.headingTextEmphasis}>
             {points}
           </AppTextBold>
-          {' points'}
+          {' points in total)'}
+        </AppText>
+
+        <AppText style={styles.headingText}>
+          {'You\'re learning '}
+          <AppTextBold style={styles.headingTextEmphasis}>
+            {operation}
+          </AppTextBold>
+          {'!'}
         </AppText>
 
         <View style={styles.eggScene}>
@@ -168,6 +198,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingBottom: 10,
     textAlign: 'center',
+  },
+  headingTextSmall: {
+    fontSize: 14,
   },
   headingTextEmphasis: {
     color: '#555'
