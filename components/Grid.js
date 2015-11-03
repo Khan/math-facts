@@ -151,12 +151,15 @@ const Grid = React.createClass({
                   const times = timeData[row][col];
                   const timesAnswered = times.length;
                   const bestTime = Math.min.apply(Math, times);
-                  const learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
-                    timeData,
-                    operation
-                  );
+                  const learnerTypingTimes = MasteryHelpers
+                    .getLearnerTypingTimes(
+                      timeData,
+                      operation
+                    );
 
-                  const factStatus = MasteryHelpers.getFactStatus(answer, times,
+                  const factStatus = MasteryHelpers.getFactStatus(
+                    answer,
+                    times,
                     learnerTypingTimes);
 
                   const masteryColor = MasteryHelpers.masteryColors[factStatus];

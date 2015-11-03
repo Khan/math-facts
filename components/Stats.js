@@ -42,7 +42,7 @@ const Stats = React.createClass({
       timeData,
     } = this.props;
 
-    const learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
+    const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
       this.props.timeData,
       operation
     );

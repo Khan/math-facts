@@ -33,7 +33,7 @@ const masteryDescription = {
   mastered: 'You know this fact from memory.',
 };
 
-const getLearnerTypingTime = function(quizzesData, operation) {
+const getLearnerTypingTimes = function(quizzesData, operation) {
   const oneDigitTimes = [];
   const twoDigitTimes = [];
   let count = 0;
@@ -185,7 +185,6 @@ module.exports = {
   masteryTextColors: masteryTextColors,
   masteryDescription: masteryDescription,
 
-  getLearnerTypingTime: getLearnerTypingTime,
-
-  getFactStatus: getFactStatus
+  getLearnerTypingTimes: getLearnerTypingTimes,
+  getFactStatus: getFactStatus,
 };

@@ -112,7 +112,7 @@ var Quizzer = React.createClass({
 
     var questionSeeds = [];
 
-    var learnerTypingTimes = MasteryHelpers.getLearnerTypingTime(
+    var learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
       this.props.timeData,
       operation
     );
