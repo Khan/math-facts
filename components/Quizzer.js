@@ -259,21 +259,31 @@ var Quizzer = React.createClass({
     });
   },
   check: function() {
-    var inputs = this.getInputs();
-    var answer =  OperationHelpers[this.props.operation].getAnswer(inputs);
-    if (parseInt(this.state.response) === parseInt(answer)) {
-      var time = this.state.time;
-      var hintUsed = this.state.hintUsed;
+    const inputs = this.getInputs();
+    const operation = this.props.operation;
+    const OperationHelper = OperationHelpers[operation];
+    const answer = OperationHelper.getAnswer(inputs);
 
-      // TODO: Change this to be based on the user's typing speed and the
-      // number of digits in the answer
-      var timeBonus = (time < 1000 ? 20 : time < 2000 ? 5 : 1);
-      var newPoints = this.state.points + timeBonus;
+    if (parseInt(this.state.response) === parseInt(answer)) {
+      const time = this.state.time;
+      const hintUsed = this.state.hintUsed;
+
+      const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
+        this.props.timeData,
+        operation
+      );
+
+      const timeBonus = MasteryHelpers.getTimeBonus(
+        time,
+        answer,
+        learnerTypingTimes,
+      );
+      const newPoints = this.state.points + timeBonus;
 
       // Delay logic so user has a chance to see the digit they just entered
       setTimeout(() => {
-        var data = _.clone(this.state.data);
-        var d = new Date();
+        const data = _.clone(this.state.data);
+        const d = new Date();
         data.push({
           inputs: inputs,
           data: {
@@ -283,15 +293,15 @@ var Quizzer = React.createClass({
           }
         });
 
-        var timesUp = this.state.totalTimeElapsed > this.props.seconds * 1000;
-        var finished = this.props.mode === 'time' ? timesUp :
+        const timesUp = this.state.totalTimeElapsed > this.props.seconds * 1000;
+        const finished = this.props.mode === 'time' ? timesUp :
                        (this.state.count >= this.props.count - 1)
         if (finished) {
           // Finished the quiz
           clearInterval(this.interval);
         }
 
-        var inputList = this.state.inputList;
+        let inputList = this.state.inputList;
         if (this.state.count >= inputList.length - 1) {
           inputList = this.addToInputList(this.props.quizzesData);
         }

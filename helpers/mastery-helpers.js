@@ -85,13 +85,19 @@ const getLearnerTypingTimes = function(quizzesData, operation) {
 const getTypingTime = function(number, learnerTypingTimes) {
   // For a given number estimate the time in ms it takes this learner to
   // type it.
-
-  // TODO: Customize times per user using and average of their fastest times
-  // as the floor on their typing time.
   const numberLength = number.toString().length;
   const oneDigitTime = learnerTypingTimes[0];
   const typingTime = oneDigitTime + learnerTypingTimes[1] * numberLength;
   return typingTime;
+};
+
+const getTimeBonus = function(time, number, learnerTypingTimes) {
+  // For a given number estimate the time in ms it takes this learner to
+  // type it.
+  const typingTime = getTypingTime(number, learnerTypingTimes);
+  return time < typingTime + MEMORY_TIME ? 20 :
+    time < typingTime + MEMORY_TIME * 2 ? 5 :
+    1;
 };
 
 /**
@@ -187,4 +193,5 @@ module.exports = {
 
   getLearnerTypingTimes: getLearnerTypingTimes,
   getFactStatus: getFactStatus,
+  getTimeBonus: getTimeBonus,
 };
