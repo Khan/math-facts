@@ -66,7 +66,7 @@ const HomeScreen = React.createClass({
           {'!'}
         </AppText>
 
-        <AppText style={styles.headingText}>
+        <AppText style={[styles.headingText, {paddingBottom: 0}]}>
           {'Points today: '}
           <AppTextBold style={styles.headingTextEmphasis}>
             {this.getPointsToday()}
@@ -75,11 +75,7 @@ const HomeScreen = React.createClass({
         </AppText>
 
         <AppText style={[styles.headingText, styles.headingTextSmall]}>
-          {'(You have '}
-          <AppTextBold style={styles.headingTextEmphasis}>
-            {points}
-          </AppTextBold>
-          {' points in total)'}
+          {`(You have ${points} points in total)`}
         </AppText>
 
         <AppText style={styles.headingText}>
@@ -200,7 +196,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   headingTextSmall: {
-    fontSize: 14,
+    fontSize: 16,
   },
   headingTextEmphasis: {
     color: '#555'
