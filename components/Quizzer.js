@@ -198,8 +198,8 @@ var Quizzer = React.createClass({
       }
     } else if (nonFluentFacts.length > 0) {
       // We know whether this learner is fluent or not fluent in each fact.
-      // We want to pick one struggling fact as the learning fact and use spaced
-      // repetition to introduce it into long term memory.
+      // We want to pick one struggling fact as the learning fact and use
+      // spaced repetition to introduce it into long term memory.
 
       // TODO: Check something to do with long term memory?
 
@@ -282,8 +282,8 @@ var Quizzer = React.createClass({
       var time = this.state.time;
       var hintUsed = this.state.hintUsed;
 
-      // TODO: Change this to be based on the user's typing speed and the number
-      // of digits in the answer
+      // TODO: Change this to be based on the user's typing speed and the
+      // number of digits in the answer
       var timeBonus = (time < 1000 ? 20 : time < 2000 ? 5 : 1);
       var newPoints = this.state.points + timeBonus;
 
