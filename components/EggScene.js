@@ -33,7 +33,6 @@ const EggScene = React.createClass({
   animate: function() {
     this.setState({
       eggRotation:
-        (this.state.eggRotation == 0) &&
         (this.tick % 9 == 8) ?
         5 :
         0,
