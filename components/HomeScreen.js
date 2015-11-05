@@ -75,7 +75,7 @@ const HomeScreen = React.createClass({
         </AppText>
 
         <AppText style={[styles.headingText, styles.headingTextSmall]}>
-          {`(You have ${points} points in total)`}
+          (You have {points} points in total)
         </AppText>
 
         <AppText style={styles.headingText}>
