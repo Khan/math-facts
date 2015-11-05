@@ -175,13 +175,15 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
   }
 
 
-  if (fluent > nonFluent) {
-    // working on it
-    return 'practiced';
+  // If they have more nonFluent than fluent facts, or have tried this fact
+  // a bunch of times and aren't at mastery yet, assume they need some help.
+  if (fluent <= nonFluent || nonFluent > 4) {
+    // non-fluent
+    return 'struggling';
   }
 
-  // non-fluent
-  return 'struggling';
+  // working on it
+  return 'practiced';
 
 };
 
