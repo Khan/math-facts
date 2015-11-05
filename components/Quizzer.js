@@ -169,9 +169,9 @@ var Quizzer = React.createClass({
       if (unknownFacts.length < 10) {
         // If we have too few unknown facts, pad the questions with some facts
         // that we know are fluent, making sure that everything is shuffled.
-        inputList = inputList.concat(shuffle(
+        inputList = inputList.concat(Helpers.shuffle(
           unknownFacts.concat(
-            shuffle(fluentFacts).slice(0, 10 - unknownFacts.length)
+            Helpers.shuffle(fluentFacts).slice(0, 10 - unknownFacts.length)
         )));
       } else {
         // If we're pullling from pretty much all the facts, give the easier
@@ -208,7 +208,7 @@ var Quizzer = React.createClass({
     } else {
       // This learner is fluent in everything! Let them practice to their
       // heart's content.
-      inputList = inputList.concat(shuffle(fluentFacts));
+      inputList = inputList.concat(Helpers.shuffle(fluentFacts));
     }
 
     return inputList;
