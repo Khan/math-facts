@@ -63,6 +63,7 @@ const Icon = React.createClass({
     size: React.PropTypes.number,
     style: React.PropTypes.style,
     type: React.PropTypes.oneOf([
+      'angleBracketLeft',
       'chevronRight',
       'cog',
       'play',
