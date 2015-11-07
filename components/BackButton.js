@@ -8,10 +8,11 @@ const {
 } = React;
 
 import { AppText, AppTextBold, AppTextThin } from './AppText';
+import Icon from './Icon';
 
 const BackButton = React.createClass({
   propTypes: {
-    onPress: React.PropTypes.func
+    onPress: React.PropTypes.func,
   },
   render: function() {
     return (
@@ -20,8 +21,16 @@ const BackButton = React.createClass({
           activeOpacity={0.4}
           onPress={this.props.onPress}
           style={styles.backButton}>
-        <View>
-          <AppText style={styles.backButtonText}>{'×'}</AppText>
+        <View style={styles.buttonContents}>
+          <Icon
+            color='rgba(0, 0, 0, 0.4)'
+            size={30}
+            style={styles.icon}
+            type='angleBracketLeft'
+          />
+          <AppText style={styles.backButtonText}>
+            Back
+          </AppText>
         </View>
       </TouchableHighlight>
     );
@@ -31,13 +40,18 @@ const BackButton = React.createClass({
 const styles = StyleSheet.create({
   backButton: {
     alignSelf: 'flex-start',
-    padding: 15
+    padding: 15,
+  },
+  buttonContents: {
+    flexDirection: 'row',
+    marginTop: 3,
   },
   backButtonText: {
     color: 'rgba(0, 0, 0, 0.4)',
-    fontSize: 30,
-    height: 30,
-    marginTop: -11
+    fontSize: 20,
+  },
+  icon: {
+    marginTop: 3,
   },
 });
 

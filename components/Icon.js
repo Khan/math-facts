@@ -50,6 +50,9 @@ const paths = {
   chevronRight: `M9.7,5.7l-5,5c-0.1,0.1-0.2,0.1-0.3,0.1s-0.2,0-0.3-0.1L3,9.6C2.9,9.5,2.9,9.4,2.9,9.3C2.9,9.1,2.9,9,3,9l3.6-3.6L3,1.8
         C2.9,1.8,2.9,1.7,2.9,1.5s0-0.2,0.1-0.3l1.1-1.1C4.2,0,4.3,0,4.4,0s0.2,0,0.3,0.1l5,5c0.1,0.1,0.1,0.2,0.1,0.3
         C9.8,5.5,9.8,5.6,9.7,5.7z`,
+  angleBracketLeft: `M4.9,0.6c0,0.1,0,0.1-0.1,0.2L2.2,3.3L4.8,6c0,0,0.1,0.1,0.1,0.2s0,0.1-0.1,0.2L4.5,6.6c0,0-0.1,0.1-0.2,0.1
+    c-0.1,0-0.1,0-0.2-0.1L1.1,3.5C1,3.5,1,3.4,1,3.3s0-0.1,0.1-0.2l3.1-3.1C4.2,0,4.3,0,4.3,0c0.1,0,0.1,0,0.2,0.1l0.3,0.3
+    C4.9,0.4,4.9,0.5,4.9,0.6z`,
 };
 
 const Icon = React.createClass({
@@ -58,6 +61,7 @@ const Icon = React.createClass({
     backgroundType: React.PropTypes.oneOf(['circle', 'square',]),
     color: React.PropTypes.string,
     size: React.PropTypes.number,
+    style: React.PropTypes.style,
     type: React.PropTypes.oneOf([
       'chevronRight',
       'cog',
@@ -76,6 +80,7 @@ const Icon = React.createClass({
       backgroundType,
       color,
       size,
+      style,
       type,
     } = this.props;
     const padding = 1;
@@ -87,7 +92,7 @@ const Icon = React.createClass({
     const offset = backgroundType ?
       (innerSize - BASE_ICON_SIZE * iconScale) / 2 : 0;
     return (
-      <Surface width={size} height={size}>
+      <Surface width={size} height={size} style={style}>
         <Group x={padding} y={padding}>
           {backgroundType === 'circle' && <Group x={radius} y={radius}>
             <Shape fill={backgroundColor} d={circlePath(radius)} />
