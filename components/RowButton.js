@@ -39,7 +39,7 @@ const Button = React.createClass({
             <Icon
               size={18}
               color='#999'
-              type='chevronRight' />
+              type='angleBracketRight' />
           </View>
         </View>
       </TouchableHighlight>
