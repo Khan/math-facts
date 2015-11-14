@@ -38,7 +38,7 @@ const HomeScreen = React.createClass({
     const now = d.getTime();
     const oneDay = 60*60*24*1000;
     scores.forEach((score) => {
-      if (score && score.date && score.date > now - oneDay && score.score) {
+      if (score.date && score.date > now - oneDay) {
         pointsToday += score.score;
       }
     });
