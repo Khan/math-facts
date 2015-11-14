@@ -247,7 +247,16 @@ const fetchPoints = function() {
       _data['points'] = (points == null) ? 0 : parseInt(points);
     }),
     AsyncStorage.getItem(createKey('scores')).then((scores) => {
-      _data['scores'] = (scores == null) ? [] : JSON.parse(scores);
+      let ret = [];
+      if (scores != null) {
+        ret = JSON.parse(scores).map((scoreData) => {
+          if (typeof scoreData === 'number') {
+            return { score: scoreData, date: null };
+          }
+          return { score: scoreData.score, date: scoreData.date };
+        });
+      }
+      _data['scores'] = ret;
     }),
   ]);
 };
