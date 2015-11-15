@@ -64,7 +64,6 @@ const Icon = React.createClass({
     backgroundType: React.PropTypes.oneOf(['circle', 'square',]),
     color: React.PropTypes.string,
     size: React.PropTypes.number,
-    style: React.PropTypes.object,
     type: React.PropTypes.oneOf([
       'angleBracketLeft',
       'angleBracketRight',
@@ -85,7 +84,6 @@ const Icon = React.createClass({
       backgroundType,
       color,
       size,
-      style,
       type,
     } = this.props;
     const padding = 1;
@@ -97,7 +95,7 @@ const Icon = React.createClass({
     const offset = backgroundType ?
       (innerSize - BASE_ICON_SIZE * iconScale) / 2 : 0;
     return (
-      <Surface width={size} height={size} style={style}>
+      <Surface width={size} height={size}>
         <Group x={padding} y={padding}>
           {backgroundType === 'circle' && <Group x={radius} y={radius}>
             <Shape fill={backgroundColor} d={circlePath(radius)} />

@@ -22,12 +22,13 @@ const BackButton = React.createClass({
           onPress={this.props.onPress}
           style={styles.backButton}>
         <View style={styles.buttonContents}>
-          <Icon
-            color='rgba(0, 0, 0, 0.4)'
-            size={30}
-            style={styles.icon}
-            type='angleBracketLeft'
-          />
+          <View style={styles.icon}>
+            <Icon
+              color='rgba(0, 0, 0, 0.4)'
+              size={30}
+              type='angleBracketLeft'
+            />
+          </View>
           <AppText style={styles.backButtonText}>
             Back
           </AppText>
