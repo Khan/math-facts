@@ -64,9 +64,10 @@ const Icon = React.createClass({
     backgroundType: React.PropTypes.oneOf(['circle', 'square',]),
     color: React.PropTypes.string,
     size: React.PropTypes.number,
-    style: React.PropTypes.style,
+    style: React.PropTypes.object,
     type: React.PropTypes.oneOf([
       'angleBracketLeft',
+      'angleBracketRight',
       'chevronRight',
       'cog',
       'play',
