@@ -27,7 +27,6 @@ const Navigation = React.createClass({
       playing: false,
       showStats: false,
       showSettings: false,
-      operation: 'multiplication',
       time: 20,
     };
   },
@@ -54,7 +53,7 @@ const Navigation = React.createClass({
     });
   },
   finish: function(quizData, points, playAgain) {
-    const operation = this.state.operation;
+    const operation = this.props.user.operation;
 
     _.each(quizData, (questionData) => {
       MathFactsActions.addAttempts(operation, [questionData]);
@@ -76,7 +75,7 @@ const Navigation = React.createClass({
     MathFactsActions.initializeData();
   },
   setOperation: function(operation) {
-    this.setState({operation: operation});
+    MathFactsActions.setOperation(operation);
   },
   setTime: function(time) {
     this.setState({time: time});
@@ -102,7 +101,7 @@ const Navigation = React.createClass({
       );
     }
 
-    const operation = this.state.operation;
+    const operation = this.props.user.operation;
     const quizzesData = this.props.factData[operation];
     const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
 
@@ -139,7 +138,7 @@ const Navigation = React.createClass({
           changeActiveUser={MathFactsActions.changeActiveUser}
           changeUserName={MathFactsActions.changeName}
           goBack={this.showMenu}
-          operation={this.state.operation}
+          operation={this.props.user.operation}
           setOperation={this.setOperation}
           time={this.state.time}
           setTime={this.setTime}

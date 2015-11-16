@@ -52,6 +52,7 @@ const makeUser = function(userId, userName) {
     id: userId,
     name: userName,
     deleted: false,
+    operation: 'multiplication',
   };
 };
 
@@ -107,13 +108,18 @@ const changeActiveUser = function(id) {
   updateUserData().then(fetchStoredData).done();
 };
 
+const setOperation = function(newOperation) {
+  _data['userList'][_data['activeUser']].operation = newOperation;
+  MathFactStore.emitChange();
+  updateUserData().done();
+};
+
 const updateUserData = function() {
   return Promise.all([
     AsyncStorage.setItem('activeUser', _data['activeUser'].toString()),
     AsyncStorage.setItem('userList', JSON.stringify(_data['userList'])),
   ]);
 };
-
 
 /*
  * Points
@@ -236,7 +242,17 @@ const fetchUserData = function() {
       _data['activeUser'] = (user == null) ? _data['activeUser'] : user;
     }),
     AsyncStorage.getItem('userList').then((userList) => {
-      _data['userList'] = (userList == null) ? _data['userList'] : JSON.parse(userList);
+      let ret = _data['userList'];
+      if (userList != null) {
+        ret = JSON.parse(userList).map((userData) => {
+          // Fill in default values and then overwrite with new ones
+          return {
+            ...makeDefaultUser(),
+            ...userData,
+          };
+        });
+      }
+      _data['userList'] = ret;
     }),
   ]);
 };
@@ -359,6 +375,11 @@ AppDispatcher.register(function(action) {
     case MathFactsConstants.USERS_CHANGE_ACTIVE_USER:
       const id = action.id;
       changeActiveUser(id);
+      break;
+
+    case MathFactsConstants.OPERATION_CHANGE:
+      const newOperation = action.operation;
+      setOperation(newOperation);
       break;
 
     default:

@@ -62,6 +62,13 @@ const MathFactsActions = {
     });
   },
 
+  setOperation: function(operation) {
+    AppDispatcher.dispatch({
+      actionType: MathFactsConstants.OPERATION_CHANGE,
+      operation: operation,
+    });
+  },
+
 };
 
 module.exports = MathFactsActions;
