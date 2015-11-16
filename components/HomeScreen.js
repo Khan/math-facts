@@ -86,9 +86,7 @@ const HomeScreen = React.createClass({
           {'!'}
         </AppText>
 
-        <View style={styles.eggScene}>
-          <EggScene />
-        </View>
+        <View style={styles.divider} />
 
         <View style={styles.actions}>
           <View style={styles.action}>
@@ -205,6 +203,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center'
+  },
+
+  divider: {
+    backgroundColor: '#eee',
+    height: 2,
+    marginBottom: 25,
+    marginTop: 20,
   },
 
 });
