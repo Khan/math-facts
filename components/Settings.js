@@ -63,6 +63,51 @@ const ModeSelection = React.createClass({
   },
 });
 
+
+const TimeSelection = React.createClass({
+  propTypes: {
+    goBack: React.PropTypes.func.isRequired,
+    time: React.PropTypes.string.isRequired,
+    setTime: React.PropTypes.func.isRequired,
+  },
+
+  setTime: function(time) {
+    return () => {
+      this.props.setTime(time);
+      this.props.goBack();
+    };
+  },
+  render: function () {
+    const {
+      goBack,
+      time,
+    } = this.props;
+
+    const timeOptions = [20, 30, 60, 90, 120];
+
+    return (
+      <View>
+        <View style={styles.topRow}>
+          <BackButton onPress={goBack} />
+        </View>
+
+        <AppText style={styles.headingText}>
+          How many seconds do you want each game to be?
+        </AppText>
+        <View style={styles.toggleButtons}>
+        {timeOptions.map((value) => {
+          return <Button
+            text={value}
+            color={time === value ? undefined : '#ddd'}
+            wrapperStyle={[styles.toggleButtonWrapper]}
+            onPress={this.setTime(value)} />
+        })}
+        </View>
+      </View>
+    );
+  },
+});
+
 const AddNewUser = React.createClass({
   propTypes: {
     addUser: React.PropTypes.func.isRequired,
@@ -238,13 +283,16 @@ const SettingsHome = React.createClass({
       operation,
       showChangeUserName,
       showModeSelection,
+      showTimeSelection,
       showUserSelection,
+      time,
       user,
       uuid,
     } = this.props;
 
     const printOperation = operation.slice(0, 1).toUpperCase() +
       operation.slice(1);
+
     return (
       <View>
 
@@ -272,6 +320,9 @@ const SettingsHome = React.createClass({
           onPress={showModeSelection}
           text={`Change Mode (${printOperation})`} />
 
+        <RowButton
+          onPress={showTimeSelection}
+          text={`Change Game Time (${time}s)`} />
 
         <View style={styles.settingsSection}>
           <AppText style={styles.uuidText}>
@@ -292,6 +343,8 @@ const Settings = React.createClass({
     goBack: React.PropTypes.func.isRequired,
     operation: React.PropTypes.string.isRequired,
     setOperation: React.PropTypes.func.isRequired,
+    time: React.PropTypes.number.isRequired,
+    setTime: React.PropTypes.func.isRequired,
     user: React.PropTypes.object.isRequired,
     userList: React.PropTypes.array.isRequired,
     uuid: React.PropTypes.string.isRequired,
@@ -319,6 +372,9 @@ const Settings = React.createClass({
   showModeSelection: function() {
     this.showScreen('modeSelection');
   },
+  showTimeSelection: function() {
+    this.showScreen('timeSelection');
+  },
   showUserSelection: function() {
     this.showScreen('userSelection');
   },
@@ -334,6 +390,8 @@ const Settings = React.createClass({
       goBack,
       operation,
       setOperation,
+      time,
+      setTime,
       user,
       userList,
       uuid,
@@ -356,6 +414,12 @@ const Settings = React.createClass({
         operation={operation}
         setOperation={setOperation} />
     }
+    if (currentScreen === 'timeSelection') {
+      return <TimeSelection
+        goBack={this.showSettingsHome}
+        time={time}
+        setTime={setTime} />
+    }
     if (currentScreen === 'userSelection') {
       return <UserSelection
         changeActiveUser={changeActiveUser}
@@ -372,7 +436,9 @@ const Settings = React.createClass({
         showAddNewUser={this.showAddNewUser}
         showChangeUserName={this.showChangeUserName}
         showModeSelection={this.showModeSelection}
+        showTimeSelection={this.showTimeSelection}
         showUserSelection={this.showUserSelection}
+        time={time}
         user={user}
         uuid={uuid} />
     );
