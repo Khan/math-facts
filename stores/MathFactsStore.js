@@ -247,7 +247,7 @@ const fetchPoints = function() {
       _data['points'] = (points == null) ? 0 : parseInt(points);
     }),
     AsyncStorage.getItem(createKey('scores')).then((scores) => {
-      let ret = [];
+      let ret = _data['scores'];
       if (scores != null) {
         ret = JSON.parse(scores).map((scoreData) => {
           if (typeof scoreData === 'number') {
