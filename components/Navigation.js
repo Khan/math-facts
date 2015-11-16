@@ -27,7 +27,6 @@ const Navigation = React.createClass({
       playing: false,
       showStats: false,
       showSettings: false,
-      time: 20,
     };
   },
   startGame: function() {
@@ -78,7 +77,7 @@ const Navigation = React.createClass({
     MathFactsActions.setOperation(operation);
   },
   setTime: function(time) {
-    this.setState({time: time});
+    MathFactsActions.setTime(time);
   },
   parseQuizzesDataIntoTimeData: function(quizzesData) {
     return _.map(_.range(0, 12), (left) => {
@@ -115,7 +114,7 @@ const Navigation = React.createClass({
           quizzesData={quizzesData}
           timeData={timeData}
           mode={'time'}
-          seconds={this.state.time}
+          seconds={this.props.user.time}
           count={10}
         />
       );
@@ -140,7 +139,7 @@ const Navigation = React.createClass({
           goBack={this.showMenu}
           operation={this.props.user.operation}
           setOperation={this.setOperation}
-          time={this.state.time}
+          time={this.props.user.time}
           setTime={this.setTime}
           user={this.props.user}
           userList={this.props.userList}

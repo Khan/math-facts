@@ -9,6 +9,7 @@ module.exports = keyMirror({
   FACT_DATA_ADD: null,
   OPERATION_CHANGE: null,
   POINTS_ADD: null,
+  TIME_CHANGE: null,
   USERS_ADD: null,
   USERS_CHANGE_NAME: null,
   USERS_CHANGE_ACTIVE_USER: null,

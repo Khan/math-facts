@@ -53,6 +53,7 @@ const makeUser = function(userId, userName) {
     name: userName,
     deleted: false,
     operation: 'multiplication',
+    time: 60,
   };
 };
 
@@ -110,6 +111,12 @@ const changeActiveUser = function(id) {
 
 const setOperation = function(newOperation) {
   _data['userList'][_data['activeUser']].operation = newOperation;
+  MathFactStore.emitChange();
+  updateUserData().done();
+};
+
+const setTime = function(newTime) {
+  _data['userList'][_data['activeUser']].time = newTime;
   MathFactStore.emitChange();
   updateUserData().done();
 };
@@ -380,6 +387,11 @@ AppDispatcher.register(function(action) {
     case MathFactsConstants.OPERATION_CHANGE:
       const newOperation = action.operation;
       setOperation(newOperation);
+      break;
+
+    case MathFactsConstants.TIME_CHANGE:
+      const newTime = action.time;
+      setTime(newTime);
       break;
 
     default:
