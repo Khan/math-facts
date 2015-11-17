@@ -36,7 +36,7 @@ var QuizzerScreen = React.createClass({
       children,
     } = this.props;
     const rgb = color;
-    const mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+    const mainColor = ColorHelpers.printRgb(rgb);
 
     return (
       <View style={[styles.container, {backgroundColor: mainColor}]}>
