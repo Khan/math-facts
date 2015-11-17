@@ -4,6 +4,7 @@ import _ from 'underscore';
 
 import React from 'react-native';
 const {
+  Animated,
   StyleSheet,
   TouchableHighlight,
   Text,
@@ -77,6 +78,7 @@ const Quizzer = React.createClass({
       totalTimeElapsed: 0,
       points: 0,
 
+      bounceValue: new Animated.Value(1),
     };
   },
   getInputs: function() {
@@ -90,7 +92,15 @@ const Quizzer = React.createClass({
         response: intResponse
       }, this.check);
     } else {
-      // TODO: visual feedback that you're at the max number of digits
+      // Visual feedback that you're at the max number of digits
+      this.state.bounceValue.setValue(0.9);
+      Animated.spring(
+        this.state.bounceValue,
+        {
+          toValue: 1,
+          friction: 3,
+        }
+      ).start();
     }
   },
   clear: function() {
@@ -421,11 +431,18 @@ const Quizzer = React.createClass({
             {question}
           </AppText>
         </View>
-        <View style={styles.responseContainer}>
+        <Animated.View
+          style={[styles.responseContainer, {
+            flex: 1,
+            transform: [
+              {scale: this.state.bounceValue},
+            ]
+          }]}
+        >
           <AppText style={[styles.response]}>
             {this.state.response}
           </AppText>
-        </View>
+        </Animated.View>
         <View style={styles.hintContainer}>
           {this.state.hintUsed &&
             <AdditionHint color={rgb} left={inputs[0]} right={inputs[1]} />
