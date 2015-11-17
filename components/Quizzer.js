@@ -3,7 +3,7 @@
 import _ from 'underscore';
 
 import React from 'react-native';
-var {
+const {
   StyleSheet,
   TouchableHighlight,
   Text,
@@ -24,7 +24,7 @@ import Circle from '../components/Circle';
 
 import BackButton from '../components/BackButton';
 
-var QuizzerScreen = React.createClass({
+const QuizzerScreen = React.createClass({
   propTypes: {
     color: React.PropTypes.arrayOf(React.PropTypes.number),
     points: React.PropTypes.number,
@@ -54,7 +54,7 @@ var QuizzerScreen = React.createClass({
   },
 });
 
-var Quizzer = React.createClass({
+const Quizzer = React.createClass({
   propTypes: {
 
   },
@@ -85,7 +85,7 @@ var Quizzer = React.createClass({
   },
   addDigit: function(value) {
     if (this.state.response.toString().length < 3) {
-      var intResponse = parseInt(this.state.response + value.toString());
+      const intResponse = parseInt(this.state.response + value.toString());
       this.setState({
         response: intResponse
       }, this.check);
@@ -104,15 +104,15 @@ var Quizzer = React.createClass({
     });
   },
   addToInputList: function(quizzesData) {
-    var operation = this.props.operation;
-    var OperationHelper = OperationHelpers[operation];
+    const operation = this.props.operation;
+    const OperationHelper = OperationHelpers[operation];
 
-    var easiestFacts = OperationHelper.getEasiestFactOrder();
-    var max = 10;
+    const easiestFacts = OperationHelper.getEasiestFactOrder();
+    const max = 10;
 
-    var questionSeeds = [];
+    const questionSeeds = [];
 
-    var learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
+    const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
       this.props.timeData,
       operation
     );
@@ -125,24 +125,24 @@ var Quizzer = React.createClass({
         quizzesData[row] = [];
       }
       _.each(_.range(0, max + 1), (col) => {
-        var timeData = quizzesData[row][col];
-        var answer = OperationHelper.getAnswer([row, col]);
-        var factStatus = MasteryHelpers.getFactStatus(answer, timeData,
+        const timeData = quizzesData[row][col];
+        const answer = OperationHelper.getAnswer([row, col]);
+        const factStatus = MasteryHelpers.getFactStatus(answer, timeData,
           learnerTypingTimes);
         questionSeeds[row][col] = factStatus;
       });
     });
 
-    var inputList = this.state.inputList;
+    let inputList = this.state.inputList.slice();
 
-    var fluentFacts = [];
-    var nonFluentFacts = [];
-    var unknownFacts = [];
+    const fluentFacts = [];
+    const nonFluentFacts = [];
+    const unknownFacts = [];
 
-    var pushFact = function(fact) {
-      var left = fact[0];
-      var right = fact[1];
-      var fluency = questionSeeds[left][right];
+    const pushFact = function(fact) {
+      const left = fact[0];
+      const right = fact[1];
+      const fluency = questionSeeds[left][right];
       if (fluency === 'mastered') {
         fluentFacts.push(fact);
       } else if (fluency === 'struggling') {
@@ -186,7 +186,7 @@ var Quizzer = React.createClass({
 
       // TODO: Check something to do with long term memory?
 
-      var studyFact = this.state.studyFact;
+      let studyFact = this.state.studyFact;
       if (studyFact.length === 0) {
         // We get to choose the study fact! Pick the next easiest fact that we
         // don't know.
@@ -198,7 +198,7 @@ var Quizzer = React.createClass({
       //    L F L F F L F F F L F F F F L F F F F F L F F F F F F L ...
       // to attempt to work the fact into long-term memory.
 
-      var spacer = this.state.spacer;
+      const spacer = this.state.spacer;
 
       inputList = inputList.concat([studyFact])
         .concat(Helpers.shuffle(fluentFacts).slice(0, spacer));
@@ -214,7 +214,7 @@ var Quizzer = React.createClass({
     return inputList;
   },
   initializeInputList: function(quizzesData) {
-    var inputList = this.addToInputList(quizzesData);
+    const inputList = this.addToInputList(quizzesData);
 
     this.setState({
       inputList: inputList,
@@ -229,7 +229,7 @@ var Quizzer = React.createClass({
     }
   },
   componentWillReceiveProps: function(newProps) {
-    var oldQuizzesData = this.props.quizzesData;
+    const oldQuizzesData = this.props.quizzesData;
 
     if (oldQuizzesData == null && newProps.quizzesData != null) {
       this.initializeInputList(newProps.quizzesData);
@@ -239,7 +239,7 @@ var Quizzer = React.createClass({
     clearInterval(this.interval);
   },
   tick: function() {
-    var timeLimit = this.props.seconds * 1000;
+    const timeLimit = this.props.seconds * 1000;
 
     this.setState({
       time: this.state.time + 50,
@@ -247,7 +247,7 @@ var Quizzer = React.createClass({
     });
   },
   countdown: function() {
-    var countdown = this.state.countdown;
+    const countdown = this.state.countdown;
 
     if (countdown < 0) {
       clearInterval(this.interval);
@@ -324,13 +324,13 @@ var Quizzer = React.createClass({
   },
 
   getColor: function() {
-    var colors = ColorHelpers.backgroundColors;
+    const colors = ColorHelpers.backgroundColors;
     return colors[this.state.colorHue % colors.length];
   },
 
   _renderProgressBar: function() {
-    var elapsedSeconds = Math.ceil(this.state.totalTimeElapsed / 1000);
-    var totalSeconds = this.props.seconds;
+    let elapsedSeconds = Math.ceil(this.state.totalTimeElapsed / 1000);
+    const totalSeconds = this.props.seconds;
     if (elapsedSeconds > totalSeconds) {
       elapsedSeconds = totalSeconds;
     }
@@ -352,8 +352,8 @@ var Quizzer = React.createClass({
     return (
       <View style={styles.progressDots}>
         {_.map(_.range(0, this.props.count), (value) => {
-          var opacity = value < this.state.count ? 1 : 0.2;
-          var color = 'rgba(255, 255, 255, ' + opacity + ')';
+          const opacity = value < this.state.count ? 1 : 0.2;
+          const color = 'rgba(255, 255, 255, ' + opacity + ')';
           return (
             <Circle
               key={'notch-' + value}
@@ -386,7 +386,7 @@ var Quizzer = React.createClass({
   },
 
   _renderCountdown: function() {
-    var countdown = this.state.countdown;
+    const countdown = this.state.countdown;
 
     return (
       <QuizzerScreen color={this.getColor()} back={this.props.back}>
@@ -401,13 +401,13 @@ var Quizzer = React.createClass({
   },
 
   _renderGame: function() {
-    var inputs = this.getInputs();
-    var total = OperationHelpers[this.props.operation].getAnswer(inputs);
+    const inputs = this.getInputs();
+    const total = OperationHelpers[this.props.operation].getAnswer(inputs);
 
-    var rgb = this.getColor();
-    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+    const rgb = this.getColor();
+    const mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 
-    var question = OperationHelpers[this.props.operation].getQuestion(inputs);
+    const question = OperationHelpers[this.props.operation].getQuestion(inputs);
 
     return (
       <QuizzerScreen
@@ -442,12 +442,12 @@ var Quizzer = React.createClass({
   },
 
   _renderSummary: function() {
-    var rgb = this.getColor();
-    var mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-    var finish = () => {
+    const rgb = this.getColor();
+    const mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+    const finish = () => {
       this.props.finish(this.state.data, this.state.points);
     };
-    var playAgain = () => {
+    const playAgain = () => {
       this.props.playAgain(this.state.data, this.state.points);
     };
     return (
@@ -495,7 +495,7 @@ var Quizzer = React.createClass({
   }
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fafafa'
