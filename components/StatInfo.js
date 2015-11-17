@@ -33,14 +33,6 @@ const StatInfo = React.createClass({
 
     const times = timeData[inputs[0]][inputs[1]];
 
-    const timesAnswered = times.length;
-    let bestTime = null;
-    _.each(times, (data) => {
-      if (data != null && (bestTime == null || data.time < bestTime)) {
-        bestTime = data.time;
-      }
-    });
-
     const OperationHelper = OperationHelpers[operation];
     const expression = OperationHelper.getExpression(inputs);
     const answer = OperationHelper.getAnswer(inputs);
@@ -59,89 +51,40 @@ const StatInfo = React.createClass({
       return parseFloat(time/1000).toFixed(2).toString() + 's';
     };
 
-    const info = (
-      <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
-        <AppText style={[styles.infoQuestion, color]}>
-          {expression}
-        </AppText>
-        <View style={styles.infoStatsGroup}>
-          <View style={styles.infoStat}>
-            <AppText style={styles.infoStatText}>
-              {timesAnswered + ' attempt' + (timesAnswered !== 1 ? 's' : '')}
-            </AppText>
-          </View>
-          {(timesAnswered > 0 && bestTime != null) ?
-          <View style={styles.infoStat}>
-            <AppText style={styles.infoStatText}>
-              {'Best time: ' + printTime(bestTime)}
-            </AppText>
-          </View> : null}
-        </View>
-          <View style={styles.infoDescription}>
-            <AppText style={[styles.infoDescriptionTitle, color]}>
-              {factStatus.toUpperCase()}
-            </AppText>
-            <AppText style={[styles.infoDescriptionText, color]}>
-              {masteryDescription}
-            </AppText>
-          </View>
-      </View>
-    );
-
-
-    const timesArr = [];
-    _.each(times, (data) => {
-      timesArr.push(data.time);
-    });
-
-    const findAverage = (arr) => {
-      if (arr.length === 0) {
-        return null;
-      }
-      const sum = arr.reduce((a, b) => {
-        return a + b;
-      }, 0);
-      return sum / arr.length;
-    };
-
-    // TODO: Reject outliers from these stats (e.g. times > 20 seconds because
-    // they got distracted or something)
-    const avg = findAverage(timesArr);
-
-    // Calculate standard deviation
-    const squareDifferences = timesArr.map((time) => {
-      const difference = time - avg;
-      return difference * difference;
-    });
-
-    const stdDev = Math.sqrt(findAverage(squareDifferences));
-
     const statInfo = (
-      <View style={[styles.infoContainer, { backgroundColor: masteryColor }]}>
-        <AppText style={[styles.infoQuestion, color]}>
+      <View style={[styles.infoContainer]}>
+        <AppText style={styles.infoQuestion}>
           {expression}
         </AppText>
+        <View style={styles.infoDescription}>
+          <AppText
+            style={[
+              styles.infoDescriptionTitle,
+              { backgroundColor: masteryColor, color: masteryColorText}
+            ]}
+          >
+            {factStatus.toUpperCase()}
+          </AppText>
+          <AppText style={styles.infoDescriptionText}>
+            {masteryDescription}
+          </AppText>
+        </View>
 
         {/*
         <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
         */}
 
-        {timesArr.length > 0 && <View>
+        {times.length > 0 && <View>
           <View style={styles.infoStatsGroup}>
-            {_.map(timesArr, (time, idx) => {
+            {_.map(times, (time, idx) => {
               return (
                 <View style={styles.infoStat} key={'time-' + idx}>
                   <AppText style={styles.infoStatText}>
-                    {printTime(time)}
+                    {printTime(time.time)}
                   </AppText>
                 </View>
               );
             })}
-          </View>
-          <View style={styles.infoStat}>
-            <AppText style={styles.infoStatText}>
-              {'Avg ' + printTime(avg) + ' ± ' + printTime(stdDev)}
-            </AppText>
           </View>
         </View>}
       </View>
@@ -160,8 +103,11 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   infoQuestion: {
+    color: '#144956',
     fontSize: 40,
     margin: 5,
+    marginBottom: 0,
+    height: 50,
     alignSelf: 'center'
   },
   infoStatsGroup: {
@@ -174,9 +120,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingLeft: 6,
     paddingRight: 6,
-    paddingTop: 2,
+    paddingTop: 3,
     paddingBottom: 2,
-    borderRadius: 10,
+    borderRadius: 3,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderWidth: 1,
     alignItems: 'center'
   },
   infoStatText: {
@@ -187,16 +135,24 @@ const styles = StyleSheet.create({
   infoDescription: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 10,
     marginTop: 10,
     marginLeft: 30,
     marginRight: 30,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   },
   infoDescriptionTitle: {
-    fontSize: 16
+    borderRadius: 3,
+    fontSize: 16,
+    marginBottom: 5,
+    paddingTop: 3,
+    paddingBottom: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   infoDescriptionText: {
-    fontSize: 11
+    fontSize: 11,
+    color: '#144956',
   },
 });
 
