@@ -149,7 +149,9 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
   let fluent = 0;
   let nonFluent = 0;
 
-  _.each(times, (timeData) => {
+  // Only use the 10 most recent times
+  const recentTimes = times.slice(-10);
+  _.each(recentTimes, (timeData) => {
     const time = timeData.time;
     // TODO: Only take into account the most recent times, but specifically
     // take into account times over the past few days to check for long-term
