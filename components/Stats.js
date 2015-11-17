@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
 
   typingTime: {
     fontSize: 12,
-    padding: 17
+    padding: 15,
+    paddingTop: 22,
   },
 });
 

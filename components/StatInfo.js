@@ -4,6 +4,8 @@ import _ from 'underscore';
 
 import React from 'react-native';
 const {
+  PixelRatio,
+  ScrollView,
   StyleSheet,
   View,
 } = React;
@@ -52,42 +54,44 @@ const StatInfo = React.createClass({
     };
 
     const statInfo = (
-      <View style={[styles.infoContainer]}>
-        <AppText style={styles.infoQuestion}>
-          {expression}
-        </AppText>
-        <View style={styles.infoDescription}>
-          <AppText
-            style={[
-              styles.infoDescriptionTitle,
-              { backgroundColor: masteryColor, color: masteryColorText}
-            ]}
-          >
-            {factStatus.toUpperCase()}
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.infoContainer}>
+          <AppText style={styles.infoQuestion}>
+            {expression}
           </AppText>
-          <AppText style={styles.infoDescriptionText}>
-            {masteryDescription}
-          </AppText>
-        </View>
-
-        {/*
-        <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
-        */}
-
-        {times.length > 0 && <View>
-          <View style={styles.infoStatsGroup}>
-            {_.map(times, (time, idx) => {
-              return (
-                <View style={styles.infoStat} key={'time-' + idx}>
-                  <AppText style={styles.infoStatText}>
-                    {printTime(time.time)}
-                  </AppText>
-                </View>
-              );
-            })}
+          <View style={styles.infoDescription}>
+            <AppText
+              style={[
+                styles.infoDescriptionTitle,
+                { backgroundColor: masteryColor, color: masteryColorText}
+              ]}
+            >
+              {factStatus.toUpperCase()}
+            </AppText>
+            <AppText style={styles.infoDescriptionText}>
+              {masteryDescription}
+            </AppText>
           </View>
-        </View>}
-      </View>
+
+          {/*
+          <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
+          */}
+
+          {times.length > 0 && <View>
+            <View style={styles.infoStatsGroup}>
+              {_.map(times, (time, idx) => {
+                return (
+                  <View style={styles.infoStat} key={'time-' + idx}>
+                    <AppText style={styles.infoStatText}>
+                      {printTime(time.time)}
+                    </AppText>
+                  </View>
+                );
+              })}
+            </View>
+          </View>}
+        </View>
+      </ScrollView>
     );
 
     return statInfo;
@@ -95,25 +99,28 @@ const StatInfo = React.createClass({
 });
 
 const styles = StyleSheet.create({
-
+  scrollView: {
+    paddingLeft: 30,
+    paddingRight: 30,
+    width: 320,
+  },
   infoContainer: {
     flex: 1,
-    alignSelf: 'stretch',
     padding: 10,
     marginTop: 1,
   },
   infoQuestion: {
+    textAlign: 'center',
     color: '#144956',
     fontSize: 40,
     margin: 5,
     marginBottom: 0,
     height: 50,
-    alignSelf: 'center'
   },
   infoStatsGroup: {
+    justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center'
   },
   infoStat: {
     margin: 2,
@@ -124,8 +131,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     borderRadius: 3,
     borderColor: 'rgba(0, 0, 0, 0.1)',
-    borderWidth: 1,
-    alignItems: 'center'
+    borderWidth: 2 / PixelRatio.get(),
   },
   infoStatText: {
     fontSize: 13,
@@ -134,12 +140,8 @@ const styles = StyleSheet.create({
 
   infoDescription: {
     alignItems: 'center',
-    justifyContent: 'center',
     marginBottom: 10,
     marginTop: 10,
-    marginLeft: 30,
-    marginRight: 30,
-    flexWrap: 'wrap',
   },
   infoDescriptionTitle: {
     borderRadius: 3,
@@ -153,6 +155,7 @@ const styles = StyleSheet.create({
   infoDescriptionText: {
     fontSize: 11,
     color: '#144956',
+    textAlign: 'center',
   },
 });
 
