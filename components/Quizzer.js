@@ -293,8 +293,8 @@ const Quizzer = React.createClass({
           }
         });
 
-        const timesUp = this.state.totalTimeElapsed > this.props.seconds * 1000;
-        const finished = this.props.mode === 'time' ? timesUp :
+        const timeUp = this.state.totalTimeElapsed > this.props.seconds * 1000;
+        const finished = this.props.mode === 'time' ? timeUp :
                        (this.state.count >= this.props.count - 1)
         if (finished) {
           // Finished the quiz
@@ -401,13 +401,14 @@ const Quizzer = React.createClass({
   },
 
   _renderGame: function() {
+    const OperationHelper = OperationHelpers[this.props.operation];
     const inputs = this.getInputs();
-    const total = OperationHelpers[this.props.operation].getAnswer(inputs);
+    const total = OperationHelper.getAnswer(inputs);
 
     const rgb = this.getColor();
     const mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
 
-    const question = OperationHelpers[this.props.operation].getQuestion(inputs);
+    const question = OperationHelper.getQuestion(inputs);
 
     return (
       <QuizzerScreen
