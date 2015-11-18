@@ -132,6 +132,57 @@ const ProgressBar = React.createClass({
   },
 });
 
+const Summary = React.createClass({
+  propTypes: {
+    color: React.PropTypes.arrayOf(React.PropTypes.number),
+    finish: React.PropTypes.func.isRequired,
+    mode: React.PropTypes.string.isRequired,
+    playAgain: React.PropTypes.func.isRequired,
+    points: React.PropTypes.number.isRequired,
+    ProgressComponent: React.PropTypes.node.isRequired,
+  },
+  render: function() {
+    const {
+      color,
+      finish,
+      mode,
+      playAgain,
+      points,
+      ProgressComponent,
+    } = this.props;
+
+    return (
+      <QuizzerScreen
+          color={color}
+          back={finish}>
+        {ProgressComponent}
+        <View style={styles.summary}>
+          <AppText style={styles.summaryTitle}>
+            {mode === 'time' ? 'Time\'s up!' : 'You\'re done!'}
+          </AppText>
+          <AppText style={styles.summaryText}>
+            {'You earned '}
+          </AppText>
+          <AppTextBold style={styles.summaryPoints}>
+            {points}
+          </AppTextBold>
+          <AppText style={styles.summaryText}>
+            {' points!'}
+          </AppText>
+        </View>
+        <Button
+          text='Play Again'
+          color='rgba(0, 0, 0, 0.15)'
+          onPress={playAgain}/>
+        <Button
+          text='Back'
+          color='rgba(0, 0, 0, 0.15)'
+          onPress={finish}/>
+      </QuizzerScreen>
+    );
+  },
+});
+
 const Quizzer = React.createClass({
   propTypes: {
 
@@ -517,44 +568,18 @@ const Quizzer = React.createClass({
   },
 
   _renderSummary: function() {
-    const rgb = this.getColor();
-    const mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-    const finish = () => {
-      this.props.finish(this.state.data, this.state.points);
-    };
-    const playAgain = () => {
-      this.props.playAgain(this.state.data, this.state.points);
-    };
-    return (
-      <QuizzerScreen
-          color={this.getColor()}
-          points={this.state.points}
-          back={finish}>
-        {this._renderProgress()}
-        <View style={styles.summary}>
-          <AppText style={styles.summaryTitle}>
-            {this.props.mode === 'time' ? 'Time\'s up!' : 'You\'re done!'}
-          </AppText>
-          <AppText style={styles.summaryText}>
-            {'You earned '}
-          </AppText>
-          <AppTextBold style={styles.summaryPoints}>
-            {this.state.points}
-          </AppTextBold>
-          <AppText style={styles.summaryText}>
-            {' points!'}
-          </AppText>
-        </View>
-        <Button
-          text='Play Again'
-          color='rgba(0, 0, 0, 0.15)'
-          onPress={playAgain}/>
-        <Button
-          text='Back'
-          color='rgba(0, 0, 0, 0.15)'
-          onPress={finish}/>
-      </QuizzerScreen>
-    );
+    return <Summary
+      color={this.getColor()}
+      finish={() => {
+        this.props.finish(this.state.data, this.state.points);
+      }}
+      mode={this.props.mode}
+      playAgain={() => {
+        this.props.finish(this.state.data, this.state.points, true);
+      }}
+      points={this.state.points}
+      ProgressComponent={this._renderProgress()}
+    />;
   },
 
   render: function() {
