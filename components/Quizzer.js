@@ -78,6 +78,34 @@ const Loading = React.createClass({
   },
 });
 
+
+const Countdown = React.createClass({
+  propTypes: {
+    back: React.PropTypes.func.isRequired,
+    color: React.PropTypes.arrayOf(React.PropTypes.number),
+    countdown: React.PropTypes.number.isRequired,
+    ProgressComponent: React.PropTypes.node.isRequired,
+  },
+  render: function() {
+    const {
+      back,
+      color,
+      countdown,
+      ProgressComponent,
+    } = this.props;
+    return (
+      <QuizzerScreen color={color} back={back}>
+        {ProgressComponent}
+        <View style={styles.countdown}>
+          <AppText style={styles.countdownText}>
+            {countdown > 0 ? 'Ready?' : 'GO!'}
+          </AppText>
+        </View>
+      </QuizzerScreen>
+    );
+  },
+});
+
 const ProgressBar = React.createClass({
   propTypes: {
     elapsedTime: React.PropTypes.number.isRequired,
@@ -431,18 +459,12 @@ const Quizzer = React.createClass({
   },
 
   _renderCountdown: function() {
-    const countdown = this.state.countdown;
-
-    return (
-      <QuizzerScreen color={this.getColor()} back={this.props.back}>
-        {this._renderProgress()}
-        <View style={styles.countdown}>
-          <AppText style={styles.countdownText}>
-            {countdown > 0 ? 'Ready?' : 'GO!'}
-          </AppText>
-        </View>
-      </QuizzerScreen>
-    );
+    return <Countdown
+      back={this.props.back}
+      color={this.getColor()}
+      countdown={this.state.countdown}
+      ProgressComponent={this._renderProgress()}
+    />;
   },
 
   _renderGame: function() {
