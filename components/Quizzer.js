@@ -78,6 +78,32 @@ const Loading = React.createClass({
   },
 });
 
+const ProgressBar = React.createClass({
+  propTypes: {
+    elapsedTime: React.PropTypes.number.isRequired,
+    totalTime: React.PropTypes.number.isRequired,
+  },
+  render: function() {
+    const {
+      elapsedTime,
+      totalTime,
+    } = this.props;
+
+    return (
+      <View style={styles.progressBar}>
+        <View style={[styles.progressBarSegment, {
+          flex: elapsedTime / totalTime,
+          backgroundColor: 'rgba(255, 255, 255, 1)',
+        }]} />
+        <View style={[styles.progressBarSegment, {
+          flex: 1 - elapsedTime / totalTime,
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        }]} />
+      </View>
+    );
+  },
+});
+
 const Quizzer = React.createClass({
   propTypes: {
 
@@ -367,18 +393,10 @@ const Quizzer = React.createClass({
     if (elapsedSeconds > totalSeconds) {
       elapsedSeconds = totalSeconds;
     }
-    return (
-      <View style={styles.progressBar}>
-        <View style={[styles.progressBarSegment, {
-          flex: elapsedSeconds / totalSeconds,
-          backgroundColor: 'rgba(255, 255, 255, 1)',
-        }]} />
-        <View style={[styles.progressBarSegment, {
-          flex: 1 - elapsedSeconds / totalSeconds,
-          backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        }]} />
-      </View>
-    );
+    return <ProgressBar
+      elapsedTime={elapsedSeconds}
+      totalTime={totalSeconds}
+    />;
   },
 
   _renderProgressDots: function() {
@@ -406,7 +424,6 @@ const Quizzer = React.createClass({
   },
 
   _renderLoading: function() {
-
     return <Loading
       back={this.props.back}
       color={this.getColor()}
