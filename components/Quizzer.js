@@ -416,6 +416,7 @@ const Quizzer = React.createClass({
         time,
         answer,
         learnerTypingTimes,
+        hintUsed,
       );
       const newPoints = this.state.points + timeBonus;
 

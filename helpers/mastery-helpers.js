@@ -51,6 +51,10 @@ const getLearnerTypingTimes = function(quizzesData, operation) {
       const numberLength = answer.toString().length;
       _.each(data, (timeData) => {
         // TODO: check if the data is recent (throw out really old times)
+        if (timeData.hintUsed) {
+          // Don't include typing times when hints were used
+          return;
+        }
         if (numberLength === 1) {
           oneDigitTimes.push(timeData.time);
           count++;
@@ -99,7 +103,10 @@ const getTypingTime = function(number, learnerTypingTimes) {
   return typingTime;
 };
 
-const getTimeBonus = function(time, number, learnerTypingTimes) {
+const getTimeBonus = function(time, number, learnerTypingTimes, hintUsed) {
+  if (hintUsed) {
+    return 1;
+  }
   // For a given number estimate the time in ms it takes this learner to
   // type it.
   const typingTime = getTypingTime(number, learnerTypingTimes);
@@ -160,6 +167,9 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
   // Only use the 10 most recent times
   const recentTimes = times.slice(-10);
   _.each(recentTimes, (timeData) => {
+    if (timeData.hintUsed) {
+      return;
+    }
     const time = timeData.time;
     // TODO: Only take into account the most recent times, but specifically
     // take into account times over the past few days to check for long-term

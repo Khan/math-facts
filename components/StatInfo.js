@@ -99,7 +99,7 @@ const StatInfo = React.createClass({
                 return (
                   <View style={styles.infoStat} key={'time-' + idx}>
                     <AppText style={styles.infoStatText}>
-                      {printTime(time.time)}
+                      {time.hintUsed ? 'HINT' : printTime(time.time)}
                     </AppText>
                   </View>
                 );
