@@ -609,18 +609,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.15)'
   },
 
-  backButton: {
-    flex: 0,
-    padding: 15,
-    alignSelf: 'flex-start'
-  },
-  backButtonText: {
-    color: '#fff',
-    fontSize: 30,
-    height: 30,
-    marginTop: -11
-  },
-
   points: {
     flex: 1,
     alignItems: 'flex-end',
