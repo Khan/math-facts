@@ -55,6 +55,29 @@ const QuizzerScreen = React.createClass({
   },
 });
 
+
+const Loading = React.createClass({
+  propTypes: {
+    back: React.PropTypes.func.isRequired,
+    color: React.PropTypes.arrayOf(React.PropTypes.number),
+  },
+  render: function() {
+    const {
+      back,
+      color,
+    } = this.props;
+    return (
+      <QuizzerScreen color={color} back={back}>
+        <View style={styles.loading}>
+          <AppText style={styles.loadingText}>
+            Loading...
+          </AppText>
+        </View>
+      </QuizzerScreen>
+    );
+  },
+});
+
 const Quizzer = React.createClass({
   propTypes: {
 
@@ -384,15 +407,10 @@ const Quizzer = React.createClass({
 
   _renderLoading: function() {
 
-    return (
-      <QuizzerScreen color={this.getColor()} back={this.props.back}>
-        <View style={styles.loading}>
-          <AppText style={styles.loadingText}>
-            Loading...
-          </AppText>
-        </View>
-      </QuizzerScreen>
-    );
+    return <Loading
+      back={this.props.back}
+      color={this.getColor()}
+    />;
   },
 
   _renderCountdown: function() {
