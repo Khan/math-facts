@@ -45,6 +45,8 @@ const StatInfo = React.createClass({
       learnerTypingTimes);
     const masteryColor = MasteryHelpers.masteryColors[factStatus];
     const masteryColorText = MasteryHelpers.masteryTextColors[factStatus];
+
+    const masteryTitle  = MasteryHelpers.masteryTitle[factStatus];
     const masteryDescription  = MasteryHelpers.masteryDescription[factStatus];
 
     const color = {color: masteryColorText};
@@ -66,7 +68,7 @@ const StatInfo = React.createClass({
                 { backgroundColor: masteryColor, color: masteryColorText}
               ]}
             >
-              {factStatus.toUpperCase()}
+              {masteryTitle.toUpperCase()}
             </AppText>
             <AppText style={styles.infoDescriptionText}>
               {masteryDescription}
@@ -75,6 +77,20 @@ const StatInfo = React.createClass({
 
           {/*
           <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
+          */}
+
+
+          {/*
+          TODO: Show times with their dates, like:
+            Nov 15 [1.60s] [2.10s]
+            Nov 2  [2.50s]
+            Oct 30 [2.00s]
+            Oct 28 [2.35s] [2.10s]
+            Then we can show them with the newest times at the top! :D
+          */}
+          {/*
+          TODO: Add a mastery indicator to each time (fast vs slow).
+            Maybe a border color? Background color?
           */}
 
           {times.length > 0 && <View>

@@ -25,12 +25,20 @@ const masteryTextColors = {
   mastered: '#f7feff',
 };
 
+const masteryTitle = {
+  unknown: 'Not Practiced',
+  struggling: 'Tricky',
+  introduced: 'Just Started',
+  practiced: 'Almost there',
+  mastered: 'Mastered',
+};
+
 const masteryDescription = {
-  unknown: 'You haven\'t answered this fact yet.',
-  struggling: 'You\'re having trouble with this fact.',
-  introduced: 'You haven\'t answered this fact enough times.',
-  practiced: 'You have answered this fact quickly sometimes.',
-  mastered: 'You know this fact from memory.',
+  unknown: `You've never answered this one yet!`,
+  struggling: `This fact isn't as fast as your other ones. You'll get there! Keep practicing!`,
+  introduced: `We need to practice this one a few more times!`,
+  practiced: `We need to get this one to be a little faster!`,
+  mastered: `You know this fact from memory.`,
 };
 
 const getLearnerTypingTimes = function(quizzesData, operation) {
@@ -193,6 +201,7 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
 module.exports = {
   masteryColors: masteryColors,
   masteryTextColors: masteryTextColors,
+  masteryTitle: masteryTitle,
   masteryDescription: masteryDescription,
 
   getLearnerTypingTimes: getLearnerTypingTimes,
