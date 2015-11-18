@@ -44,7 +44,9 @@ const QuizzerScreen = React.createClass({
           <BackButton onPress={this.props.back} />
           {points != null && <View style={styles.points}>
             <AppText style={styles.pointsText}>
-              {`${points} points`}
+              <AppTextBold style={styles.pointsTextBold}>
+                {points}
+              </AppTextBold> points
             </AppText>
           </View>}
         </View>
@@ -622,10 +624,15 @@ const styles = StyleSheet.create({
   points: {
     flex: 1,
     alignItems: 'flex-end',
-    padding: 15
+    paddingRight: 20,
+    paddingTop: 18,
   },
   pointsText: {
-    color: '#fff'
+    fontSize: 20,
+    color: 'rgba(255, 255, 255, 0.6)',
+  },
+  pointsTextBold: {
+    color: '#fff',
   },
 
   progressBar: {
