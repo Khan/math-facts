@@ -106,15 +106,13 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    padding: 10,
+    padding: 8,
     marginTop: 1,
   },
   infoQuestion: {
     textAlign: 'center',
     color: '#144956',
     fontSize: 40,
-    margin: 5,
-    marginBottom: 0,
     height: 50,
   },
   infoStatsGroup: {
@@ -132,6 +130,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     borderWidth: 2 / PixelRatio.get(),
+    borderBottomWidth: 4 / PixelRatio.get(),
   },
   infoStatText: {
     fontSize: 13,
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
   infoDescription: {
     alignItems: 'center',
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: 5,
   },
   infoDescriptionTitle: {
     borderRadius: 3,
