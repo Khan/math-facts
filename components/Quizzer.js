@@ -19,7 +19,6 @@ import OperationHelpers from '../helpers/operation-helpers';
 import Helpers from '../helpers/helpers';
 
 import NumPad from '../components/NumPad';
-import AdditionHint from '../components/AdditionHint';
 import Button from '../components/Button';
 import Circle from '../components/Circle';
 
@@ -521,10 +520,7 @@ const Quizzer = React.createClass({
   _renderGame: function() {
     const OperationHelper = OperationHelpers[this.props.operation];
     const inputs = this.getInputs();
-    const total = OperationHelper.getAnswer(inputs);
-
-    const rgb = this.getColor();
-    const mainColor = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+    const answer = OperationHelper.getAnswer(inputs);
 
     const question = OperationHelper.getQuestion(inputs);
 
@@ -553,7 +549,9 @@ const Quizzer = React.createClass({
         </Animated.View>
         <View style={styles.hintContainer}>
           {this.state.hintUsed &&
-            <AdditionHint color={rgb} left={inputs[0]} right={inputs[1]} />
+            <AppText style={styles.hintText}>
+              The answer is <AppTextBold>{answer}</AppTextBold>
+            </AppText>
           }
         </View>
 
@@ -663,7 +661,7 @@ const styles = StyleSheet.create({
     fontSize: 75,
     height: 90,
     color: '#fff',
-    marginBottom: 50,
+    marginBottom: 20,
   },
 
   loading: {
@@ -706,7 +704,17 @@ const styles = StyleSheet.create({
   summaryPoints: {
     fontSize: 40,
     color: '#fff'
-  }
+  },
+
+  hintContainer: {
+    alignItems: 'center',
+    height: 30,
+    marginBottom: 5,
+  },
+  hintText: {
+    color: 'rgba(255, 255, 255, 0.5)',
+    fontSize: 22,
+  },
 });
 
 module.exports = Quizzer;
