@@ -4,6 +4,7 @@ import _ from 'underscore';
 
 import React from 'react-native';
 import {
+  PixelRatio,
   StyleSheet,
   TextInput,
   TouchableHighlight,
@@ -207,7 +208,7 @@ const styles = StyleSheet.create({
 
   divider: {
     backgroundColor: '#eee',
-    height: 2,
+    height: 3 / PixelRatio.get(),
     marginBottom: 25,
     marginTop: 20,
   },
