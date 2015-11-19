@@ -1,5 +1,6 @@
 'use strict';
 
+import CodePush from 'react-native-code-push';
 import React from 'react-native';
 import {
   StyleSheet,
@@ -22,6 +23,9 @@ const MathFactsApp = React.createClass({
       },
     })
   ],
+  componentDidMount: function() {
+    CodePush.sync();
+  },
   render: function() {
     return (
       <View style={styles.appWrapper}>

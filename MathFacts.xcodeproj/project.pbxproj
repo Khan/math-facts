@@ -24,6 +24,7 @@
 		320C22EE1B16D6CE009501EF /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 320C22ED1B16D6A3009501EF /* libRCTWebSocket.a */; };
 		32A24E9D1BE435AD003CE90A /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A24E921BE43594003CE90A /* libART.a */; };
 		32A24ED61BE48CB3003CE90A /* math-facts-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A24ED51BE48CB3003CE90A /* math-facts-icon.png */; };
+		32B9275A1BFE27A600A8E940 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B927591BFE276000A8E940 /* libCodePush.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +99,13 @@
 			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
 			remoteInfo = ART;
 		};
+		32B927581BFE276000A8E940 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 32B927541BFE276000A8E940 /* CodePush.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = CodePush;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -137,6 +145,7 @@
 		3270CCD01BF9611E00AC63E4 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		32A24E8D1BE43594003CE90A /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		32A24ED51BE48CB3003CE90A /* math-facts-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "math-facts-icon.png"; sourceTree = "<group>"; };
+		32B927541BFE276000A8E940 /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "node_modules/react-native-code-push/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -164,6 +173,7 @@
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
+				32B9275A1BFE27A600A8E940 /* libCodePush.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +285,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		32B927551BFE276000A8E940 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				32B927591BFE276000A8E940 /* libCodePush.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +304,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				32B927541BFE276000A8E940 /* CodePush.xcodeproj */,
 				32A24E8D1BE43594003CE90A /* ART.xcodeproj */,
 				320C22E81B16D6A3009501EF /* RCTWebSocket.xcodeproj */,
 				78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */,
@@ -401,6 +420,10 @@
 					ProjectRef = 32A24E8D1BE43594003CE90A /* ART.xcodeproj */;
 				},
 				{
+					ProductGroup = 32B927551BFE276000A8E940 /* Products */;
+					ProjectRef = 32B927541BFE276000A8E940 /* CodePush.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -511,6 +534,13 @@
 			fileType = archive.ar;
 			path = libART.a;
 			remoteRef = 32A24E911BE43594003CE90A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		32B927591BFE276000A8E940 /* libCodePush.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCodePush.a;
+			remoteRef = 32B927581BFE276000A8E940 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
@@ -653,6 +683,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/node_modules/react-native-code-push/**",
 					"$(SRCROOT)/node_modules/react-native/React/**",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
@@ -674,6 +705,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/node_modules/react-native-code-push/**",
 					"$(SRCROOT)/node_modules/react-native/React/**",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
