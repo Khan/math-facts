@@ -64,7 +64,7 @@ const HomeScreen = React.createClass({
           <AppTextBold style={styles.headingTextEmphasis}>
             {userName}
           </AppTextBold>
-          {'!!!'}
+          {'!'}
         </AppText>
 
         <AppText style={[styles.headingText, {paddingBottom: 0}]}>
