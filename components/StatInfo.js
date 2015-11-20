@@ -55,6 +55,25 @@ const StatInfo = React.createClass({
       return parseFloat(time/1000).toFixed(2).toString() + 's';
     };
 
+    // Group the facts by date, with the newest date at the top
+    const sortedTimes = {};
+    times.slice().reverse().forEach((time) => {
+      const d = new Date(time.date);
+      // d.toLocaleString() returns a string like:
+      // "October 31, 2015 at 3:32:32 PM PDT"
+      // We want to turn it into a string that looks like:
+      // "Oct 31"
+      // Do this by removing the comma, splitting it up into words, and
+      // taking the first 3 letters of the first word and the whole second
+      // word (which is the date number).
+      const dateParts = d.toLocaleString().replace(/,/g, '').split(' ');
+      const key = dateParts[0].slice(0, 3) + ' ' + dateParts[1];
+      if (sortedTimes[key] == null) {
+        sortedTimes[key] = [];
+      }
+      sortedTimes[key].push(time)
+    });
+
     const statInfo = (
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.infoContainer}>
@@ -79,19 +98,18 @@ const StatInfo = React.createClass({
           <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
           */}
 
-
-          {/*
-          TODO: Show times with their dates, like:
-            Nov 15 [1.60s] [2.10s]
-            Nov 2  [2.50s]
-            Oct 30 [2.00s]
-            Oct 28 [2.35s] [2.10s]
-            Then we can show them with the newest times at the top! :D
-          */}
-
-          {times.length > 0 && <View>
-            <View style={styles.infoStatsGroup}>
-              {_.map(times, (time, idx) => {
+          {_.map(sortedTimes, (timesArray, date) => {
+            return <View
+              style={styles.infoStatsGroup}
+              key={'time-group-' + date}
+            >
+              <View>
+                <AppText style={styles.infoStatLabel}>
+                  {date.toUpperCase()}
+                </AppText>
+              </View>
+              <View style={styles.infoStatsData}>
+              {timesArray.map((time, idx) => {
                 const timeStatus = MasteryHelpers.isFluent(
                   answer, time.time, learnerTypingTimes);
                 const color = timeStatus ?
@@ -99,7 +117,10 @@ const StatInfo = React.createClass({
                     MasteryHelpers.masteryColors.struggling;
                 return (
                   <View
-                    style={[styles.infoStat, !time.hintUsed && { borderBottomColor: color}]}
+                    style={[
+                      styles.infoStat,
+                      !time.hintUsed && { borderBottomColor: color}
+                    ]}
                     key={'time-' + idx}
                   >
                     <AppText style={styles.infoStatText}>
@@ -108,8 +129,9 @@ const StatInfo = React.createClass({
                   </View>
                 );
               })}
+              </View>
             </View>
-          </View>}
+          })}
         </View>
       </ScrollView>
     );
@@ -136,9 +158,23 @@ const styles = StyleSheet.create({
     height: 50,
   },
   infoStatsGroup: {
-    justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+  },
+  infoStatLabel: {
+    color: '#999',
+    fontSize: 13,
+    paddingTop: 6,
+    paddingRight: 6,
+    textAlign: 'right',
+    width: 67,
+  },
+  infoStatsData: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
   },
   infoStat: {
     margin: 2,
@@ -159,8 +195,11 @@ const styles = StyleSheet.create({
 
   infoDescription: {
     alignItems: 'center',
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
     marginBottom: 10,
     marginTop: 5,
+    paddingBottom: 10,
   },
   infoDescriptionTitle: {
     borderRadius: 3,
