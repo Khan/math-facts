@@ -119,6 +119,14 @@ const getTimeBonus = function(time, number, learnerTypingTimes, hintUsed) {
  * Given data about a particular math fact, determine the fact's mastery level
  *
  */
+const isFluent = function(number, time, learnerTypingTimes) {
+  // TODO: Maybe add another level of "quick but not fluent"?
+  if (time < getTypingTime(number, learnerTypingTimes) + MEMORY_TIME) {
+    return true;
+  } else {
+    return false;
+  }
+};
 const getFactStatus = function(number, times, learnerTypingTimes) {
   // times is an array of the learner's time data for this fact in the form:
   // [ {time: 1200, date: 19346832, hintUsed: true},
@@ -161,8 +169,8 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
     return 'unknown';
   }
 
-  let fluent = 0;
-  let nonFluent = 0;
+  let fluentTimes = 0;
+  let nonFluentTimes = 0;
 
   // Only use the 10 most recent times
   const recentTimes = times.slice(-10);
@@ -176,10 +184,11 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
     // retention.
 
     // TODO: Maybe add another level of "quick but not fluent"?
-    if (time < getTypingTime(number, learnerTypingTimes) + MEMORY_TIME) {
-      fluent++;
+    const fluent = isFluent(number, time, learnerTypingTimes);
+    if (fluent) {
+      fluentTimes++;
     } else {
-      nonFluent++;
+      nonFluentTimes++;
     }
   });
 
@@ -189,15 +198,15 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
 
   // If the learner has shown fluency on this fact more than 75% of the time,
   // we can consider them fluent.
-  if (fluent > nonFluent * 3) {
-    // fluent
+  if (fluentTimes > nonFluentTimes * 3) {
+    // fluent overall
     return 'mastered';
   }
 
 
   // If they have more nonFluent than fluent facts, or have tried this fact
   // a bunch of times and aren't at mastery yet, assume they need some help.
-  if (fluent <= nonFluent || nonFluent > 4) {
+  if (fluentTimes <= nonFluentTimes || nonFluentTimes > 4) {
     // non-fluent
     return 'struggling';
   }
@@ -215,6 +224,7 @@ module.exports = {
   masteryDescription: masteryDescription,
 
   getLearnerTypingTimes: getLearnerTypingTimes,
+  isFluent: isFluent,
   getFactStatus: getFactStatus,
   getTimeBonus: getTimeBonus,
 };

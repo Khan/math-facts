@@ -88,16 +88,20 @@ const StatInfo = React.createClass({
             Oct 28 [2.35s] [2.10s]
             Then we can show them with the newest times at the top! :D
           */}
-          {/*
-          TODO: Add a mastery indicator to each time (fast vs slow).
-            Maybe a border color? Background color?
-          */}
 
           {times.length > 0 && <View>
             <View style={styles.infoStatsGroup}>
               {_.map(times, (time, idx) => {
+                const timeStatus = MasteryHelpers.isFluent(
+                  answer, time.time, learnerTypingTimes);
+                const color = timeStatus ?
+                    MasteryHelpers.masteryColors.mastered :
+                    MasteryHelpers.masteryColors.struggling;
                 return (
-                  <View style={styles.infoStat} key={'time-' + idx}>
+                  <View
+                    style={[styles.infoStat, !time.hintUsed && { borderBottomColor: color}]}
+                    key={'time-' + idx}
+                  >
                     <AppText style={styles.infoStatText}>
                       {time.hintUsed ? 'HINT' : printTime(time.time)}
                     </AppText>
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
     paddingTop: 3,
     paddingBottom: 2,
     borderRadius: 3,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderColor: 'rgba(0, 0, 0, 0.12)',
     borderWidth: 2 / PixelRatio.get(),
     borderBottomWidth: 4 / PixelRatio.get(),
   },
