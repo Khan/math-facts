@@ -12,6 +12,7 @@ const {
 
 import { AppText, AppTextBold, AppTextThin } from './AppText';
 
+import Helpers from '../helpers/helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 
@@ -49,12 +50,6 @@ const StatInfo = React.createClass({
     const masteryTitle  = MasteryHelpers.masteryTitle[factStatus];
     const masteryDescription  = MasteryHelpers.masteryDescription[factStatus];
 
-    const color = {color: masteryColorText};
-
-    const printTime = (time) => {
-      return parseFloat(time/1000).toFixed(2).toString() + 's';
-    };
-
     // Group the facts by date, with the newest date at the top
     const sortedTimes = {};
     times.slice().reverse().forEach((time) => {
@@ -81,14 +76,19 @@ const StatInfo = React.createClass({
             {expression}
           </AppText>
           <View style={styles.infoDescription}>
-            <AppText
-              style={[
+            <View style={[
                 styles.infoDescriptionTitle,
-                { backgroundColor: masteryColor, color: masteryColorText}
+                { backgroundColor: masteryColor }
               ]}
             >
-              {masteryTitle.toUpperCase()}
-            </AppText>
+              <AppText style={[
+                  styles.infoDescriptionTitleText,
+                  { color: masteryColorText },
+                ]}
+              >
+                {masteryTitle.toUpperCase()}
+              </AppText>
+            </View>
             <AppText style={styles.infoDescriptionText}>
               {masteryDescription}
             </AppText>
@@ -124,7 +124,7 @@ const StatInfo = React.createClass({
                     key={'time-' + idx}
                   >
                     <AppText style={styles.infoStatText}>
-                      {time.hintUsed ? 'HINT' : printTime(time.time)}
+                      {time.hintUsed ? 'HINT' : Helpers.printTime(time.time)}
                     </AppText>
                   </View>
                 );
@@ -203,12 +203,15 @@ const styles = StyleSheet.create({
   },
   infoDescriptionTitle: {
     borderRadius: 3,
-    fontSize: 16,
     marginBottom: 5,
     paddingTop: 3,
     paddingBottom: 2,
     paddingLeft: 10,
     paddingRight: 10,
+  },
+  infoDescriptionTitleText: {
+    backgroundColor: 'transparent',
+    fontSize: 16,
   },
   infoDescriptionText: {
     fontSize: 11,

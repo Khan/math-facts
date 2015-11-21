@@ -1,5 +1,9 @@
 'use strict';
 
+const printTime = (time) => {
+  return parseFloat(time/1000).toFixed(2).toString() + 's';
+};
+
 const randomIntBetween = function(min, max) {
   return Math.floor(Math.random()*(max - min + 1)) + min;
 };
@@ -31,6 +35,7 @@ const softShuffle = function(arr, blockSize, offset) {
 };
 
 module.exports = {
+  printTime: printTime,
   randomIntBetween: randomIntBetween,
   shuffle: shuffle,
   softShuffle: softShuffle,
