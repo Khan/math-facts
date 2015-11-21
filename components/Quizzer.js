@@ -184,6 +184,88 @@ const Summary = React.createClass({
   },
 });
 
+
+const Game = React.createClass({
+  propTypes: {
+    addDigit: React.PropTypes.func.isRequired,
+    answer: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string,
+    ]).isRequired,
+    back: React.PropTypes.func.isRequired,
+    bounceValue: React.PropTypes.object.isRequired,
+    clear: React.PropTypes.func.isRequired,
+    color: React.PropTypes.arrayOf(React.PropTypes.number),
+    hint: React.PropTypes.func.isRequired,
+    hintUsed: React.PropTypes.bool.isRequired,
+    operation: React.PropTypes.string.isRequired,
+    points: React.PropTypes.number.isRequired,
+    ProgressComponent: React.PropTypes.node.isRequired,
+    question: React.PropTypes.string.isRequired,
+    response: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string,
+    ]).isRequired,
+  },
+  render: function() {
+    const {
+      addDigit,
+      answer,
+      back,
+      bounceValue,
+      clear,
+      color,
+      hint,
+      hintUsed,
+      operation,
+      points,
+      ProgressComponent,
+      question,
+      response,
+    } = this.props;
+
+    return (
+      <QuizzerScreen
+          color={color}
+          points={points}
+          back={back}>
+        {ProgressComponent}
+        <View style={styles.questionContainer}>
+          <AppText style={styles.question}>
+            {question}
+          </AppText>
+        </View>
+        <Animated.View
+          style={[styles.responseContainer, {
+            flex: 1,
+            transform: [
+              {scale: bounceValue},
+            ]
+          }]}
+        >
+          <AppText style={[styles.response]}>
+            {response}
+          </AppText>
+        </Animated.View>
+        <View style={styles.hintContainer}>
+          {hintUsed &&
+            <AppText style={styles.hintText}>
+              The answer is <AppTextBold>{answer}</AppTextBold>
+            </AppText>
+          }
+        </View>
+
+        <NumPad
+          operation={operation}
+          addDigit={addDigit}
+          hint={hint}
+          clear={clear}/>
+
+      </QuizzerScreen>
+    );
+  },
+});
+
 const Quizzer = React.createClass({
   propTypes: {
 
@@ -426,50 +508,26 @@ const Quizzer = React.createClass({
 
   _renderGame: function() {
     const OperationHelper = OperationHelpers[this.props.operation];
+
     const inputs = this.getInputs();
     const answer = OperationHelper.getAnswer(inputs);
-
     const question = OperationHelper.getQuestion(inputs);
 
-    return (
-      <QuizzerScreen
-          color={this.getColor()}
-          points={this.state.points}
-          back={this.props.back}>
-        {this._renderProgress()}
-        <View style={styles.questionContainer}>
-          <AppText style={styles.question}>
-            {question}
-          </AppText>
-        </View>
-        <Animated.View
-          style={[styles.responseContainer, {
-            flex: 1,
-            transform: [
-              {scale: this.state.bounceValue},
-            ]
-          }]}
-        >
-          <AppText style={[styles.response]}>
-            {this.state.response}
-          </AppText>
-        </Animated.View>
-        <View style={styles.hintContainer}>
-          {this.state.hintUsed &&
-            <AppText style={styles.hintText}>
-              The answer is <AppTextBold>{answer}</AppTextBold>
-            </AppText>
-          }
-        </View>
-
-        <NumPad
-          operation={this.props.operation}
-          addDigit={this.addDigit}
-          hint={this.hint}
-          clear={this.clear}/>
-
-      </QuizzerScreen>
-    );
+    return <Game
+      addDigit={this.addDigit}
+      answer={answer}
+      back={this.props.back}
+      bounceValue={this.state.bounceValue}
+      clear={this.clear}
+      color={this.getColor()}
+      hint={this.hint}
+      hintUsed={this.state.hintUsed}
+      operation={this.props.operation}
+      points={this.state.points}
+      ProgressComponent={this._renderProgress()}
+      question={question}
+      response={this.state.response}
+    />;
   },
 
   _renderSummary: function() {
