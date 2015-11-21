@@ -8,3 +8,9 @@ Learn basic math facts
 3. Open MathFacts.xcodeproj
 4. Build and run app
 5. Learn basic math facts ^_^
+
+## To deploy via code push
+```
+react-native bundle
+code-push release MathFacts ./ios/main.jsbundle 1.0.0
+```
