@@ -41,11 +41,11 @@ const masteryDescription = {
   mastered: `You know this fact from memory.`,
 };
 
-const getLearnerTypingTimes = function(quizzesData, operation) {
+const getLearnerTypingTimes = function(factData, operation) {
   const oneDigitTimes = [];
   const twoDigitTimes = [];
   let count = 0;
-  _.each(quizzesData, (rowData, row) => {
+  _.each(factData, (rowData, row) => {
     _.each(rowData, (data, col) => {
       const answer = OperationHelpers[operation].getAnswer([row, col]);
       const numberLength = answer.toString().length;
