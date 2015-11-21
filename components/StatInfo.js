@@ -152,7 +152,7 @@ const StatInfo = React.createClass({
 
           <View style={styles.divider} />
 
-          <View style={styles.totalStats}>
+          {numTimesCounted > 0 && <View style={styles.totalStats}>
             <AppText style={styles.totalStatsText}>
               {'Last '}
             </AppText>
@@ -198,15 +198,29 @@ const StatInfo = React.createClass({
                 {' hints'}
               </AppText>
             </View>}
-          </View>
+          </View>}
 
-          <View style={styles.divider} />
+          {numTimesCounted > 0 && <View style={styles.divider} />}
 
           {/*
           <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
           */}
 
           {timeByDateOutput}
+
+
+          {timeByDateOutput.length > 0 && <View style={styles.divider} />}
+
+          <View>
+            <AppText style={styles.timeGoalText}>
+              {'Time goal: ' +
+                Helpers.printTime(
+                  MasteryHelpers.getTypingTime(answer, learnerTypingTimes)
+                )
+              }
+            </AppText>
+          </View>
+
         </View>
       </ScrollView>
     );
@@ -309,6 +323,11 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingLeft: 5,
     paddingRight: 5,
+  },
+  timeGoalText: {
+    color: '#999',
+    fontSize: 11,
+    textAlign: 'center',
   },
 });
 

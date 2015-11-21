@@ -51,10 +51,6 @@ const Stats = React.createClass({
       <View style={styles.container}>
         <View style={styles.topRow}>
           <BackButton onPress={goBack} />
-          <AppText style={styles.typingTime}>
-            {'Typing time: ' +
-              learnerTypingTimes[0] + ', ' + learnerTypingTimes[1]}
-          </AppText>
         </View>
 
         <Grid
@@ -88,12 +84,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'stretch',
     alignSelf: 'stretch',
-  },
-
-  typingTime: {
-    fontSize: 12,
-    padding: 15,
-    paddingTop: 22,
   },
 });
 

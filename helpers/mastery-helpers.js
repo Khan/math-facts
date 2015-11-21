@@ -223,6 +223,7 @@ module.exports = {
   masteryTitle: masteryTitle,
   masteryDescription: masteryDescription,
 
+  getTypingTime: getTypingTime,
   getLearnerTypingTimes: getLearnerTypingTimes,
   isFluent: isFluent,
   getFactStatus: getFactStatus,
