@@ -53,6 +53,7 @@ const StatInfo = React.createClass({
     const numTimesCounted = Math.min(times.length, 10);
     let count = 0;
     const totalStatuses = {
+      hint: 0,
       fast: 0,
       slow: 0,
     };
@@ -77,7 +78,7 @@ const StatInfo = React.createClass({
       const status = MasteryHelpers.isFluent(
         answer, time.time, learnerTypingTimes);
       if (count < numTimesCounted) {
-        const index = status ? 'fast' : 'slow';
+        const index = time.hintUsed ? 'hint' : (status ? 'fast' : 'slow');
         totalStatuses[index] = totalStatuses[index] + 1;
         count++;
       }
@@ -153,16 +154,50 @@ const StatInfo = React.createClass({
 
           <View style={styles.totalStats}>
             <AppText style={styles.totalStatsText}>
-              <AppText>
-                Last {numTimesCounted} tries:{' '}
-              </AppText>
-              <AppText>
-                {totalStatuses.fast} fast,{' '}
-              </AppText>
-              <AppText>
-                {totalStatuses.slow} slow
-              </AppText>
+              {'Last '}
             </AppText>
+            <View style={styles.totalEm}>
+              <AppText style={styles.totalStatsText}>
+                {numTimesCounted}
+              </AppText>
+            </View>
+            <AppText style={styles.totalStatsText}>
+              {' tries: '}
+            </AppText>
+            <View style={[styles.totalEm, { backgroundColor: '#1c758a' }]}>
+              <AppText style={[styles.totalStatsText, { color: '#f7feff' }]}>
+                {totalStatuses.fast}
+              </AppText>
+            </View>
+            <AppText style={styles.totalStatsText}>
+              {' fast'}
+            </AppText>
+            {totalStatuses.slow > 0 && <View style={styles.totalStats}>
+              <AppText style={styles.totalStatsText}>
+                {' '}
+              </AppText>
+              <View style={[styles.totalEm, { backgroundColor: '#c30202' }]}>
+                <AppText style={[styles.totalStatsText, { color: '#ffdfdf' }]}>
+                  {totalStatuses.slow}
+                </AppText>
+              </View>
+              <AppText style={styles.totalStatsText}>
+                {' slow'}
+              </AppText>
+            </View>}
+            {totalStatuses.hint > 0 && <View style={styles.totalStats}>
+              <AppText style={styles.totalStatsText}>
+                {' '}
+              </AppText>
+              <View style={styles.totalEm}>
+                <AppText style={styles.totalStatsText}>
+                  {totalStatuses.hint}
+                </AppText>
+              </View>
+              <AppText style={styles.totalStatsText}>
+                {' hints'}
+              </AppText>
+            </View>}
           </View>
 
           <View style={styles.divider} />
@@ -262,9 +297,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
+  totalStats: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   totalStatsText: {
     color: '#144956',
-    textAlign: 'center',
+  },
+  totalEm: {
+    backgroundColor: '#ddd',
+    borderRadius: 3,
+    paddingLeft: 5,
+    paddingRight: 5,
   },
 });
 
