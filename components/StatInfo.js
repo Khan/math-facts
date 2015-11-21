@@ -77,6 +77,9 @@ const StatInfo = React.createClass({
       }
       const status = MasteryHelpers.isFluent(
         answer, time.time, learnerTypingTimes);
+      // TODO: This probably isn't counting things right.... we don't want to
+      // use hints to bump off actual time data because then it might get out
+      // sync with what we're calculating for your mastery level
       if (count < numTimesCounted) {
         const index = time.hintUsed ? 'hint' : (status ? 'fast' : 'slow');
         totalStatuses[index] = totalStatuses[index] + 1;
