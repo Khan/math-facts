@@ -243,114 +243,18 @@ const Quizzer = React.createClass({
     });
   },
   addToInputList: function(quizzesData) {
-    const operation = this.props.operation;
-    const OperationHelper = OperationHelpers[operation];
-
-    const easiestFacts = OperationHelper.getEasiestFactOrder();
-    const max = 10;
-
-    const questionSeeds = [];
-
-    const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
+    const ret = MasteryHelpers.addToInputList(
+      this.props.operation,
+      quizzesData,
+      this.state.inputList,
       this.props.timeData,
-      operation
-    );
+      this.state.studyFact,
+      this.state.spacer);
 
-    // Populate question seeder with data about facts that have already been
-    // practiced
-    _.each(_.range(0, max + 1), (row) => {
-      questionSeeds[row] = [];
-      if (quizzesData[row] == null) {
-        quizzesData[row] = [];
-      }
-      _.each(_.range(0, max + 1), (col) => {
-        const timeData = quizzesData[row][col];
-        const answer = OperationHelper.getAnswer([row, col]);
-        const factStatus = MasteryHelpers.getFactStatus(answer, timeData,
-          learnerTypingTimes);
-        questionSeeds[row][col] = factStatus;
-      });
-    });
-
-    let inputList = this.state.inputList.slice();
-
-    const fluentFacts = [];
-    const nonFluentFacts = [];
-    const unknownFacts = [];
-
-    const pushFact = function(fact) {
-      const left = fact[0];
-      const right = fact[1];
-      const fluency = questionSeeds[left][right];
-      if (fluency === 'mastered') {
-        fluentFacts.push(fact);
-      } else if (fluency === 'struggling') {
-        nonFluentFacts.push(fact);
-      } else {
-        unknownFacts.push(fact);
-      }
-    };
-
-    _.each(easiestFacts, (fact) => {
-      pushFact(fact);
-      if (fact[0] !== fact[1]) {
-        // Include the flipped fact if it's distinct (e.g. 2 + 1 and 1 + 2)
-        pushFact([fact[1], fact[0]]);
-      }
-    });
-
-    // TODO: update quizzesData on the fly so we can have the most up-to-date
-    // view of which facts are fluent/not
-
-    // TODO: make sure there are enough facts for this quiz
-    if (unknownFacts.length > 0) {
-      // We don't have enough data about this user, so ask them unknown facts.
-      if (unknownFacts.length < 10) {
-        // If we have too few unknown facts, pad the questions with some facts
-        // that we know are fluent, making sure that everything is shuffled.
-        inputList = inputList.concat(Helpers.shuffle(
-          unknownFacts.concat(
-            Helpers.shuffle(fluentFacts).slice(0, 10 - unknownFacts.length)
-        )));
-      } else {
-        // If we're pullling from pretty much all the facts, give the easier
-        // facts first. The blockSize comes from figuring out approximately
-        // where the facts go from being easy to hard.
-        inputList = inputList.concat(Helpers.softShuffle(unknownFacts, 60));
-      }
-    } else if (nonFluentFacts.length > 0) {
-      // We know whether this learner is fluent or not fluent in each fact.
-      // We want to pick one struggling fact as the learning fact and use
-      // spaced repetition to introduce it into long term memory.
-
-      // TODO: Check something to do with long term memory?
-
-      let studyFact = this.state.studyFact;
-      if (studyFact.length === 0) {
-        // We get to choose the study fact! Pick the next easiest fact that we
-        // don't know.
-        studyFact = nonFluentFacts[0];
-      }
-
-      // We're introducing this fact via spaced repetition. This fact will be
-      // mixed in with fluent facts in the following pattern:
-      //    L F L F F L F F F L F F F F L F F F F F L F F F F F F L ...
-      // to attempt to work the fact into long-term memory.
-
-      const spacer = this.state.spacer;
-
-      inputList = inputList.concat([studyFact])
-        .concat(Helpers.shuffle(fluentFacts).slice(0, spacer));
       this.setState({
-        spacer: spacer + 1
+        spacer: ret.spacer
       });
-    } else {
-      // This learner is fluent in everything! Let them practice to their
-      // heart's content.
-      inputList = inputList.concat(Helpers.shuffle(fluentFacts));
-    }
-
-    return inputList;
+    return ret.inputList;
   },
   initializeInputList: function(quizzesData) {
     const inputList = this.addToInputList(quizzesData);
