@@ -50,9 +50,17 @@ const StatInfo = React.createClass({
     const masteryTitle  = MasteryHelpers.masteryTitle[factStatus];
     const masteryDescription  = MasteryHelpers.masteryDescription[factStatus];
 
+    const numTimesCounted = Math.min(times.length, 10);
+    let count = 0;
+    const totalStatuses = {
+      fast: 0,
+      slow: 0,
+    };
+
     // Group the facts by date, with the newest date at the top
-    const sortedTimes = {};
-    times.slice().reverse().forEach((time) => {
+    const sortedTimes = times.slice().reverse();
+    const sortedTimesByDate = {};
+    sortedTimes.forEach((time) => {
       const d = new Date(time.date);
       // d.toLocaleString() returns a string like:
       // "October 31, 2015 at 3:32:32 PM PDT"
@@ -63,11 +71,58 @@ const StatInfo = React.createClass({
       // word (which is the date number).
       const dateParts = d.toLocaleString().replace(/,/g, '').split(' ');
       const key = dateParts[0].slice(0, 3) + ' ' + dateParts[1];
-      if (sortedTimes[key] == null) {
-        sortedTimes[key] = [];
+      if (sortedTimesByDate[key] == null) {
+        sortedTimesByDate[key] = [];
       }
-      sortedTimes[key].push(time)
+      const status = MasteryHelpers.isFluent(
+        answer, time.time, learnerTypingTimes);
+      if (count < numTimesCounted) {
+        const index = status ? 'fast' : 'slow';
+        totalStatuses[index] = totalStatuses[index] + 1;
+        count++;
+      }
+
+      sortedTimesByDate[key].push({
+        ...time,
+        status: status,
+      });
     });
+
+    const timeByDateOutput = _.map(
+      sortedTimesByDate,
+      (timesArrayForThisDate, date) => {
+        return <View
+          style={styles.infoStatsGroup}
+          key={'time-group-' + date}
+        >
+          <View>
+            <AppText style={styles.infoStatLabel}>
+              {date.toUpperCase()}
+            </AppText>
+          </View>
+          <View style={styles.infoStatsData}>
+          {timesArrayForThisDate.map((time, idx) => {
+            const color = time.status ?
+                MasteryHelpers.masteryColors.mastered :
+                MasteryHelpers.masteryColors.struggling;
+            return (
+              <View
+                style={[
+                  styles.infoStat,
+                  !time.hintUsed && { borderBottomColor: color}
+                ]}
+                key={'time-' + idx}
+              >
+                <AppText style={styles.infoStatText}>
+                  {time.hintUsed ? 'HINT' : Helpers.printTime(time.time)}
+                </AppText>
+              </View>
+            );
+          })}
+          </View>
+        </View>
+      }
+    );
 
     const statInfo = (
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -94,44 +149,29 @@ const StatInfo = React.createClass({
             </AppText>
           </View>
 
+          <View style={styles.divider} />
+
+          <View style={styles.totalStats}>
+            <AppText style={styles.totalStatsText}>
+              <AppText>
+                Last {numTimesCounted} tries:{' '}
+              </AppText>
+              <AppText>
+                {totalStatuses.fast} fast,{' '}
+              </AppText>
+              <AppText>
+                {totalStatuses.slow} slow
+              </AppText>
+            </AppText>
+          </View>
+
+          <View style={styles.divider} />
+
           {/*
           <Chart timeData={times} learnerTypingTimes={learnerTypingTimes} />
           */}
 
-          {_.map(sortedTimes, (timesArray, date) => {
-            return <View
-              style={styles.infoStatsGroup}
-              key={'time-group-' + date}
-            >
-              <View>
-                <AppText style={styles.infoStatLabel}>
-                  {date.toUpperCase()}
-                </AppText>
-              </View>
-              <View style={styles.infoStatsData}>
-              {timesArray.map((time, idx) => {
-                const timeStatus = MasteryHelpers.isFluent(
-                  answer, time.time, learnerTypingTimes);
-                const color = timeStatus ?
-                    MasteryHelpers.masteryColors.mastered :
-                    MasteryHelpers.masteryColors.struggling;
-                return (
-                  <View
-                    style={[
-                      styles.infoStat,
-                      !time.hintUsed && { borderBottomColor: color}
-                    ]}
-                    key={'time-' + idx}
-                  >
-                    <AppText style={styles.infoStatText}>
-                      {time.hintUsed ? 'HINT' : Helpers.printTime(time.time)}
-                    </AppText>
-                  </View>
-                );
-              })}
-              </View>
-            </View>
-          })}
+          {timeByDateOutput}
         </View>
       </ScrollView>
     );
@@ -195,11 +235,7 @@ const styles = StyleSheet.create({
 
   infoDescription: {
     alignItems: 'center',
-    borderBottomColor: '#ddd',
-    borderBottomWidth: 1,
-    marginBottom: 10,
     marginTop: 5,
-    paddingBottom: 10,
   },
   infoDescriptionTitle: {
     borderRadius: 3,
@@ -215,6 +251,18 @@ const styles = StyleSheet.create({
   },
   infoDescriptionText: {
     fontSize: 11,
+    color: '#144956',
+    textAlign: 'center',
+  },
+
+  divider: {
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 1,
+    marginBottom: 10,
+    marginTop: 10,
+  },
+
+  totalStatsText: {
     color: '#144956',
     textAlign: 'center',
   },
