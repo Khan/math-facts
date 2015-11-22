@@ -277,8 +277,8 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     borderRadius: 3,
     borderColor: 'rgba(0, 0, 0, 0.12)',
-    borderWidth: 2 / PixelRatio.get(),
-    borderBottomWidth: 4 / PixelRatio.get(),
+    borderWidth: 1,
+    borderBottomWidth: 2,
   },
   infoStatText: {
     fontSize: 13,

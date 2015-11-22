@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
 
   divider: {
     backgroundColor: '#eee',
-    height: 3 / PixelRatio.get(),
+    height: 1.5,
     marginBottom: 25,
     marginTop: 20,
   },
