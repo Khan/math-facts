@@ -395,7 +395,7 @@ const Quizzer = React.createClass({
 
       const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
         this.props.timeData,
-        operation
+        operation,
       );
 
       const timeBonus = MasteryHelpers.getTimeBonus(
@@ -408,27 +408,29 @@ const Quizzer = React.createClass({
 
       // Delay logic so user has a chance to see the digit they just entered
       setTimeout(() => {
-        const data = _.clone(this.state.data);
         const d = new Date();
-        data.push({
-          inputs: inputs,
-          data: {
-            time: time, // time taken in ms
-            hintUsed: hintUsed,
-            date: d.getTime()
-          }
-        });
+        const data = [
+          ...this.state.data,
+          {
+            inputs: inputs,
+            data: {
+              time: time, // time taken in ms
+              hintUsed: hintUsed,
+              date: d.getTime(),
+            }
+          },
+        ];
 
         const timeUp = this.state.totalTimeElapsed > this.props.seconds * 1000;
         const finished = this.props.mode === 'time' ? timeUp :
-                       (this.state.count >= this.props.count - 1)
+                       (this.state.count >= this.props.count - 1);
         if (finished) {
           // Finished the quiz
           clearInterval(this.interval);
         }
 
-        let inputList = this.state.inputList;
-        if (this.state.count >= inputList.length - 1) {
+        // If the input list is empty, add more questions to it
+        if (this.state.inputList.length - 1 >= 0) {
           inputList = this.addToInputList(this.props.quizzesData);
         }
 
@@ -443,7 +445,7 @@ const Quizzer = React.createClass({
           response: '',
           colorHue: this.state.colorHue + 1,
           points: newPoints,
-          finished: finished
+          finished: finished,
         });
       }, 150);
     }
