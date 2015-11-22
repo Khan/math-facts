@@ -492,47 +492,47 @@ const Quizzer = React.createClass({
                                         this._renderProgressDots();
   },
 
-  _renderLoading: function() {
-    return <Loading
-      back={this.props.back}
-      color={this.getColor()}
-    />;
-  },
+  render: function() {
+    if (!this.state.loaded) {
+      return <Loading
+        back={this.props.back}
+        color={this.getColor()}
+      />;
+    }
 
-  _renderCountdown: function() {
-    return <Countdown
-      back={this.props.back}
-      color={this.getColor()}
-      countdown={this.state.countdown}
-      ProgressComponent={this._renderProgress()}
-    />;
-  },
+    if (this.state.countdown >= 0) {
+      return <Countdown
+        back={this.props.back}
+        color={this.getColor()}
+        countdown={this.state.countdown}
+        ProgressComponent={this._renderProgress()}
+      />;
+    }
 
-  _renderGame: function() {
-    const OperationHelper = OperationHelpers[this.props.operation];
+    if (!this.state.finished) {
+      const OperationHelper = OperationHelpers[this.props.operation];
 
-    const inputs = this.getInputs();
-    const answer = OperationHelper.getAnswer(inputs);
-    const question = OperationHelper.getQuestion(inputs);
+      const inputs = this.getInputs();
+      const answer = OperationHelper.getAnswer(inputs);
+      const question = OperationHelper.getQuestion(inputs);
 
-    return <Game
-      addDigit={this.addDigit}
-      answer={answer}
-      back={this.props.back}
-      bounceValue={this.state.bounceValue}
-      clear={this.clear}
-      color={this.getColor()}
-      hint={this.hint}
-      hintUsed={this.state.hintUsed}
-      operation={this.props.operation}
-      points={this.state.points}
-      ProgressComponent={this._renderProgress()}
-      question={question}
-      response={this.state.response}
-    />;
-  },
+      return <Game
+        addDigit={this.addDigit}
+        answer={answer}
+        back={this.props.back}
+        bounceValue={this.state.bounceValue}
+        clear={this.clear}
+        color={this.getColor()}
+        hint={this.hint}
+        hintUsed={this.state.hintUsed}
+        operation={this.props.operation}
+        points={this.state.points}
+        ProgressComponent={this._renderProgress()}
+        question={question}
+        response={this.state.response}
+      />;
+    }
 
-  _renderSummary: function() {
     return <Summary
       color={this.getColor()}
       finish={() => {
@@ -545,18 +545,6 @@ const Quizzer = React.createClass({
       points={this.state.points}
       ProgressComponent={this._renderProgress()}
     />;
-  },
-
-  render: function() {
-    if (!this.state.loaded) {
-      return this._renderLoading();
-    } else if (this.state.countdown >= 0) {
-      return this._renderCountdown();
-    } else if (!this.state.finished) {
-      return this._renderGame();
-    } else {
-      return this._renderSummary();
-    }
   }
 });
 
