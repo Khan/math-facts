@@ -4,7 +4,6 @@ import _ from 'underscore';
 
 import React from 'react-native';
 import {
-  PixelRatio,
   StyleSheet,
   TextInput,
   TouchableHighlight,
