@@ -16,6 +16,23 @@ import Button from '../components/Button';
 import BackButton from '../components/BackButton';
 import RowButton from '../components/RowButton';
 
+const SettingsWrapper = React.createClass({
+  propTypes: {
+    goBack: React.PropTypes.func.isRequired,
+    style: React.PropTypes.object,
+  },
+  render: function() {
+    return (
+      <View style={this.props.style}>
+        <View style={styles.topRow}>
+          <BackButton onPress={this.props.goBack} />
+        </View>
+        {this.props.children}
+      </View>
+    );
+  },
+});
+
 const ModeSelection = React.createClass({
   propTypes: {
     goBack: React.PropTypes.func.isRequired,
@@ -36,13 +53,7 @@ const ModeSelection = React.createClass({
     } = this.props;
 
     return (
-      <View>
-        {/* TODO(clean code): Abstract the back button into a settings
-          * wrapper so there's less duplication. */}
-        <View style={styles.topRow}>
-          <BackButton onPress={goBack} />
-        </View>
-
+      <SettingsWrapper goBack={goBack}>
         <AppText style={styles.headingText}>
           What do you want to practice?
         </AppText>
@@ -58,7 +69,7 @@ const ModeSelection = React.createClass({
             wrapperStyle={[styles.toggleButtonWrapper]}
             onPress={this.setOperation('multiplication')} />
         </View>
-      </View>
+      </SettingsWrapper>
     );
   },
 });
@@ -86,11 +97,7 @@ const TimeSelection = React.createClass({
     const timeOptions = [20, 30, 60, 90, 120];
 
     return (
-      <View>
-        <View style={styles.topRow}>
-          <BackButton onPress={goBack} />
-        </View>
-
+      <SettingsWrapper goBack={goBack}>
         <AppText style={styles.headingText}>
           How many seconds do you want each game to be?
         </AppText>
@@ -103,7 +110,7 @@ const TimeSelection = React.createClass({
             onPress={this.setTime(value)} />
         })}
         </View>
-      </View>
+      </SettingsWrapper>
     );
   },
 });
@@ -129,11 +136,7 @@ const AddNewUser = React.createClass({
     } = this.props;
 
     return (
-      <View>
-        <View style={styles.topRow}>
-          <BackButton onPress={goBack} />
-        </View>
-
+      <SettingsWrapper goBack={goBack}>
         <AppText style={styles.headingText}>Hi! What's your name?</AppText>
         <TextInput
           autoCapitalize='words'
@@ -152,7 +155,7 @@ const AddNewUser = React.createClass({
           text="Add this player!"
           onPress={this.handleSubmitEditing}
         />
-      </View>
+      </SettingsWrapper>
     );
   },
 });
@@ -184,11 +187,7 @@ const ChangeUserName = React.createClass({
     } = this.props;
 
     return (
-      <View>
-        <View style={styles.topRow}>
-          <BackButton onPress={goBack} />
-        </View>
-
+      <SettingsWrapper goBack={goBack}>
         <AppText style={styles.headingText}>What's your new name?</AppText>
         <TextInput
           autoCapitalize='words'
@@ -208,7 +207,7 @@ const ChangeUserName = React.createClass({
           text="Change my nickname!"
           onPress={this.handleSubmitEditing}
         />
-      </View>
+      </SettingsWrapper>
     );
   },
 });
@@ -232,11 +231,10 @@ const UserSelection = React.createClass({
     } = this.props;
 
     return (
-      <View style={styles.scrollViewContainer}>
-        <View style={styles.topRow}>
-          <BackButton onPress={goBack} />
-        </View>
-
+      <SettingsWrapper
+        goBack={goBack}
+        style={styles.scrollViewContainer}
+      >
         <AppText style={styles.headingText}>Who are you?</AppText>
 
         <RowButton
@@ -260,8 +258,7 @@ const UserSelection = React.createClass({
             )
           })}
         </ScrollView>
-
-      </View>
+      </SettingsWrapper>
     );
   },
 });
@@ -294,12 +291,7 @@ const SettingsHome = React.createClass({
       operation.slice(1);
 
     return (
-      <View>
-
-        <View style={styles.topRow}>
-          <BackButton onPress={goBack} />
-        </View>
-
+      <SettingsWrapper goBack={goBack}>
         <AppText style={styles.headingText}>
           {'Hi '}
           <AppTextBold style={styles.headingTextEmphasis}>
@@ -330,7 +322,7 @@ const SettingsHome = React.createClass({
           </AppText>
         </View>
 
-      </View>
+      </SettingsWrapper>
     );
   }
 });
