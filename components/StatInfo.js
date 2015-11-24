@@ -97,7 +97,7 @@ const StatInfo = React.createClass({
       (timesArrayForThisDate, date) => {
         return <View
           style={styles.infoStatsGroup}
-          key={'time-group-' + date}
+          key={date}
         >
           <View>
             <AppText style={styles.infoStatLabel}>
@@ -115,7 +115,7 @@ const StatInfo = React.createClass({
                   styles.infoStat,
                   !time.hintUsed && { borderBottomColor: color}
                 ]}
-                key={'time-' + idx}
+                key={idx}
               >
                 <AppText style={styles.infoStatText}>
                   {time.hintUsed ? 'HINT' : Helpers.printTime(time.time)}
