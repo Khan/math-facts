@@ -211,7 +211,7 @@ const StatInfo = React.createClass({
             <AppText style={styles.timeGoalText}>
               {'Time goal: ' +
                 Helpers.printTime(
-                  MasteryHelpers.getTypingTime(answer, learnerTypingTimes)
+                  MasteryHelpers.getGoalTime(answer, learnerTypingTimes)
                 )
               }
             </AppText>

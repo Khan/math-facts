@@ -104,15 +104,19 @@ const getTypingTime = function(number, learnerTypingTimes) {
   return typingTime;
 };
 
+const getGoalTime = function(number, learnerTypingTimes) {
+  return getTypingTime(number, learnerTypingTimes) + MEMORY_TIME;
+};
+
 const getTimeBonus = function(time, number, learnerTypingTimes, hintUsed) {
   if (hintUsed) {
     return 1;
   }
   // For a given number estimate the time in ms it takes this learner to
   // type it.
-  const typingTime = getTypingTime(number, learnerTypingTimes);
-  return time < typingTime + MEMORY_TIME ? 20 :
-    time < typingTime + MEMORY_TIME * 2 ? 5 :
+  const goalTime = getGoalTime(number, learnerTypingTimes);
+  return time < goalTime ? 20 :
+    time < goalTime * 2 ? 5 :
     1;
 };
 
@@ -122,7 +126,7 @@ const getTimeBonus = function(time, number, learnerTypingTimes, hintUsed) {
  */
 const isFluent = function(number, time, learnerTypingTimes) {
   // TODO: Maybe add another level of "quick but not fluent"?
-  if (time < getTypingTime(number, learnerTypingTimes) + MEMORY_TIME) {
+  if (time < getGoalTime(number, learnerTypingTimes)) {
     return true;
   } else {
     return false;
@@ -331,7 +335,7 @@ module.exports = {
   masteryTitle: masteryTitle,
   masteryDescription: masteryDescription,
 
-  getTypingTime: getTypingTime,
+  getGoalTime: getGoalTime,
   getLearnerTypingTimes: getLearnerTypingTimes,
   isFluent: isFluent,
   getFactStatus: getFactStatus,
