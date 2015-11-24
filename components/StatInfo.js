@@ -1,7 +1,7 @@
 'use strict';
 
 import _ from 'underscore';
-
+import moment from 'moment';
 import React from 'react-native';
 const {
   PixelRatio,
@@ -63,15 +63,8 @@ const StatInfo = React.createClass({
     const sortedTimesByDate = {};
     sortedTimes.forEach((time) => {
       const d = new Date(time.date);
-      // d.toLocaleString() returns a string like:
-      // "October 31, 2015 at 3:32:32 PM PDT"
-      // We want to turn it into a string that looks like:
-      // "Oct 31"
-      // Do this by removing the comma, splitting it up into words, and
-      // taking the first 3 letters of the first word and the whole second
-      // word (which is the date number).
-      const dateParts = d.toLocaleString().replace(/,/g, '').split(' ');
-      const key = dateParts[0].slice(0, 3) + ' ' + dateParts[1];
+      // Display the date as a string like "Oct 31"
+      const key = moment(d).format("MMM D");
       if (sortedTimesByDate[key] == null) {
         sortedTimesByDate[key] = [];
       }
