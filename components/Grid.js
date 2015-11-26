@@ -106,6 +106,11 @@ const Grid = React.createClass({
     const headerCellColor = '#eee';
     const operationCellColor = '#ddd';
 
+    const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
+      timeData,
+      operation
+    );
+
     return (
       <View style={styles.grid}>
         {/* Render the top row of cells */}
@@ -151,11 +156,6 @@ const Grid = React.createClass({
                   const times = timeData[row][col];
                   const timesAnswered = times.length;
                   const bestTime = Math.min.apply(Math, times);
-                  const learnerTypingTimes = MasteryHelpers
-                    .getLearnerTypingTimes(
-                      timeData,
-                      operation
-                    );
 
                   const factStatus = MasteryHelpers.getFactStatus(
                     answer,
