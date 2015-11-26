@@ -13,6 +13,7 @@ import {
 import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import Button from '../components/Button';
+import CheckButton from '../components/CheckButton';
 import BackButton from '../components/BackButton';
 import RowButton from '../components/RowButton';
 
@@ -23,7 +24,7 @@ const SettingsWrapper = React.createClass({
   },
   render: function() {
     return (
-      <View style={this.props.style}>
+      <View style={[this.props.style, styles.settingsWrapper]}>
         <View style={styles.topRow}>
           <BackButton onPress={this.props.goBack} />
         </View>
@@ -231,31 +232,28 @@ const UserSelection = React.createClass({
     } = this.props;
 
     return (
-      <SettingsWrapper
-        goBack={goBack}
-        style={styles.scrollViewContainer}
-      >
-        <AppText style={styles.headingText}>Who are you?</AppText>
+      <SettingsWrapper goBack={goBack}>
+        <AppText style={styles.headingText}>
+          Who are you?
+        </AppText>
 
         <RowButton
           onPress={showAddNewUser}
-          text={'I\'m a new player!'} />
+          text={`I'm a new player!`} />
 
         <ScrollView>
-          {_.map(userList, (curUser) => {
+          {_.map(userList, (curUser, idx) => {
             return (
-              <Button
+              <CheckButton
+                active={curUser.id === user.id}
                 key={curUser.id}
-                text={curUser.name}
-                style={[
-                  styles.userListButton,
-                  (curUser.id === user.id) && styles.activeUserListButton
-                ]}
+                last={idx === userList.length - 1}
                 onPress={() => {
                   changeActiveUser(curUser.id);
-                  goBack();
-                }}/>
-            )
+                }}
+                text={curUser.name}
+              />
+            );
           })}
         </ScrollView>
       </SettingsWrapper>
@@ -455,7 +453,7 @@ const styles = StyleSheet.create({
     color: '#555'
   },
 
-  scrollViewContainer: {
+  settingsWrapper: {
     flex: 1,
   },
   settingsSection: {
