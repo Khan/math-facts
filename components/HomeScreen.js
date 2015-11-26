@@ -73,6 +73,9 @@ const HomeScreen = React.createClass({
     return currentStreak;
   },
   render: function() {
+    // TODO: Make animations between screens! Possible ways:
+    // - Use Navigator
+    // - Position absolute the other screens on top of the homescreen
     const {
       operation,
       points,
