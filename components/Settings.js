@@ -149,6 +149,7 @@ const AddNewUser = React.createClass({
           onSubmitEditing={this.handleSubmitEditing}
         />
         <Button
+          style={styles.submitButton}
           text="Add this player!"
           onPress={this.handleSubmitEditing}
         />
@@ -185,7 +186,9 @@ const ChangeUserName = React.createClass({
 
     return (
       <SettingsWrapper goBack={goBack}>
-        <AppText style={styles.headingText}>What's your new name?</AppText>
+        <AppText style={styles.headingText}>
+          What's your new name?
+        </AppText>
         <TextInput
           autoCapitalize='words'
           autoFocus={true}
@@ -201,6 +204,7 @@ const ChangeUserName = React.createClass({
           onSubmitEditing={this.handleSubmitEditing}
         />
         <Button
+          style={styles.submitButton}
           text="Change my nickname!"
           onPress={this.handleSubmitEditing}
         />
@@ -442,7 +446,7 @@ const styles = StyleSheet.create({
   headingText: {
     color: '#999',
     fontSize: 20,
-    paddingBottom: 10,
+    marginBottom: 20,
     paddingLeft: 10,
     paddingRight: 10,
     textAlign: 'center',
@@ -461,24 +465,19 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#fff',
     borderColor: '#ddd',
-    height: 40,
+    height: 50,
     paddingRight: 10,
     paddingLeft: 10,
     borderWidth: 1,
     textAlign: 'center'
   },
 
-  userListButton: {
-    flex: 1,
-    marginTop: 0,
-    marginLeft: 2,
-    marginRight: 2,
-    marginBottom: 2,
-    padding: 10,
+  submitButton: {
+    backgroundColor: '#29abca',
+    borderColor: '#2d8ca2',
+    borderBottomWidth: 4,
   },
-  activeUserListButton: {
-    backgroundColor: '#555',
-  },
+
   uuidText: {
     color: '#aaa',
     fontSize: 12,

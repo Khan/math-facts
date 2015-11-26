@@ -172,12 +172,13 @@ const Summary = React.createClass({
           </AppText>
         </View>
         <Button
-          text='Play Again'
-          color='rgba(0, 0, 0, 0.15)'
+          text='Play Again!'
+          style={styles.summaryButton}
+          styleText={styles.summaryButtonText}
           onPress={playAgain}/>
         <Button
           text='Back'
-          color='rgba(0, 0, 0, 0.15)'
+          style={styles.summaryButton}
           onPress={finish}/>
       </QuizzerScreen>
     );
@@ -652,6 +653,13 @@ const styles = StyleSheet.create({
   summaryPoints: {
     fontSize: 40,
     color: '#fff'
+  },
+  summaryButton: {
+    backgroundColor: 'rgba(0, 0, 0, 0.20)',
+    padding: 20,
+  },
+  summaryButtonText: {
+    fontSize: 25,
   },
 
   hintContainer: {
