@@ -44,7 +44,6 @@ const ModeSelection = React.createClass({
   setOperation: function(operation) {
     return () => {
       this.props.setOperation(operation);
-      this.props.goBack();
     };
   },
   render: function () {
@@ -58,18 +57,15 @@ const ModeSelection = React.createClass({
         <AppText style={styles.headingText}>
           What do you want to practice?
         </AppText>
-        <View style={styles.toggleButtons}>
-          <Button
-            text='Addition'
-            color={operation === 'addition' ? undefined : '#ddd'}
-            wrapperStyle={[styles.toggleButtonWrapper]}
-            onPress={this.setOperation('addition')} />
-          <Button
-            text='Multiplication'
-            color={operation === 'multiplication' ? undefined : '#ddd'}
-            wrapperStyle={[styles.toggleButtonWrapper]}
-            onPress={this.setOperation('multiplication')} />
-        </View>
+        <CheckButton
+          active={operation === 'addition'}
+          onPress={this.setOperation('addition')}
+          text='Addition' />
+        <CheckButton
+          active={operation === 'multiplication'}
+          last={true}
+          onPress={this.setOperation('multiplication')}
+          text='Multiplication' />
       </SettingsWrapper>
     );
   },
