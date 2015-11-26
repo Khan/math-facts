@@ -39,7 +39,7 @@ const masteryDescription = {
   struggling: `This fact isn't as fast as your other ones. You'll get there! Keep practicing!`,
   introduced: `We need to practice this one a few more times!`,
   practiced: `We need to get this one to be a little faster!`,
-  mastered: `You know this fact from memory.`,
+  mastered: `You know this fact from memory! You did it!`,
 };
 
 const getLearnerTypingTimes = function(factData, operation) {
