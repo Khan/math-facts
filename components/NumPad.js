@@ -47,11 +47,12 @@ const NumPad = React.createClass({
 
     buttons.push(
       <NumPadButton
-        onPress={this.props.clear}
-        content='CLEAR'
-        key='clear'
+        onPress={this.props.hint}
+        content='HELP'
+        key='help'
         control={true} />
     );
+
     buttons.push(
       <NumPadButton
         onPress={() => {this.props.addDigit(0)}}
@@ -61,9 +62,9 @@ const NumPad = React.createClass({
 
     buttons.push(
       <NumPadButton
-        onPress={this.props.hint}
-        content='HELP'
-        key='help'
+        onPress={this.props.clear}
+        content='CLEAR'
+        key='clear'
         control={true} />
     );
 
