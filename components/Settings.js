@@ -82,7 +82,6 @@ const TimeSelection = React.createClass({
   setTime: function(time) {
     return () => {
       this.props.setTime(time);
-      this.props.goBack();
     };
   },
   render: function () {
@@ -92,21 +91,22 @@ const TimeSelection = React.createClass({
     } = this.props;
 
     const timeOptions = [20, 30, 60, 90, 120];
+    let idx = 0;
 
     return (
       <SettingsWrapper goBack={goBack}>
         <AppText style={styles.headingText}>
-          How many seconds do you want each game to be?
+          How long do you want each game to be?
         </AppText>
-        <View style={styles.toggleButtons}>
         {timeOptions.map((value) => {
-          return <Button
-            text={value}
-            color={time === value ? undefined : '#ddd'}
-            wrapperStyle={[styles.toggleButtonWrapper]}
-            onPress={this.setTime(value)} />
+          idx++;
+          return <CheckButton
+            key={idx}
+            text={`${value} seconds`}
+            active={time === value}
+            last={idx === timeOptions.length}
+            onPress={this.setTime(value)} />;
         })}
-        </View>
       </SettingsWrapper>
     );
   },
@@ -443,6 +443,8 @@ const styles = StyleSheet.create({
     color: '#999',
     fontSize: 20,
     paddingBottom: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
     textAlign: 'center',
   },
   headingTextEmphasis: {
