@@ -115,8 +115,8 @@ const getTimeBonus = function(time, number, learnerTypingTimes, hintUsed) {
   // For a given number estimate the time in ms it takes this learner to
   // type it.
   const goalTime = getGoalTime(number, learnerTypingTimes);
-  return time < goalTime ? 20 :
-    time < goalTime * 2 ? 5 :
+  return time <= goalTime ? 20 :
+    time <= goalTime * 2 ? 5 :
     1;
 };
 
@@ -126,7 +126,7 @@ const getTimeBonus = function(time, number, learnerTypingTimes, hintUsed) {
  */
 const isFluent = function(number, time, learnerTypingTimes) {
   // TODO: Maybe add another level of "quick but not fluent"?
-  if (time < getGoalTime(number, learnerTypingTimes)) {
+  if (time <= getGoalTime(number, learnerTypingTimes)) {
     return true;
   } else {
     return false;
