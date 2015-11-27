@@ -30,6 +30,12 @@ project.xcworkspace
 node_modules/
 npm-debug.log
 
+# Android/IJ
+#
+.idea
+.gradle
+local.properties
+
 # React Native
 #
 iOS/main.jsbundle
