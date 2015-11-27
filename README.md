@@ -1,6 +1,12 @@
 # Math Facts App (WIP)
 This is an app being developed at Khan Academy to explore how we can help people memorize their math facts, starting with multiplication tables and single-digit addition.
 
+![Demo of playing the game](https://raw.github.com/Khan/math-facts/master/screenshots/demo-play-the-game.gif)
+
+![Demo of the progress screen](https://raw.github.com/Khan/math-facts/master/screenshots/demo-progress.gif)
+
+![Demo of the settings menu](https://raw.github.com/Khan/math-facts/master/screenshots/demo-settings.gif)
+
 ## Contributing
 1. Install dependencies: `npm install`
 2. Build iOS/main.jsbundle: `curl http://localhost:8081/index.ios.bundle\?dev\=0 -o iOS/main.jsbundle`
