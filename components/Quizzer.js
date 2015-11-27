@@ -393,6 +393,7 @@ const Quizzer = React.createClass({
     if (parseInt(this.state.response) === parseInt(answer)) {
       const time = this.state.time;
       const hintUsed = this.state.hintUsed;
+      let inputList = this.state.inputList.slice();
 
       const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
         this.props.timeData,
@@ -430,9 +431,11 @@ const Quizzer = React.createClass({
           clearInterval(this.interval);
         }
 
-        // If the input list is empty, add more questions to it
-        if (this.state.inputList.length - 1 >= 0) {
-          inputList = this.addToInputList(this.props.quizzesData);
+        // If we're near the end of the input list, add more questions to it
+        if (this.state.count >= (inputList.length - 1) - 2) {
+          inputList = inputList.concat(
+            this.addToInputList(this.props.quizzesData)
+          );
         }
 
         // Load a new question
