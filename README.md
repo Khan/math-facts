@@ -1,10 +1,13 @@
 # Math Facts App (WIP)
 This is an app being developed at Khan Academy to explore how we can help people memorize their math facts, starting with multiplication tables and single-digit addition.
 
+## Playing the game
 ![Demo of playing the game](https://raw.github.com/Khan/math-facts/master/screenshots/demo-play-the-game.gif)
 
+## Progress summary
 ![Demo of the progress screen](https://raw.github.com/Khan/math-facts/master/screenshots/demo-progress.gif)
 
+## Changing your settings
 ![Demo of the settings menu](https://raw.github.com/Khan/math-facts/master/screenshots/demo-settings.gif)
 
 ## Contributing
