@@ -20,7 +20,7 @@ import RowButton from '../components/RowButton';
 const SettingsWrapper = React.createClass({
   propTypes: {
     goBack: React.PropTypes.func.isRequired,
-    style: React.PropTypes.object,
+    style: View.propTypes.style,
   },
   render: function() {
     return (
@@ -75,7 +75,7 @@ const ModeSelection = React.createClass({
 const TimeSelection = React.createClass({
   propTypes: {
     goBack: React.PropTypes.func.isRequired,
-    time: React.PropTypes.string.isRequired,
+    time: React.PropTypes.number.isRequired,
     setTime: React.PropTypes.func.isRequired,
   },
 

@@ -14,8 +14,8 @@ const Button = React.createClass({
   propTypes: {
     color: React.PropTypes.string,
     onPress: React.PropTypes.func.isRequired,
-    style: React.PropTypes.array,
-    styleText: React.PropTypes.arrayText,
+    style: View.propTypes.style,
+    styleText: Text.propTypes.style,
     text: React.PropTypes.string,
   },
   render: function() {
