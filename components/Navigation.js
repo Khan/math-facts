@@ -4,6 +4,7 @@ import _ from 'underscore';
 
 import React from 'react-native';
 import {
+  Navigator,
   StyleSheet,
   View,
 } from 'react-native';
@@ -22,53 +23,13 @@ if (React.StatusBarIOS) {
 }
 
 const Navigation = React.createClass({
-  getInitialState: function() {
-    return {
-      playing: false,
-      showStats: false,
-      showSettings: false,
-    };
-  },
-  startGame: function() {
-    this.setState({
-      playing: true
-    });
-  },
-  showStats: function() {
-    this.setState({
-      showStats: true
-    });
-  },
-  showSettings: function() {
-    this.setState({
-      showSettings: true
-    });
-  },
-  showMenu: function() {
-    this.setState({
-      playing: false,
-      showStats: false,
-      showSettings: false,
-    });
-  },
-  finish: function(quizData, points, playAgain) {
+  finish: function(quizData, points) {
     const operation = this.props.user.operation;
 
     _.each(quizData, (questionData) => {
       MathFactsActions.addAttempts(operation, [questionData]);
     });
     MathFactsActions.addPoints(points);
-
-    this.setState({
-      playing: false,
-    }, () => {
-      if (playAgain) {
-        this.startGame();
-      }
-    });
-  },
-  playAgain: function(quizData, points) {
-    this.finish(quizData, points, true);
   },
   componentDidMount: function() {
     MathFactsActions.initializeData();
@@ -91,7 +52,6 @@ const Navigation = React.createClass({
   },
 
   render: function() {
-
     if (!this.props.isLoaded) {
       return (
         <View style={styles.loadingScreen}>
@@ -99,67 +59,89 @@ const Navigation = React.createClass({
         </View>
       );
     }
-
     const operation = this.props.user.operation;
     const quizzesData = this.props.factData[operation];
     const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
 
-    if (this.state.playing) {
-      return (
-        <Quizzer
-          operation={operation}
-          back={this.showMenu}
-          finish={this.finish}
-          playAgain={this.playAgain}
-          quizzesData={quizzesData}
-          timeData={timeData}
-          mode={'time'}
-          seconds={this.props.user.time}
-          count={10}
-        />
-      );
-    }
+    const initialRoute = {name: 'home'};
+    return <Navigator
+      initialRoute={initialRoute}
+      renderScene={(route, navigator) => {
+        if (route.name === 'home') {
+          return <HomeScreen
+            navigator={navigator}
 
-    if (this.state.showStats) {
-      return (
-        <Stats
-          operation={operation}
-          goBack={this.showMenu}
-          timeData={timeData}
-        />
-      );
-    }
+            operation={operation}
+            points={this.props.points}
+            scores={this.props.scores}
+            showSettings={() => {
+              navigator.push({
+                name: 'settings',
+              })
+            }}
+            showStats={() => {
+              navigator.push({
+                name: 'stats',
+              })
+            }}
+            startGame={() => {
+              navigator.push({
+                name: 'game',
+              })
+            }}
+            timeData={timeData}
+            userName={this.props.user.name}
+          />;
+        } else if (route.name === 'settings') {
+          return <Settings
+            navigator={navigator}
 
-    if (this.state.showSettings) {
-      return (
-        <Settings
-          addUser={MathFactsActions.addUser}
-          changeActiveUser={MathFactsActions.changeActiveUser}
-          changeUserName={MathFactsActions.changeName}
-          goBack={this.showMenu}
-          operation={this.props.user.operation}
-          setOperation={this.setOperation}
-          time={this.props.user.time}
-          setTime={this.setTime}
-          user={this.props.user}
-          userList={this.props.userList}
-          uuid={this.props.uuid}
-        />
-      );
-    }
+            addUser={MathFactsActions.addUser}
+            changeActiveUser={MathFactsActions.changeActiveUser}
+            changeUserName={MathFactsActions.changeName}
+            goBack={navigator.popToTop}
+            operation={this.props.user.operation}
+            setOperation={this.setOperation}
+            time={this.props.user.time}
+            setTime={this.setTime}
+            user={this.props.user}
+            userList={this.props.userList}
+            uuid={this.props.uuid}
+          />;
+        } else if (route.name === 'game') {
+          return <Quizzer
+            navigator={navigator}
 
-    return (
-      <HomeScreen
-        operation={operation}
-        points={this.props.points}
-        scores={this.props.scores}
-        showSettings={this.showSettings}
-        showStats={this.showStats}
-        startGame={this.startGame}
-        timeData={timeData}
-        userName={this.props.user.name}
-      />
-    );
+            operation={operation}
+            back={navigator.popToTop}
+            finish={(quizData, points) => {
+              this.finish(quizData, points);
+              navigator.popToTop();
+            }}
+            playAgain={(quizData, points) => {
+              this.finish(quizData, points);
+              navigator.push({
+                name: 'game',
+              });
+            }}
+            quizzesData={quizzesData}
+            timeData={timeData}
+            mode={'time'}
+            seconds={this.props.user.time}
+            count={10}
+          />
+        } else if (route.name === 'stats') {
+          return <Stats
+            navigator={navigator}
+
+            operation={operation}
+            goBack={navigator.popToTop}
+            timeData={timeData}
+          />;
+        }
+      }}
+    />
+
   }
 });
 
