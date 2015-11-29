@@ -629,7 +629,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $CONFIGURATION = Release ]\nthen\n    $NODE ./node_modules/.bin/react-native bundle\nfi";
+			shellScript = "if [ $CONFIGURATION = Release ]\nthen\n    $NODE ./node_modules/.bin/react-native bundle --entry-file index.ios.js --bundle-output iOS/main.jsbundle --platform ios\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 

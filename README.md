@@ -19,7 +19,12 @@ This is an app being developed at Khan Academy to explore how we can help people
 
 ## To deploy via code push
 Set up your [codepush account](http://microsoft.github.io/code-push/index.html#getting_started), and then run:
+
 ```
-react-native bundle
+react-native bundle --entry-file index.ios.js --bundle-output iOS/main.jsbundle --platform ios
 code-push release MathFacts ./ios/main.jsbundle 1.0.0
+```
+```
+react-native bundle --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.jsbundle --platform android
+code-push release MathFacts ./android/app/src/main/assets/index.android.jsbundle 1.0.0
 ```
