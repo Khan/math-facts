@@ -82,6 +82,7 @@ const HomeScreen = React.createClass({
       timeData,
       userName,
     } = this.props;
+    const currentStreak = this.getCurrentStreak();
 
     return (
       <View style={styles.container}>
@@ -109,9 +110,9 @@ const HomeScreen = React.createClass({
         <AppText style={[styles.headingText, {paddingBottom: 0}]}>
           {'Current streak: '}
           <AppTextBold style={styles.headingTextEmphasis}>
-            {this.getCurrentStreak()}
+            {currentStreak}
           </AppTextBold>
-          {' day'}
+          {` day${currentStreak === 1 ? '' : 's'}`}
         </AppText>
 
         <AppText style={styles.headingText}>
