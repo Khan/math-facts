@@ -457,6 +457,7 @@ const styles = StyleSheet.create({
 
   settingsWrapper: {
     flex: 1,
+    backgroundColor: '#fafafa',
   },
   settingsSection: {
     marginBottom: 20,
