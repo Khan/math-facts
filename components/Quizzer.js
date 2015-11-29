@@ -332,11 +332,12 @@ const Quizzer = React.createClass({
       this.state.inputList,
       this.props.timeData,
       this.state.studyFact,
-      this.state.spacer);
+      this.state.spacer
+    );
 
-      this.setState({
-        spacer: ret.spacer
-      });
+    this.setState({
+      spacer: ret.spacer
+    });
     return ret.inputList;
   },
   initializeInputList: function(quizzesData) {
@@ -433,9 +434,7 @@ const Quizzer = React.createClass({
 
         // If we're near the end of the input list, add more questions to it
         if (this.state.count >= (inputList.length - 1) - 2) {
-          inputList = inputList.concat(
-            this.addToInputList(this.props.quizzesData)
-          );
+          inputList = this.addToInputList(this.props.quizzesData);
         }
 
         // Load a new question
