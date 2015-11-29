@@ -24,6 +24,7 @@
 		320C22EE1B16D6CE009501EF /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 320C22ED1B16D6A3009501EF /* libRCTWebSocket.a */; };
 		32A24E9D1BE435AD003CE90A /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A24E921BE43594003CE90A /* libART.a */; };
 		32A24ED61BE48CB3003CE90A /* math-facts-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 32A24ED51BE48CB3003CE90A /* math-facts-icon.png */; };
+		32A3C7981C0B7CC200F1E40E /* RCTRootView.m in Frameworks */ = {isa = PBXBuildFile; fileRef = 32A3C7971C0B7CC200F1E40E /* RCTRootView.m */; };
 		32B9275A1BFE27A600A8E940 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32B927591BFE276000A8E940 /* libCodePush.a */; };
 		32F9BB791C036DA000525369 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32F9BB781C036D9000525369 /* libRCTPushNotification.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -153,6 +154,7 @@
 		3270CCD01BF9611E00AC63E4 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		32A24E8D1BE43594003CE90A /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		32A24ED51BE48CB3003CE90A /* math-facts-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "math-facts-icon.png"; sourceTree = "<group>"; };
+		32A3C7971C0B7CC200F1E40E /* RCTRootView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RCTRootView.m; path = "node_modules/react-native/React/Base/RCTRootView.m"; sourceTree = "<group>"; };
 		32B927541BFE276000A8E940 /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "node_modules/react-native-code-push/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		32F9BB731C036D9000525369 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32A3C7981C0B7CC200F1E40E /* RCTRootView.m in Frameworks */,
 				32F9BB791C036DA000525369 /* libRCTPushNotification.a in Frameworks */,
 				32A24E9D1BE435AD003CE90A /* libART.a in Frameworks */,
 				320C22EE1B16D6CE009501EF /* libRCTWebSocket.a in Frameworks */,
@@ -350,6 +353,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				32A3C7971C0B7CC200F1E40E /* RCTRootView.m */,
 				13B07FAE1A68108700A75B9A /* MathFacts */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MathFactsTests */,

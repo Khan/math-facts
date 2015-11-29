@@ -51,7 +51,7 @@
   //
   // and uncomment the next following line
 #ifndef DEBUG
-  jsCodeLocation = [CodePush getBundleUrl];
+  jsCodeLocation = [CodePush bundleURL];
 #endif
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"MathFacts"
