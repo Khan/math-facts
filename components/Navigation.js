@@ -147,9 +147,10 @@ const Navigation = React.createClass({
 
 const styles = StyleSheet.create({
   loadingScreen: {
+    backgroundColor: '#fafafa',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
 });

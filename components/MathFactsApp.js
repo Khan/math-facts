@@ -42,7 +42,7 @@ const MathFactsApp = React.createClass({
 const styles = StyleSheet.create({
   appWrapper: {
     flex: 1,
-    backgroundColor: '#fafafa'
+    backgroundColor: '#555'
   },
 });
 

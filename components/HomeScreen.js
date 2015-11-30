@@ -238,8 +238,9 @@ const styles = StyleSheet.create({
   },
 
   container: {
+    backgroundColor: '#fafafa',
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 
   divider: {
