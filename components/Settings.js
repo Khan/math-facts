@@ -4,6 +4,7 @@ import _ from 'underscore';
 
 import React from 'react-native';
 import {
+  Navigator,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -340,39 +341,7 @@ const Settings = React.createClass({
     uuid: React.PropTypes.string.isRequired,
   },
 
-  getInitialState: function() {
-    return {
-      currentScreen: 'home',
-    };
-  },
-  showScreen: function(screen) {
-    this.setState({
-      currentScreen: screen,
-    });
-  },
-  showSettingsHome: function(screen) {
-    this.showScreen('home');
-  },
-  showAddNewUser: function() {
-    this.showScreen('addNewUser');
-  },
-  showChangeUserName: function() {
-    this.showScreen('changeUserName');
-  },
-  showModeSelection: function() {
-    this.showScreen('modeSelection');
-  },
-  showTimeSelection: function() {
-    this.showScreen('timeSelection');
-  },
-  showUserSelection: function() {
-    this.showScreen('userSelection');
-  },
   render: function() {
-    const {
-      currentScreen
-    } = this.state;
-
     const {
       addUser,
       changeActiveUser,
@@ -387,50 +356,56 @@ const Settings = React.createClass({
       uuid,
     } = this.props;
 
-    if (currentScreen === 'addNewUser') {
-      return <AddNewUser
-        addUser={addUser}
-        goBack={this.showSettingsHome} />
-    }
-    if (currentScreen === 'changeUserName') {
-      return <ChangeUserName
-        changeUserName={changeUserName}
-        goBack={this.showSettingsHome}
-        user={user} />
-    }
-    if (currentScreen === 'modeSelection') {
-      return <ModeSelection
-        goBack={this.showSettingsHome}
-        operation={operation}
-        setOperation={setOperation} />
-    }
-    if (currentScreen === 'timeSelection') {
-      return <TimeSelection
-        goBack={this.showSettingsHome}
-        time={time}
-        setTime={setTime} />
-    }
-    if (currentScreen === 'userSelection') {
-      return <UserSelection
-        changeActiveUser={changeActiveUser}
-        goBack={this.showSettingsHome}
-        showAddNewUser={this.showAddNewUser}
-        user={user}
-        userList={userList} />
-    }
-
     return (
-      <SettingsHome
-        goBack={goBack}
-        operation={operation}
-        showAddNewUser={this.showAddNewUser}
-        showChangeUserName={this.showChangeUserName}
-        showModeSelection={this.showModeSelection}
-        showTimeSelection={this.showTimeSelection}
-        showUserSelection={this.showUserSelection}
-        time={time}
-        user={user}
-        uuid={uuid} />
+      <Navigator
+        initialRoute={{name: 'settings'}}
+        renderScene={(route, navigator) => {
+          if (route.name === 'addNewUser') {
+            return <AddNewUser
+              addUser={addUser}
+              goBack={navigator.popToTop} />
+          }
+          if (route.name === 'changeUserName') {
+            return <ChangeUserName
+              changeUserName={changeUserName}
+              goBack={navigator.popToTop}
+              user={user} />
+          }
+          if (route.name === 'modeSelection') {
+            return <ModeSelection
+              goBack={navigator.popToTop}
+              operation={operation}
+              setOperation={setOperation} />
+          }
+          if (route.name === 'timeSelection') {
+            return <TimeSelection
+              goBack={navigator.popToTop}
+              time={time}
+              setTime={setTime} />
+          }
+          if (route.name === 'userSelection') {
+            return <UserSelection
+              changeActiveUser={changeActiveUser}
+              goBack={navigator.popToTop}
+              showAddNewUser={() => navigator.push({name: 'addNewUser'})}
+              user={user}
+              userList={userList} />
+          }
+          return <SettingsHome
+            navigator={navigator}
+
+            goBack={goBack}
+            operation={operation}
+            showChangeUserName={() => navigator.push({name: 'changeUserName'})}
+            showModeSelection={() => navigator.push({name: 'modeSelection'})}
+            showTimeSelection={() => navigator.push({name: 'timeSelection'})}
+            showUserSelection={() => navigator.push({name: 'userSelection'})}
+            time={time}
+            user={user}
+            uuid={uuid}
+          />;
+        }}
+      />
     );
   }
 });
