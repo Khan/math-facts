@@ -90,13 +90,15 @@ const HomeScreen = React.createClass({
     return (
       <View style={styles.container}>
 
-        <AppText style={styles.headingText}>
+        <AppText style={[styles.headingText, styles.name]}>
           {'Hi '}
           <AppTextBold style={styles.headingTextEmphasis}>
             {userName}
           </AppTextBold>
           {'!'}
         </AppText>
+
+        <View style={styles.divider} />
 
         <AppText style={[styles.headingText, {paddingBottom: 0}]}>
           {'Points today: '}
@@ -229,9 +231,12 @@ const styles = StyleSheet.create({
 
   headingText: {
     color: SH.colors.grey68,
-    fontSize: 20,
+    fontSize: 18,
     paddingBottom: 10,
     textAlign: 'center',
+  },
+  name: {
+    fontSize: 24,
   },
   headingTextSmall: {
     fontSize: 16,
@@ -250,7 +255,7 @@ const styles = StyleSheet.create({
     backgroundColor: SH.colors.grey90,
     height: 1.5,
     marginBottom: 25,
-    marginTop: 20,
+    marginTop: 15,
   },
 
 });
