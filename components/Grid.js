@@ -104,8 +104,8 @@ const Grid = React.createClass({
     const maxVal = 10;
     const cellRange = _.range(1, maxVal + 1);
 
-    const headerCellColor = SH.colors.grey90;
-    const operationCellColor = SH.colors.grey85;
+    const headerCellColor = SH.colors.grey85;
+    const operationCellColor = SH.colors.grey90;
 
     const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
       timeData,
@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
   },
   gridCell: {
     alignItems: 'center',
-    backgroundColor: '#face01',
     flexDirection: 'column',
     height: 29, // 34 for iPhone 6
     justifyContent: 'center',

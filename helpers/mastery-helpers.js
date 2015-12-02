@@ -20,7 +20,7 @@ const masteryColors = {
 };
 
 const masteryTextColors = {
-  unknown: SH.colors.grey25,
+  unknown: SH.colors.grey68,
   struggling: SH.colors.redLight,
   introduced: SH.colors.blueDarker,
   practiced: SH.colors.blueDarker,
