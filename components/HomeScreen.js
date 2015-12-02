@@ -43,8 +43,8 @@ const HomeScreen = React.createClass({
     }, 0);
   },
   getStreak: function() {
-    // TODO: make the steak realize that if you haven't done something today,
-    // but are still in the middle of a streak, that's okay! you're not at 0!
+    // TODO: make the streak (and points in general) take into account which
+    // operation they're for.
     const scores = this.props.scores.slice().reverse();
     const streak = {};
     scores.forEach((score) => {
@@ -64,11 +64,16 @@ const HomeScreen = React.createClass({
   getCurrentStreak: function() {
     const streak = this.getStreak();
     const m = moment();
+    const yesterday = moment().subtract(1, "day");
     let currentStreak = 0;
     for (let date in streak) {
-      if (date === m.format("MMM D")) {
+      // If the last date you did something was today or yesterday, increment
+      // the streak. We don't want to throw away the streak if you haven't
+      // done anything *yet* today, so we check yseterday too.
+      if (date === m.format("MMM D") ||
+          (date === yesterday.format("MMM D") && currentStreak === 0)) {
         currentStreak++;
-        m.subtract(1, "day")
+        m.subtract(1, "day");
       } else {
         break;
       }
