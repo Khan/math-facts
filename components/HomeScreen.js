@@ -237,7 +237,8 @@ const styles = StyleSheet.create({
   headingText: {
     color: SH.colors.grey68,
     fontSize: 18,
-    paddingBottom: 10,
+    padding: 10,
+    paddingTop: 0,
     textAlign: 'center',
   },
   name: {
