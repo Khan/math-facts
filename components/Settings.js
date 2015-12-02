@@ -152,7 +152,7 @@ const AddNewUser = React.createClass({
         />
         <Button
           style={styles.submitButton}
-          text="Add this player!"
+          text="Save!"
           onPress={this.handleSubmitEditing}
         />
       </SettingsWrapper>
@@ -207,7 +207,7 @@ const ChangeUserName = React.createClass({
         />
         <Button
           style={styles.submitButton}
-          text="Change my nickname!"
+          text="Save!"
           onPress={this.handleSubmitEditing}
         />
       </SettingsWrapper>
