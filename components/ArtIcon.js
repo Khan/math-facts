@@ -10,6 +10,8 @@ const {
     Surface
 } = ReactART;
 
+import SH from '../helpers/style-helpers';
+
 const circlePath = function(r) {
   // relative to center of the circle
   return new Path()
@@ -81,8 +83,8 @@ const Icon = React.createClass({
   },
   getDefaultProps: function() {
     return {
-      backgroundColor: '#ddd',
-      color: '#29abca',
+      backgroundColor: SH.colors.inactive,
+      color: SH.colors.active,
     };
   },
   render: function() {

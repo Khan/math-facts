@@ -8,7 +8,7 @@ const {
 const Circle = React.createClass({
   render: function() {
     const size = this.props.size || 20;
-    const color = this.props.color || '#527fe4';
+    const color = this.props.color;
     return (
       <View
         style={{

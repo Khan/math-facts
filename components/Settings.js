@@ -17,6 +17,7 @@ import Button from '../components/Button';
 import CheckButton from '../components/CheckButton';
 import BackButton from '../components/BackButton';
 import RowButton from '../components/RowButton';
+import SH from '../helpers/style-helpers';
 
 const SettingsWrapper = React.createClass({
   propTypes: {
@@ -419,7 +420,7 @@ const styles = StyleSheet.create({
   },
 
   headingText: {
-    color: '#999',
+    color: SH.colors.grey68,
     fontSize: 20,
     marginBottom: 20,
     paddingLeft: 10,
@@ -427,20 +428,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   headingTextEmphasis: {
-    color: '#555'
+    color: SH.colors.grey25,
   },
 
   settingsWrapper: {
     flex: 1,
-    backgroundColor: '#fafafa',
+    backgroundColor: SH.colors.backgroundColor,
   },
   settingsSection: {
     marginBottom: 20,
   },
 
   input: {
-    backgroundColor: '#fff',
-    borderColor: '#ddd',
+    backgroundColor: SH.colors.white,
+    borderColor: SH.colors.grey85,
     height: 50,
     paddingRight: 10,
     paddingLeft: 10,
@@ -449,13 +450,13 @@ const styles = StyleSheet.create({
   },
 
   submitButton: {
-    backgroundColor: '#29abca',
-    borderColor: '#2d8ca2',
+    backgroundColor: SH.colors.active,
+    borderColor: SH.colors.activeShadow,
     borderBottomWidth: 4,
   },
 
   uuidText: {
-    color: '#aaa',
+    color: SH.colors.grey68,
     fontSize: 12,
     textAlign: 'center',
   },

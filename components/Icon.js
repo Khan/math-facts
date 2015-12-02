@@ -5,6 +5,8 @@ const {
   Platform,
 } = React;
 
+import SH from '../helpers/style-helpers';
+
 const Icon = React.createClass({
   propTypes: {
     backgroundColor: React.PropTypes.string,
@@ -24,8 +26,8 @@ const Icon = React.createClass({
   },
   getDefaultProps: function() {
     return {
-      backgroundColor: '#ddd',
-      color: '#29abca',
+      backgroundColor: SH.colors.inactive,
+      color: SH.colors.active,
     };
   },
   render: function() {

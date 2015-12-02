@@ -15,6 +15,7 @@ import { AppText, AppTextBold, AppTextThin } from './AppText';
 import Helpers from '../helpers/helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
+import SH from '../helpers/style-helpers';
 
 import Chart from '../components/Chart';
 
@@ -160,8 +161,12 @@ const StatInfo = React.createClass({
             <AppText style={styles.totalStatsText}>
               {' tries: '}
             </AppText>
-            <View style={[styles.totalEm, { backgroundColor: '#1c758a' }]}>
-              <AppText style={[styles.totalStatsText, { color: '#f7feff' }]}>
+            <View style={[styles.totalEm,
+              { backgroundColor: MasteryHelpers.masteryColors.mastered }]}
+            >
+              <AppText style={[styles.totalStatsText,
+                { color: MasteryHelpers.masteryTextColors.mastered }]}
+              >
                 {totalStatuses.fast}
               </AppText>
             </View>
@@ -172,8 +177,12 @@ const StatInfo = React.createClass({
               <AppText style={styles.totalStatsText}>
                 {' '}
               </AppText>
-              <View style={[styles.totalEm, { backgroundColor: '#c30202' }]}>
-                <AppText style={[styles.totalStatsText, { color: '#ffdfdf' }]}>
+              <View style={[styles.totalEm,
+                { backgroundColor: MasteryHelpers.masteryColors.struggling }]}
+              >
+                <AppText style={[styles.totalStatsText,
+                  { color: MasteryHelpers.masteryTextColors.struggling }]}
+                >
                   {totalStatuses.slow}
                 </AppText>
               </View>
@@ -238,7 +247,7 @@ const styles = StyleSheet.create({
   },
   infoQuestion: {
     textAlign: 'center',
-    color: '#144956',
+    color: SH.colors.blueDarker,
     fontSize: 40,
     height: 50,
   },
@@ -248,7 +257,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   infoStatLabel: {
-    color: '#999',
+    color: SH.colors.grey68,
     fontSize: 13,
     paddingTop: 6,
     paddingRight: 6,
@@ -263,7 +272,7 @@ const styles = StyleSheet.create({
   },
   infoStat: {
     margin: 2,
-    backgroundColor: '#fff',
+    backgroundColor: SH.colors.white,
     paddingLeft: 6,
     paddingRight: 6,
     paddingTop: 3,
@@ -275,7 +284,7 @@ const styles = StyleSheet.create({
   },
   infoStatText: {
     fontSize: 13,
-    color: '#144956'
+    color: SH.colors.blueDarker,
   },
 
   infoDescription: {
@@ -296,12 +305,12 @@ const styles = StyleSheet.create({
   },
   infoDescriptionText: {
     fontSize: 11,
-    color: '#144956',
+    color: SH.colors.blueDarker,
     textAlign: 'center',
   },
 
   divider: {
-    borderBottomColor: '#ddd',
+    borderBottomColor: SH.colors.grey85,
     borderBottomWidth: 1,
     marginBottom: 10,
     marginTop: 10,
@@ -312,16 +321,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   totalStatsText: {
-    color: '#144956',
+    color: SH.colors.blueDarker,
   },
   totalEm: {
-    backgroundColor: '#ddd',
+    backgroundColor: SH.colors.grey90,
     borderRadius: 3,
     paddingLeft: 5,
     paddingRight: 5,
   },
   timeGoalText: {
-    color: '#999',
+    color: SH.colors.grey68,
     fontSize: 11,
     textAlign: 'center',
   },

@@ -112,34 +112,6 @@ function rgbToHex(rgb) {
   return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 };
 
-// From /webapp/stylesheets/shared-package/variables.less
-const KAColors = {
-  mathDomainColor: '#1c758a',
-  mathSubjectColor: '#46a8bf',
-  mathTopicColor: '#4fbad4',
-  blueDark: '#2c3747',
-  blueDarkUnsaturated: '#3b414e',
-  blueDarkSaturated: '#1f3043',
-  blue: '#005a88',
-  blueLight: '#a9c0d1',
-  green: '#76a005',
-  greenLight: '#c6d1ad',
-  greenDark: '#356700',
-  yellowGreen: '#9db63b',
-  okGreen: '#a7cf5b',
-  orange: '#bf4f04',
-  red: '#cf5044',
-};
-
-const masteryColors = {
-  unknown: '#eeeeee',
-  struggling: '#c30202',
-  practiced: '#9cdceb',
-  levelOne: '#58c4dd',
-  levelTwo: '#29abca',
-  mastered: KAColors.mathDomainColor,
-};
-
 const backgroundColors = [
   hslToRgb([0.35, 0.39, 0.46]), // green
   hslToRgb([0.41, 0.69, 0.38]), // green-teal

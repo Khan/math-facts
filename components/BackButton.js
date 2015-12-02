@@ -7,7 +7,7 @@ const {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText } from './AppText';
 import Icon from './Icon';
 
 const BackButton = React.createClass({

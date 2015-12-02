@@ -11,6 +11,7 @@ const {
 import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import MasteryHelpers from '../helpers/mastery-helpers';
+import SH from '../helpers/style-helpers';
 
 import BackButton from '../components/BackButton';
 
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#fafafa',
+    backgroundColor: SH.colors.backgroundColor,
     justifyContent: 'flex-start'
   },
 

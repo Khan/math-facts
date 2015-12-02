@@ -19,6 +19,7 @@ import Icon from '../components/Icon';
 
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
+import SH from '../helpers/style-helpers';
 
 const HomeScreen = React.createClass({
   propTypes: {
@@ -42,6 +43,8 @@ const HomeScreen = React.createClass({
     }, 0);
   },
   getStreak: function() {
+    // TODO: make the steak realize that if you haven't done something today,
+    // but are still in the middle of a streak, that's okay! you're not at 0!
     const scores = this.props.scores.slice().reverse();
     const streak = {};
     scores.forEach((score) => {
@@ -151,8 +154,8 @@ const HomeScreen = React.createClass({
                 <Icon
                   type='play'
                   backgroundType='circle'
-                  color='#fff'
-                  backgroundColor='#29abca'
+                  color={SH.colors.white}
+                  backgroundColor={SH.colors.active}
                   size={90} />
                 <View>
                   <AppTextBold
@@ -178,8 +181,8 @@ const HomeScreen = React.createClass({
                 <Icon
                   type='cog'
                   backgroundType='square'
-                  backgroundColor='#eee'
-                  color='#bbb'
+                  backgroundColor={SH.colors.inactive}
+                  color={SH.colors.grey68}
                   size={68} />
                 <View>
                   <AppTextBold style={styles.actionCaption}>
@@ -205,12 +208,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   actionCaption: {
-    color: '#999',
+    color: SH.colors.grey68,
     fontSize: 12,
     lineHeight: 22,
   },
   actionCaptionLarge: {
-    color: '#29abca',
+    color: SH.colors.active,
     fontSize: 18,
     lineHeight: 26,
   },
@@ -225,7 +228,7 @@ const styles = StyleSheet.create({
   },
 
   headingText: {
-    color: '#999',
+    color: SH.colors.grey68,
     fontSize: 20,
     paddingBottom: 10,
     textAlign: 'center',
@@ -234,17 +237,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   headingTextEmphasis: {
-    color: '#555'
+    color: SH.colors.grey25,
   },
 
   container: {
-    backgroundColor: '#fafafa',
+    backgroundColor: SH.colors.backgroundColor,
     flex: 1,
     justifyContent: 'center',
   },
 
   divider: {
-    backgroundColor: '#eee',
+    backgroundColor: SH.colors.grey90,
     height: 1.5,
     marginBottom: 25,
     marginTop: 20,

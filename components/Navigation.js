@@ -17,6 +17,7 @@ import HomeScreen from '../components/HomeScreen';
 import Quizzer from '../components/Quizzer';
 import Stats from '../components/Stats';
 import Settings from '../components/Settings';
+import SH from '../helpers/style-helpers';
 
 if (React.StatusBarIOS) {
   React.StatusBarIOS.setHidden(true, 'slide');
@@ -147,7 +148,7 @@ const Navigation = React.createClass({
 
 const styles = StyleSheet.create({
   loadingScreen: {
-    backgroundColor: '#fafafa',
+    backgroundColor: SH.colors.backgroundColor,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

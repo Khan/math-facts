@@ -5,25 +5,26 @@ import _ from 'underscore';
 import ColorHelpers from '../helpers/color-helpers';
 import Helpers from '../helpers/helpers';
 import OperationHelpers from '../helpers/operation-helpers';
+import SH from '../helpers/style-helpers';
 
 // The time to recall a fact from memory should be less than 800ms
 const MEMORY_TIME = 800;
 
 // From /webapp/stylesheets/shared-package/variables.less
 const masteryColors = {
-  unknown: '#dddddd',
-  struggling: '#c30202',
-  introduced: '#9cdceb',
-  practiced: '#29abca',
-  mastered: '#1c758a',
+  unknown: SH.colors.grey90,
+  struggling: SH.colors.red,
+  introduced: SH.colors.blueLight,
+  practiced: SH.colors.blueMedium,
+  mastered: SH.colors.blueDark,
 };
 
 const masteryTextColors = {
-  unknown: '#5d5d5d',
-  struggling: '#ffdfdf',
-  introduced: '#124653',
-  practiced: '#0C3842',
-  mastered: '#f7feff',
+  unknown: SH.colors.grey25,
+  struggling: SH.colors.redLight,
+  introduced: SH.colors.blueDarker,
+  practiced: SH.colors.blueDarker,
+  mastered: SH.colors.blueLighter,
 };
 
 const masteryTitle = {
@@ -203,7 +204,7 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
 
   // If the learner has shown fluency on this fact more than 75% of the time,
   // we can consider them fluent.
-  if (fluentTimes >= nonFluentTimes * 2) {
+  if (fluentTimes >= nonFluentTimes * 6) {
     // fluent overall
     return 'mastered';
   }

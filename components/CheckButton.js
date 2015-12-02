@@ -9,7 +9,8 @@ const {
 } = React;
 
 import { AppText, AppTextBold, AppTextThin } from './AppText';
-import Icon from '../components/Icon'
+import Icon from '../components/Icon';
+import SH from '../helpers/style-helpers';
 
 const Button = React.createClass({
   propTypes: {
@@ -29,7 +30,7 @@ const Button = React.createClass({
     return (
       <TouchableHighlight
         onPress={onPress}
-        underlayColor='#ddd'
+        underlayColor={SH.colors.grey85}
         style={styles.buttonWrapper}
         activeOpacity={0.8}
       >
@@ -37,10 +38,10 @@ const Button = React.createClass({
           style={[styles.button, last && styles.lastButton]}>
           <View style={styles.icon}>
             <Icon
-              backgroundColor={active ? '#29abca' : '#eee'}
+              backgroundColor={active ? SH.colors.active : SH.colors.inactive}
               backgroundType='circle'
               size={28}
-              color={active ? '#fff' : '#999'}
+              color={SH.colors.white}
               type={active ? 'check'  : 'none'} />
           </View>
           <AppText style={styles.buttonText}>

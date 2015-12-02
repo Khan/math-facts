@@ -13,6 +13,7 @@ import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
+import SH from '../helpers/style-helpers';
 
 const GridCell = React.createClass({
   propTypes: {
@@ -28,8 +29,8 @@ const GridCell = React.createClass({
   },
   getDefaultProps: function () {
     return {
-      color: '#ddd',
-      textColor: '#222',
+      color: SH.colors.grey85,
+      textColor: SH.colors.grey25,
     };
   },
   render: function() {
@@ -103,8 +104,8 @@ const Grid = React.createClass({
     const maxVal = 10;
     const cellRange = _.range(1, maxVal + 1);
 
-    const headerCellColor = '#eee';
-    const operationCellColor = '#ddd';
+    const headerCellColor = SH.colors.grey90;
+    const operationCellColor = SH.colors.grey85;
 
     const learnerTypingTimes = MasteryHelpers.getLearnerTypingTimes(
       timeData,

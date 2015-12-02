@@ -17,6 +17,7 @@ import ColorHelpers from '../helpers/color-helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 import Helpers from '../helpers/helpers';
+import SH from '../helpers/style-helpers';
 
 import NumPad from '../components/NumPad';
 import Button from '../components/Button';
@@ -554,7 +555,7 @@ const Quizzer = React.createClass({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa'
+    backgroundColor: SH.colors.backgroundColor,
   },
 
   topRow: {
@@ -576,7 +577,7 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.6)',
   },
   pointsTextBold: {
-    color: '#fff',
+    color: SH.colors.white,
   },
 
   progressBar: {
@@ -601,7 +602,7 @@ const styles = StyleSheet.create({
   },
   question: {
     fontSize: 40,
-    color: '#fff'
+    color: SH.colors.white,
   },
   responseContainer: {
     flex: 1,
@@ -611,7 +612,7 @@ const styles = StyleSheet.create({
   response: {
     fontSize: 75,
     height: 90,
-    color: '#fff',
+    color: SH.colors.white,
     marginBottom: 20,
   },
 
@@ -623,7 +624,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 30,
-    color: '#fff'
+    color: SH.colors.white,
   },
 
   countdown: {
@@ -634,7 +635,7 @@ const styles = StyleSheet.create({
   },
   countdownText: {
     fontSize: 60,
-    color: '#fff'
+    color: SH.colors.white,
   },
 
   summary: {
@@ -646,15 +647,15 @@ const styles = StyleSheet.create({
   summaryTitle: {
     fontSize: 50,
     marginBottom: 20,
-    color: '#fff'
+    color: SH.colors.white,
   },
   summaryText: {
     fontSize: 25,
-    color: '#fff'
+    color: SH.colors.white,
   },
   summaryPoints: {
     fontSize: 40,
-    color: '#fff'
+    color: SH.colors.white,
   },
   summaryButton: {
     backgroundColor: 'rgba(0, 0, 0, 0.20)',
