@@ -137,6 +137,7 @@ const ProgressBar = React.createClass({
 const Summary = React.createClass({
   propTypes: {
     color: React.PropTypes.arrayOf(React.PropTypes.number),
+    count: React.PropTypes.number.isRequired,
     finish: React.PropTypes.func.isRequired,
     mode: React.PropTypes.string.isRequired,
     playAgain: React.PropTypes.func.isRequired,
@@ -146,6 +147,7 @@ const Summary = React.createClass({
   render: function() {
     const {
       color,
+      count,
       finish,
       mode,
       playAgain,
@@ -170,6 +172,18 @@ const Summary = React.createClass({
           </AppTextBold>
           <AppText style={styles.summaryText}>
             {' points!'}
+          </AppText>
+
+          <AppText style={styles.summaryCountText}>
+            <AppText>
+              {'You answered '}
+            </AppText>
+            <AppTextBold>
+              {count}
+            </AppTextBold>
+            <AppText>
+              {' questions!'}
+            </AppText>
           </AppText>
         </View>
         <Button
@@ -539,6 +553,7 @@ const Quizzer = React.createClass({
 
     return <Summary
       color={this.getColor()}
+      count={this.state.count}
       finish={() => {
         this.props.finish(this.state.data, this.state.points);
       }}
@@ -652,6 +667,11 @@ const styles = StyleSheet.create({
   summaryText: {
     fontSize: 25,
     color: SH.colors.white,
+  },
+  summaryCountText: {
+    fontSize: 20,
+    color: SH.colors.white,
+    marginTop: 20,
   },
   summaryPoints: {
     fontSize: 40,
