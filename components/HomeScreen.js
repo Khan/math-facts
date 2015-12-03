@@ -69,9 +69,12 @@ const HomeScreen = React.createClass({
     for (let date in streak) {
       // If the last date you did something was today or yesterday, increment
       // the streak. We don't want to throw away the streak if you haven't
-      // done anything *yet* today, so we check yseterday too.
-      if (date === m.format("MMM D") ||
-          (date === yesterday.format("MMM D") && currentStreak === 0)) {
+      // done anything *yet* today, so we check yesterday too, and if you did
+      // something yesterday we start counting there.
+      if (date === yesterday.format("MMM D") && currentStreak === 0) {
+        m.subtract(1, "day");
+      }
+      if (date === m.format("MMM D")) {
         currentStreak++;
         m.subtract(1, "day");
       } else {
