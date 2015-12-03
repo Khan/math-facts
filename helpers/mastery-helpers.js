@@ -204,7 +204,7 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
 
   // If the learner has shown fluency on this fact more than 75% of the time,
   // we can consider them fluent.
-  if (fluentTimes >= nonFluentTimes * 6) {
+  if (fluentTimes >= nonFluentTimes * 2) {
     // fluent overall
     return 'mastered';
   }
