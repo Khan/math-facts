@@ -361,17 +361,13 @@ AppDispatcher.register(function(action) {
       break;
 
     case MathFactsConstants.FACT_DATA_ADD:
-      const operation = action.operation;
-      const data = action.data;
-      if (!_.isEmpty(data)) {
-        addAttempts(operation, data);
+      if (!_.isEmpty(action.data)) {
+        addAttempts(action.operation, action.data);
       }
       break;
 
     case MathFactsConstants.POINTS_ADD:
-      const amount = action.amount;
-      const time = action.time;
-      addPoints(amount, time);
+      addPoints(action.amount, action.time);
       break;
 
     case MathFactsConstants.DATA_CLEAR:
@@ -379,28 +375,23 @@ AppDispatcher.register(function(action) {
       break;
 
     case MathFactsConstants.USERS_ADD:
-      const name = action.name;
-      addUser(name);
+      addUser(action.name);
       break;
 
     case MathFactsConstants.USERS_CHANGE_NAME:
-      const newUserName = action.name;
-      changeUserName(newUserName);
+      changeUserName(action.name);
       break;
 
     case MathFactsConstants.USERS_CHANGE_ACTIVE_USER:
-      const id = action.id;
-      changeActiveUser(id);
+      changeActiveUser(action.id);
       break;
 
     case MathFactsConstants.OPERATION_CHANGE:
-      const newOperation = action.operation;
-      setOperation(newOperation);
+      setOperation(action.operation);
       break;
 
     case MathFactsConstants.TIME_CHANGE:
-      const newTime = action.time;
-      setTime(newTime);
+      setTime(action.time);
       break;
 
     default:
