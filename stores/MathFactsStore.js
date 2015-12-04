@@ -131,10 +131,10 @@ const updateUserData = function() {
 /*
  * Points
  */
-const addPoints = function(amount) {
+const addPoints = function(amount, time) {
   _data['points'] += amount;
   const d = new Date();
-  _data['scores'].push({score: amount, date: d.getTime()});
+  _data['scores'].push({score: amount, date: d.getTime(), time: time});
   MathFactStore.emitChange();
   updateStoredPoints();
 };
@@ -274,9 +274,17 @@ const fetchPoints = function() {
       if (scores != null) {
         ret = JSON.parse(scores).map((scoreData) => {
           if (typeof scoreData === 'number') {
-            return { score: scoreData, date: null };
+            return {
+              score: scoreData,
+              date: null,
+              time: null,
+            };
           }
-          return { score: scoreData.score, date: scoreData.date };
+          return {
+            score: scoreData.score,
+            date: scoreData.date,
+            time: scoreData.time != null ? scoreData.time : null,
+          };
         });
       }
       _data['scores'] = ret;
@@ -362,7 +370,8 @@ AppDispatcher.register(function(action) {
 
     case MathFactsConstants.POINTS_ADD:
       const amount = action.amount;
-      addPoints(amount);
+      const time = action.time;
+      addPoints(amount, time);
       break;
 
     case MathFactsConstants.DATA_CLEAR:

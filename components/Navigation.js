@@ -30,7 +30,7 @@ const Navigation = React.createClass({
     _.each(quizData, (questionData) => {
       MathFactsActions.addAttempts(operation, [questionData]);
     });
-    MathFactsActions.addPoints(points);
+    MathFactsActions.addPoints(points, this.props.user.time);
   },
   componentDidMount: function() {
     MathFactsActions.initializeData();

@@ -34,10 +34,11 @@ const MathFactsActions = {
     });
   },
 
-  addPoints: function(amount) {
+  addPoints: function(amount, time) {
     AppDispatcher.dispatch({
       actionType: MathFactsConstants.POINTS_ADD,
       amount: amount,
+      time: time,
     });
   },
 
