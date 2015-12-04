@@ -25,12 +25,15 @@ if (React.StatusBarIOS) {
 
 const Navigation = React.createClass({
   finish: function(quizData, points) {
-    const operation = this.props.user.operation;
+    const {
+      operation,
+      time,
+    } = this.props.user;
 
     _.each(quizData, (questionData) => {
       MathFactsActions.addAttempts(operation, [questionData]);
     });
-    MathFactsActions.addPoints(points, this.props.user.time);
+    MathFactsActions.addPoints(points, time, operation);
   },
   componentDidMount: function() {
     MathFactsActions.initializeData();
