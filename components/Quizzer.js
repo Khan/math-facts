@@ -559,7 +559,7 @@ const Quizzer = React.createClass({
       }}
       mode={this.props.mode}
       playAgain={() => {
-        this.props.finish(this.state.data, this.state.points, true);
+        this.props.playAgain(this.state.data, this.state.points);
       }}
       points={this.state.points}
       ProgressComponent={this._renderProgress()}
