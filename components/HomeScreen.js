@@ -140,18 +140,28 @@ const HomeScreen = React.createClass({
 
         <View style={styles.actions}>
           <View style={styles.action}>
-            <View style={styles.gridWrapper}>
-              <Grid
-                small={true}
-                timeData={timeData}
-                operation={operation}
-                onPress={showStats} />
-            </View>
-            <View>
-              <AppTextBold style={styles.actionCaption}>
-                My Progress
-              </AppTextBold>
-            </View>
+            <TouchableHighlight
+              onPress={showStats}
+              activeOpacity={0.5}
+              underlayColor='transparent'
+            >
+              <View style={styles.action}>
+                <View
+                  style={styles.gridWrapper}
+                >
+                  <Grid
+                    small={true}
+                    timeData={timeData}
+                    operation={operation}
+                  />
+                </View>
+                <View>
+                  <AppTextBold style={styles.actionCaption}>
+                    My Progress
+                  </AppTextBold>
+                </View>
+              </View>
+            </TouchableHighlight>
           </View>
 
           <View style={styles.action}>

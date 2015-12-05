@@ -177,7 +177,7 @@ const Grid = React.createClass({
                     color={masteryColor}
                     content={answer}
                     key={'cell-' + row + '-' + col}
-                    onPress={() => onPress([row, col])}
+                    onPress={onPress ? () => onPress([row, col]) : null}
                     small={small}
                     textColor={masteryColorText} />
                   );
