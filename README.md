@@ -22,9 +22,9 @@ Set up your [codepush account](http://microsoft.github.io/code-push/index.html#g
 
 ```
 react-native bundle --entry-file index.ios.js --bundle-output iOS/main.jsbundle --platform ios --dev false
-code-push release MathFacts ./ios/main.jsbundle 1.0.1
+code-push release MathFacts ./ios/main.jsbundle 1.0.2
 ```
 ```
 react-native bundle --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.jsbundle --platform android --dev false
-code-push release MathFacts ./android/app/src/main/assets/index.android.jsbundle 1.0.1
+code-push release MathFacts ./android/app/src/main/assets/index.android.jsbundle 1.0.2
 ```
