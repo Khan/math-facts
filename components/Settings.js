@@ -23,12 +23,16 @@ const SettingsWrapper = React.createClass({
   propTypes: {
     goBack: React.PropTypes.func.isRequired,
     style: View.propTypes.style,
+    backButtonText: React.PropTypes.string,
   },
   render: function() {
     return (
       <View style={[this.props.style, styles.settingsWrapper]}>
         <View style={styles.topRow}>
-          <BackButton onPress={this.props.goBack} />
+          <BackButton
+            onPress={this.props.goBack}
+            text={this.props.backButtonText}
+          />
         </View>
         {this.props.children}
       </View>
@@ -135,7 +139,7 @@ const AddNewUser = React.createClass({
     } = this.props;
 
     return (
-      <SettingsWrapper goBack={goBack}>
+      <SettingsWrapper goBack={goBack} backButtonText="Cancel">
         <AppText style={styles.headingText}>Hi! What's your name?</AppText>
         <TextInput
           autoCapitalize='words'
@@ -187,7 +191,7 @@ const ChangeUserName = React.createClass({
     } = this.props;
 
     return (
-      <SettingsWrapper goBack={goBack}>
+      <SettingsWrapper goBack={goBack} backButtonText="Cancel">
         <AppText style={styles.headingText}>
           What's your new name?
         </AppText>

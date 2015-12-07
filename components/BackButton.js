@@ -13,6 +13,12 @@ import Icon from './Icon';
 const BackButton = React.createClass({
   propTypes: {
     onPress: React.PropTypes.func,
+    text: React.PropTypes.string,
+  },
+  getDefaultProps: function() {
+    return {
+      text: 'Back',
+    };
   },
   render: function() {
     return (
@@ -30,7 +36,7 @@ const BackButton = React.createClass({
             />
           </View>
           <AppText style={styles.backButtonText}>
-            Back
+            {this.props.text}
           </AppText>
         </View>
       </TouchableHighlight>
