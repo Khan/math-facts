@@ -48,10 +48,20 @@ const Stats = React.createClass({
       operation
     );
 
+    const totalQuestionsAnswered = timeData.reduce(function(total, row) {
+      return total + row.reduce(function (innerTotal, col) {
+        return innerTotal + col.length;
+      }, 0);
+    }, 0);
+
     return (
       <View style={styles.container}>
         <View style={styles.topRow}>
           <BackButton onPress={goBack} />
+          <AppText style={styles.topRowText}>
+            Total answered: <AppTextBold>
+              {totalQuestionsAnswered}</AppTextBold>
+          </AppText>
         </View>
 
         <Grid
@@ -85,6 +95,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'stretch',
     alignSelf: 'stretch',
+  },
+
+  topRowText: {
+    fontSize: 12,
+    paddingRight: 15,
+    paddingTop: 23,
   },
 });
 
