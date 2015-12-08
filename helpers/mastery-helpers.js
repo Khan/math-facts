@@ -37,7 +37,8 @@ const masteryTitle = {
 
 const masteryDescription = {
   unknown: `You haven't answered this one yet!`,
-  struggling: `This fact isn't as fast as your other ones. You'll get there! Keep practicing!`,
+  struggling: "This fact isn't as fast as your other ones." +
+    "You'll get there! Keep practicing!",
   introduced: `We need to practice this one a few more times!`,
   practiced: `We need to get this one to be a little faster!`,
   mastered: `You know this fact from memory! You did it!`,
@@ -222,7 +223,8 @@ const getFactStatus = function(number, times, learnerTypingTimes) {
 
 };
 
-const addToInputList = function(operation, factData, inputList, propsTimeData, studyFact, spacer) {
+const addToInputList = function(operation, factData, inputList,
+    propsTimeData, studyFact, spacer) {
   const OperationHelper = OperationHelpers[operation];
 
   const easiestFacts = OperationHelper.getEasiestFactOrder();
