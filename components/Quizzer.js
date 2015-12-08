@@ -209,11 +209,12 @@ const Game = React.createClass({
       React.PropTypes.string,
     ]).isRequired,
     back: React.PropTypes.func.isRequired,
-    bounceValue: React.PropTypes.object.isRequired,
     clear: React.PropTypes.func.isRequired,
     color: React.PropTypes.arrayOf(React.PropTypes.number),
+    digitBounceValue: React.PropTypes.object.isRequired,
     hint: React.PropTypes.func.isRequired,
     hintUsed: React.PropTypes.bool.isRequired,
+    newQuestionBounceValue: React.PropTypes.object.isRequired,
     operation: React.PropTypes.string.isRequired,
     points: React.PropTypes.number.isRequired,
     ProgressComponent: React.PropTypes.node.isRequired,
@@ -228,11 +229,12 @@ const Game = React.createClass({
       addDigit,
       answer,
       back,
-      bounceValue,
       clear,
       color,
+      digitBounceValue,
       hint,
       hintUsed,
+      newQuestionBounceValue,
       operation,
       points,
       ProgressComponent,
@@ -244,25 +246,36 @@ const Game = React.createClass({
       <QuizzerScreen
           color={color}
           points={points}
-          back={back}>
+          back={back}
+        >
+
         {ProgressComponent}
-        <View style={styles.questionContainer}>
+
+        <Animated.View
+          style={[styles.questionContainer, {
+            flex: 1,
+            transform: [
+              {scale: newQuestionBounceValue},
+            ],
+          }]}>
           <AppText style={styles.question}>
             {question}
           </AppText>
-        </View>
+        </Animated.View>
+
         <Animated.View
           style={[styles.responseContainer, {
             flex: 1,
             transform: [
-              {scale: bounceValue},
-            ]
+              {scale: digitBounceValue},
+            ],
           }]}
         >
           <AppText style={[styles.response]}>
             {response}
           </AppText>
         </Animated.View>
+
         <View style={styles.hintContainer}>
           {hintUsed &&
             <AppText style={styles.hintText}>
@@ -305,7 +318,8 @@ const Quizzer = React.createClass({
       totalTimeElapsed: 0,
       points: 0,
 
-      bounceValue: new Animated.Value(1),
+      digitBounceValue: new Animated.Value(1),
+      newQuestionBounceValue: new Animated.Value(1),
     };
   },
   getInputs: function() {
@@ -320,9 +334,9 @@ const Quizzer = React.createClass({
       }, this.check);
     } else {
       // Visual feedback that you're at the max number of digits
-      this.state.bounceValue.setValue(0.9);
+      this.state.digitBounceValue.setValue(0.9);
       Animated.spring(
-        this.state.bounceValue,
+        this.state.digitBounceValue,
         {
           toValue: 1,
           friction: 3,
@@ -452,6 +466,17 @@ const Quizzer = React.createClass({
           inputList = this.addToInputList(this.props.quizzesData);
         }
 
+        // Visual feedback that you're getting a new question
+        // todo move this somewhere else so that it can animate the first Q too
+        this.state.newQuestionBounceValue.setValue(0.92);
+        Animated.spring(
+          this.state.newQuestionBounceValue,
+          {
+            toValue: 1,
+            friction: 4,
+          }
+        ).start();
+
         // Load a new question
         this.setState({
           inputList: inputList,
@@ -538,11 +563,12 @@ const Quizzer = React.createClass({
         addDigit={this.addDigit}
         answer={answer}
         back={this.props.back}
-        bounceValue={this.state.bounceValue}
         clear={this.clear}
         color={this.getColor()}
+        digitBounceValue={this.state.digitBounceValue}
         hint={this.hint}
         hintUsed={this.state.hintUsed}
+        newQuestionBounceValue={this.state.newQuestionBounceValue}
         operation={this.props.operation}
         points={this.state.points}
         ProgressComponent={this._renderProgress()}
@@ -616,8 +642,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   question: {
-    fontSize: 40,
     color: SH.colors.white,
+    fontSize: 50,
+    height: 65,
   },
   responseContainer: {
     flex: 1,
