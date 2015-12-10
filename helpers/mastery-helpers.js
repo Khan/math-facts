@@ -37,7 +37,7 @@ const masteryTitle = {
 
 const masteryDescription = {
   unknown: `You haven't answered this one yet!`,
-  struggling: "This fact isn't as fast as your other ones." +
+  struggling: "This fact isn't as fast as your other ones. " +
     "You'll get there! Keep practicing!",
   introduced: `We need to practice this one a few more times!`,
   practiced: `We need to get this one to be a little faster!`,
