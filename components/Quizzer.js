@@ -462,7 +462,8 @@ const Quizzer = React.createClass({
         }
 
         // If we're near the end of the input list, add more questions to it
-        if (this.state.count >= (inputList.length - 1) - 2) {
+        const questionsRemaining = inputList.length - (this.state.count + 1);
+        if (questionsRemaining <= 2) {
           inputList = this.addToInputList(this.props.quizzesData);
         }
 
