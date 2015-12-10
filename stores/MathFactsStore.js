@@ -133,10 +133,9 @@ const updateUserData = function() {
  */
 const addPoints = function(amount, time, operation) {
   _data['points'] += amount;
-  const d = new Date();
   _data['scores'].push({
     score: amount,
-    date: d.getTime(),
+    date: Date.now(),
     time: time,
     operation: operation,
   });
