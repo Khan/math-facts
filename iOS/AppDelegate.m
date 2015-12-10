@@ -13,15 +13,7 @@
 
 #import "CodePush.h"
 
-#import "RCTPushNotificationManager.h"
-
 @implementation AppDelegate
-
-// Required for the notification event.
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)notification
-{
-  [RCTPushNotificationManager application:application didReceiveRemoteNotification:notification];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
