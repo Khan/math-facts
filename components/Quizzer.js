@@ -318,6 +318,8 @@ const Quizzer = React.createClass({
       totalTimeElapsed: 0,
       points: 0,
 
+      correctAnswer: false,
+
       digitBounceValue: new Animated.Value(1),
       newQuestionBounceValue: new Animated.Value(1),
     };
@@ -327,6 +329,9 @@ const Quizzer = React.createClass({
     return this.state.inputList[this.state.count];
   },
   addDigit: function(value) {
+    if (this.state.correctAnswer) {
+      return;
+    }
     if (this.state.response.toString().length < 3) {
       const intResponse = parseInt(this.state.response + value.toString());
       this.setState({
@@ -421,6 +426,11 @@ const Quizzer = React.createClass({
     const answer = OperationHelper.getAnswer(inputs);
 
     if (parseInt(this.state.response) === parseInt(answer)) {
+      // They have entered the correct answer
+      this.setState({
+        correctAnswer: true,
+      });
+
       const time = this.state.time;
       const hintUsed = this.state.hintUsed;
       let inputList = this.state.inputList.slice();
@@ -480,6 +490,7 @@ const Quizzer = React.createClass({
 
         // Load a new question
         this.setState({
+          correctAnswer: false,
           inputList: inputList,
 
           count: this.state.count + 1,
