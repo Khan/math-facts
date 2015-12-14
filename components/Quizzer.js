@@ -209,6 +209,7 @@ const Game = React.createClass({
       React.PropTypes.string,
     ]).isRequired,
     back: React.PropTypes.func.isRequired,
+    bounce: React.PropTypes.func,
     clear: React.PropTypes.func.isRequired,
     color: React.PropTypes.arrayOf(React.PropTypes.number),
     digitBounceValue: React.PropTypes.object.isRequired,
@@ -223,6 +224,11 @@ const Game = React.createClass({
       React.PropTypes.number,
       React.PropTypes.string,
     ]).isRequired,
+  },
+  componentDidMount: function() {
+    if (this.props.bounce) {
+      this.props.bounce();
+    }
   },
   render: function() {
     const {
@@ -419,6 +425,16 @@ const Quizzer = React.createClass({
       countdown: countdown - 1
     });
   },
+  questionBounce: function() {
+      this.state.newQuestionBounceValue.setValue(0.92);
+      Animated.spring(
+        this.state.newQuestionBounceValue,
+        {
+          toValue: 1,
+          friction: 4,
+        }
+      ).start();
+  },
   check: function() {
     const inputs = this.getInputs();
     const operation = this.props.operation;
@@ -479,14 +495,7 @@ const Quizzer = React.createClass({
 
         // Visual feedback that you're getting a new question
         // todo move this somewhere else so that it can animate the first Q too
-        this.state.newQuestionBounceValue.setValue(0.92);
-        Animated.spring(
-          this.state.newQuestionBounceValue,
-          {
-            toValue: 1,
-            friction: 4,
-          }
-        ).start();
+        this.questionBounce();
 
         // Load a new question
         this.setState({
@@ -575,6 +584,7 @@ const Quizzer = React.createClass({
         addDigit={this.addDigit}
         answer={answer}
         back={this.props.back}
+        bounce={this.questionBounce}
         clear={this.clear}
         color={this.getColor()}
         digitBounceValue={this.state.digitBounceValue}
