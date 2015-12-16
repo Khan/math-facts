@@ -74,6 +74,7 @@ const KeyboardKey = React.createClass({
 const Keyboard = React.createClass({
   propTypes: {
     children: React.PropTypes.node,
+    triggerOnMove: React.PropTypes.bool,
   },
   statics: {
     Key: KeyboardKey,
@@ -169,6 +170,9 @@ const Keyboard = React.createClass({
     const currentTouchId = this._currentTouch && this._currentTouch.identifier;
     event.nativeEvent.changedTouches.forEach(function(touch) {
       if (touch.identifier === currentTouchId) {
+        if (this.props.triggerOnMove) {
+          this._triggerKeyPress();
+        }
         this._currentTouch = touch;
         this._updateHighlightedKeys();
       }

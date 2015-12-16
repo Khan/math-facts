@@ -117,10 +117,7 @@ const Grid = React.createClass({
       operation
     );
 
-    const Wrapper = onPress == null ? View : Keyboard;
-
-    return (
-      <Wrapper>
+    const gridOutput = (
       <View style={styles.grid}>
         {/* Render the top row of cells */}
         <View
@@ -194,8 +191,15 @@ const Grid = React.createClass({
           );
         })}
       </View>
-      </Wrapper>
     );
+
+    if (onPress == null) {
+      return gridOutput;
+    }
+
+    return <Keyboard triggerOnMove={true}>
+      {gridOutput}
+    </Keyboard>;
   }
 });
 
