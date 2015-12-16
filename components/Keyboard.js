@@ -28,6 +28,11 @@ const {
 let idCounter = 1;
 
 const KeyboardKey = React.createClass({
+  propTypes: {
+    style: View.propTypes.style,
+    highlightStyle: View.propTypes.style,
+    children: React.PropTypes.node,
+  },
   getInitialState: function() {
     return {
       highlighted: false,
@@ -67,6 +72,9 @@ const KeyboardKey = React.createClass({
 });
 
 const Keyboard = React.createClass({
+  propTypes: {
+    children: React.PropTypes.node,
+  },
   statics: {
     Key: KeyboardKey,
   },
