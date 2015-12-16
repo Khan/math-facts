@@ -14,16 +14,27 @@ import { AppText, AppTextBold, AppTextThin } from './AppText';
 import Keyboard from './Keyboard.js';
 
 const NumPadButton = React.createClass({
+  propTypes: {
+    content: React.PropTypes.string.isRequired,
+    control: React.PropTypes.boolean,
+    onPress: React.PropTypes.func.isRequired,
+  },
   render: function() {
     return (
       <Keyboard.Key
-          style={styles.button}
+          style={[
+            styles.button,
+            this.props.control && styles.controlButton,
+          ]}
           highlightStyle={styles.highlightedButton}
           onPress={this.props.onPress}>
         <View>
-          <AppText style={
-            [styles.buttonText, this.props.control && styles.controlButtonText]
-          }>
+          <AppText
+            style={[
+              styles.buttonText,
+              this.props.control && styles.controlButtonText,
+            ]}
+          >
             {this.props.content}
           </AppText>
         </View>
@@ -33,6 +44,11 @@ const NumPadButton = React.createClass({
 });
 
 const NumPad = React.createClass({
+  propTypes: {
+    addDigit: React.PropTypes.func.isRequired,
+    clear: React.PropTypes.func.isRequired,
+    hint: React.PropTypes.func.isRequired,
+  },
 
   render: function() {
 
@@ -108,6 +124,9 @@ var styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     margin: 2
+  },
+  controlButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   highlightedButton: {
     backgroundColor: 'rgba(0, 0, 0, 0.15)',
