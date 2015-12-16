@@ -16,7 +16,7 @@ import Keyboard from './Keyboard.js';
 const NumPadButton = React.createClass({
   propTypes: {
     content: React.PropTypes.string.isRequired,
-    control: React.PropTypes.boolean,
+    control: React.PropTypes.bool,
     onPress: React.PropTypes.func.isRequired,
   },
   render: function() {
@@ -56,7 +56,7 @@ const NumPad = React.createClass({
       return (
         <NumPadButton
           onPress={() => {this.props.addDigit(value)}}
-          content={value}
+          content={value.toString()}
           key={value}/>
       );
     });
