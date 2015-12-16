@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { AppText, AppTextBold, AppTextThin } from './AppText';
-
+import Keyboard from './Keyboard.js';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 import SH from '../helpers/style-helpers';
@@ -43,10 +43,11 @@ const GridCell = React.createClass({
       textColor,
     } = this.props;
 
+    const activeStyle = { borderWidth: 1, borderColor: textColor };
     const gridCellStyles = [
       styles.gridCell,
       { backgroundColor: color },
-      active && { borderWidth: 1, borderColor: textColor },
+      active && activeStyle,
       small && { height: 6, width: 6 }
     ];
 
@@ -58,14 +59,18 @@ const GridCell = React.createClass({
 
     if (onPress != null) {
       return (
-        <TouchableHighlight
-            style={gridCellStyles}
-            underlayColor='transparent'
-            onPress={onPress}>
+        <Keyboard.Key
+          style={gridCellStyles}
+          onPress={onPress}
+          highlightStyle={{
+            borderWidth: 2,
+            borderColor: "#fff",
+          }}
+        >
           <View>
             {cellContent}
           </View>
-        </TouchableHighlight>
+        </Keyboard.Key>
       );
     } else {
       return (
@@ -112,7 +117,10 @@ const Grid = React.createClass({
       operation
     );
 
+    const Wrapper = onPress == null ? View : Keyboard;
+
     return (
+      <Wrapper>
       <View style={styles.grid}>
         {/* Render the top row of cells */}
         <View
@@ -186,6 +194,7 @@ const Grid = React.createClass({
           );
         })}
       </View>
+      </Wrapper>
     );
   }
 });
