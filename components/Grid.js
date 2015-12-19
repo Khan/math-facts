@@ -52,7 +52,7 @@ const GridCell = React.createClass({
     } = this.props;
     const active = this.state.active;
 
-    const activeStyle = { borderWidth: 1, borderColor: textColor };
+    const activeStyle = { borderWidth: 2, borderColor: "#fff", opacity: 0.76 };
     const gridCellStyles = [
       styles.gridCell,
       { backgroundColor: color },
@@ -71,10 +71,7 @@ const GridCell = React.createClass({
         <Keyboard.Key
           style={gridCellStyles}
           onPress={onPress}
-          highlightStyle={{
-            borderWidth: 2,
-            borderColor: "#fff",
-          }}
+          highlightStyle={activeStyle}
         >
           <View>
             {cellContent}
