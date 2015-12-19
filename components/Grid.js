@@ -106,7 +106,8 @@ const Grid = React.createClass({
     timeData: React.PropTypes.array,
   },
   componentWillUpdate: function(newProps) {
-    this.shouldUpdate = this.props.operation != newProps.operation;
+    this.shouldUpdate = this.props.operation != newProps.operation ||
+      this.props.timeData != newProps.timeData;
   },
   componentDidMount: function() {
     if (this.props.activeCell) {
