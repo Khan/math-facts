@@ -52,7 +52,11 @@ const GridCell = React.createClass({
     } = this.props;
     const active = this.state.active;
 
-    const activeStyle = { borderWidth: 2, borderColor: "#fff", opacity: 0.76 };
+    const activeStyle = {
+      borderWidth: 2,
+      borderColor: "#fff",
+      opacity: 0.76,
+    };
     const gridCellStyles = [
       styles.gridCell,
       { backgroundColor: color },
@@ -97,7 +101,8 @@ const Grid = React.createClass({
     operation: React.PropTypes.string,
     // Size of each cell in the grid: small or not-small.
     small: React.PropTypes.bool,
-    // The time data as a 2D array of time values: {time: ..., date: ..., ...}
+    // The time data as a 2D array of time values:
+    // {time: ..., date: ..., ...}
     timeData: React.PropTypes.array,
   },
   componentWillUpdate: function(newProps) {
@@ -198,10 +203,10 @@ const Grid = React.createClass({
                     times,
                     learnerTypingTimes);
 
-                  const masteryColor = MasteryHelpers.masteryColors[factStatus];
-                  const masteryColorText = MasteryHelpers.masteryTextColors[
-                    factStatus
-                  ];
+                  const masteryColor = MasteryHelpers
+                    .masteryColors[factStatus];
+                  const masteryColorText = MasteryHelpers
+                    .masteryTextColors[factStatus];
 
                   const key = this.createKey([row, col]);
                   return (<GridCell
