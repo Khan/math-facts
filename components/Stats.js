@@ -30,11 +30,11 @@ const Stats = React.createClass({
     };
   },
 
-  updateActiveCell: function(active) {
+  updateActiveCell: _.throttle(function(active) {
     this.setState({
       active: active
     });
-  },
+  }, 20),
 
   render: function() {
     const {
