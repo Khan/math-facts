@@ -17,7 +17,6 @@ import SH from '../helpers/style-helpers';
 
 const GridCell = React.createClass({
   propTypes: {
-    active: React.PropTypes.bool,
     color: React.PropTypes.string,
     content: React.PropTypes.oneOfType([
       React.PropTypes.string,
@@ -27,21 +26,31 @@ const GridCell = React.createClass({
     small: React.PropTypes.bool,
     textColor: React.PropTypes.string,
   },
+  getInitialState: function() {
+    return {
+      active: false,
+    };
+  },
   getDefaultProps: function () {
     return {
       color: SH.colors.grey85,
       textColor: SH.colors.grey25,
     };
   },
+  setActive: function(activeState) {
+    this.setState({
+      active: activeState,
+    });
+  },
   render: function() {
     const {
-      active,
       color,
       content,
       onPress,
       small,
       textColor,
     } = this.props;
+    const active = this.state.active;
 
     const activeStyle = { borderWidth: 1, borderColor: textColor };
     const gridCellStyles = [
@@ -94,7 +103,31 @@ const Grid = React.createClass({
     // The time data as a 2D array of time values: {time: ..., date: ..., ...}
     timeData: React.PropTypes.array,
   },
+  componentWillUpdate: function(newProps) {
+    this.shouldUpdate = this.props.operation != newProps.operation;
+  },
+  componentDidMount: function() {
+    if (this.props.activeCell) {
+      this.refs[this.createKey(this.props.activeCell)].setActive(true);
+    }
+  },
+  componentDidUpdate: function(oldProps) {
+    if (oldProps.activeCell) {
+      this.refs[this.createKey(oldProps.activeCell)].setActive(false);
+    }
+    if (this.props.activeCell) {
+      this.refs[this.createKey(this.props.activeCell)].setActive(true);
+    }
+  },
+  shouldUpdate: true,
+  createKey: function(index) {
+    return `cell-${index[0]}-${index[1]}`;
+  },
   render: function() {
+    if (!this.shouldUpdate) {
+      return this.gridOutput;
+    }
+
     const {
       activeCell,
       onPress,
@@ -173,16 +206,13 @@ const Grid = React.createClass({
                     factStatus
                   ];
 
-                  const active = activeCell != null &&
-                               activeCell[0] === row &&
-                               activeCell[1] === col;
-
+                  const key = this.createKey([row, col]);
                   return (<GridCell
-                    active={active}
                     color={masteryColor}
                     content={answer}
-                    key={'cell-' + row + '-' + col}
+                    key={key}
                     onPress={onPress ? () => onPress([row, col]) : null}
+                    ref={key}
                     small={small}
                     textColor={masteryColorText} />
                   );
@@ -194,12 +224,14 @@ const Grid = React.createClass({
     );
 
     if (onPress == null) {
-      return gridOutput;
+      this.gridOutput = gridOutput;
+    } else {
+      this.gridOutput = <Keyboard triggerOnMove={true}>
+        {gridOutput}
+      </Keyboard>;
     }
 
-    return <Keyboard triggerOnMove={true}>
-      {gridOutput}
-    </Keyboard>;
+    return this.gridOutput;
   }
 });
 
