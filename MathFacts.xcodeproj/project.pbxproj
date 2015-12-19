@@ -605,7 +605,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.khanacademy.Math-Facts.beta";
 				PRODUCT_NAME = MathFacts;
-				PROVISIONING_PROFILE = "cc46a0e4-9325-45b0-974d-72d49e07d9f1";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
