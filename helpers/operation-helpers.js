@@ -4,6 +4,7 @@ import _ from 'underscore';
 
 let Operations = {
   noop: {
+    showGrid: false,
     getSign: function() {
       return '';
     },
@@ -15,10 +16,11 @@ let Operations = {
     },
     getExpression: function(input) {
       return input.toString();
-    }
+    },
   },
 
   addition: {
+    showGrid: true,
     getSign: function() {
       return '+';
     },
@@ -95,6 +97,7 @@ let Operations = {
   },
 
   multiplication: {
+    showGrid: true,
     getSign: function() {
       return '×';
     },

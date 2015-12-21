@@ -11,6 +11,7 @@ const {
 import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import MasteryHelpers from '../helpers/mastery-helpers';
+import OperationHelpers from '../helpers/operation-helpers';
 import SH from '../helpers/style-helpers';
 
 import BackButton from '../components/BackButton';
@@ -54,6 +55,8 @@ const Stats = React.createClass({
       }, 0);
     }, 0);
 
+    const showGrid = OperationHelpers[operation].showGrid;
+
     return (
       <View style={styles.container}>
         <View style={styles.topRow}>
@@ -64,19 +67,18 @@ const Stats = React.createClass({
           </AppText>
         </View>
 
-        <Grid
-          activeCell={this.state.active}
-          onPress={this.updateActiveCell}
-          operation={operation}
-          timeData={timeData}
-        />
-
-        <StatInfo
-          inputs={this.state.active}
-          learnerTypingTimes={learnerTypingTimes}
-          operation={operation}
-          timeData={timeData}
-        />
+        {showGrid && [<Grid
+            activeCell={this.state.active}
+            onPress={this.updateActiveCell}
+            operation={operation}
+            timeData={timeData}
+          />,
+          <StatInfo
+            inputs={this.state.active}
+            learnerTypingTimes={learnerTypingTimes}
+            operation={operation}
+            timeData={timeData}
+          />]}
       </View>
     );
   }

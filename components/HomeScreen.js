@@ -13,6 +13,7 @@ import {
 import { AppText, AppTextBold, AppTextThin } from './AppText';
 
 import Grid from '../components/Grid';
+import OperationHelpers from '../helpers/operation-helpers';
 
 import EggScene from '../components/EggScene';
 import Icon from '../components/Icon';
@@ -132,6 +133,8 @@ const HomeScreen = React.createClass({
     } = this.props;
     const currentStreak = this.getCurrentStreak();
 
+    const showGrid = OperationHelpers[operation].showGrid;
+
     return (
       <View style={styles.container}>
 
@@ -177,13 +180,13 @@ const HomeScreen = React.createClass({
 
         <View style={styles.actions}>
           <HomeScreenButton caption="My Progress" onPress={showStats}>
-            <View style={styles.gridWrapper}>
+            {showGrid && <View style={styles.gridWrapper}>
               <Grid
                 small={true}
                 timeData={timeData}
                 operation={operation}
               />
-            </View>
+            </View>}
           </HomeScreenButton>
 
           <HomeScreenButton caption="PLAY!" large={true} onPress={startGame}>
