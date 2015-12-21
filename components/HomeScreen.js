@@ -21,6 +21,43 @@ import Button from '../components/Button';
 import BackButton from '../components/BackButton';
 import SH from '../helpers/style-helpers';
 
+const HomeScreenButton = React.createClass({
+  propTypes: {
+    caption: React.PropTypes.string.isRequired,
+    children: React.PropTypes.node.isRequired,
+    large: React.PropTypes.bool,
+    onPress: React.PropTypes.func.isRequired,
+  },
+  render: function() {
+    const {
+      caption,
+      large,
+      onPress,
+    } = this.props;
+    return <View style={styles.action}>
+      <TouchableHighlight
+        onPress={onPress}
+        activeOpacity={0.5}
+        underlayColor='transparent'
+      >
+        <View style={styles.action}>
+          {this.props.children}
+          <View>
+            <AppTextBold
+              style={[
+                styles.actionCaption,
+                large && styles.actionCaptionLarge
+              ]}
+            >
+              {caption}
+            </AppTextBold>
+          </View>
+        </View>
+      </TouchableHighlight>
+    </View>;
+  },
+});
+
 const HomeScreen = React.createClass({
   propTypes: {
     operation: React.PropTypes.string.isRequired,
@@ -139,79 +176,35 @@ const HomeScreen = React.createClass({
         <View style={styles.divider} />
 
         <View style={styles.actions}>
-          <View style={styles.action}>
-            <TouchableHighlight
-              onPress={showStats}
-              activeOpacity={0.5}
-              underlayColor='transparent'
-            >
-              <View style={styles.action}>
-                <View
-                  style={styles.gridWrapper}
-                >
-                  <Grid
-                    small={true}
-                    timeData={timeData}
-                    operation={operation}
-                  />
-                </View>
-                <View>
-                  <AppTextBold style={styles.actionCaption}>
-                    My Progress
-                  </AppTextBold>
-                </View>
-              </View>
-            </TouchableHighlight>
-          </View>
+          <HomeScreenButton caption="My Progress" onPress={showStats}>
+            <View style={styles.gridWrapper}>
+              <Grid
+                small={true}
+                timeData={timeData}
+                operation={operation}
+              />
+            </View>
+          </HomeScreenButton>
 
-          <View style={styles.action}>
-            <TouchableHighlight
-              onPress={startGame}
-              underlayColor='transparent'
-              activeOpacity={0.5}
-            >
-              <View style={styles.action}>
-                <Icon
-                  type='play'
-                  backgroundType='circle'
-                  color={SH.colors.white}
-                  backgroundColor={SH.colors.active}
-                  size={90} />
-                <View>
-                  <AppTextBold
-                    style={[
-                      styles.actionCaption,
-                      styles.actionCaptionLarge
-                    ]}
-                  >
-                    PLAY!
-                  </AppTextBold>
-                </View>
-              </View>
-            </TouchableHighlight>
-          </View>
+          <HomeScreenButton caption="PLAY!" large={true} onPress={startGame}>
+            <Icon
+              type='play'
+              backgroundType='circle'
+              color={SH.colors.white}
+              backgroundColor={SH.colors.active}
+              size={90}
+            />
+          </HomeScreenButton>
 
-          <View style={styles.action}>
-            <TouchableHighlight
-              onPress={showSettings}
-              underlayColor='transparent'
-              activeOpacity={0.5}
-            >
-              <View style={styles.action}>
-                <Icon
-                  type='cog'
-                  backgroundType='square'
-                  backgroundColor={SH.colors.inactive}
-                  color={SH.colors.grey68}
-                  size={68} />
-                <View>
-                  <AppTextBold style={styles.actionCaption}>
-                    Settings
-                  </AppTextBold>
-                </View>
-              </View>
-            </TouchableHighlight>
-          </View>
+          <HomeScreenButton caption="Settings" onPress={showSettings}>
+            <Icon
+              type='cog'
+              backgroundType='square'
+              backgroundColor={SH.colors.inactive}
+              color={SH.colors.grey68}
+              size={68}
+            />
+          </HomeScreenButton>
         </View>
       </View>
     );
