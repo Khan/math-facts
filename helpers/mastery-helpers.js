@@ -318,6 +318,13 @@ const addToInputList = function(operation, factData, inputList,
     inputList = inputList.concat([studyFact])
       .concat(Helpers.shuffle(fluentFacts).slice(0, spacer));
 
+    if (fluentFacts.length === 0) {
+      // Um, it appears as though every single fact is nonFluent. So let's
+      // also let them practice another nonFluent fact. This case is really,
+      // really rare. Basically impossible.
+      inputList.push(nonFluentFacts[1]);
+    }
+
     spacer = spacer + 1;
   } else {
     // This learner is fluent in everything! Let them practice to their
