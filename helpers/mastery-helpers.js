@@ -332,6 +332,21 @@ const addToInputList = function(operation, factData, inputList,
     inputList = inputList.concat(Helpers.shuffle(fluentFacts));
   }
 
+  // If there are two identical facts in a row, swap the second one with the
+  // one after it. If they're the last two facts (and this there isn't one to
+  // swap with) then just leave it so we don't break things.
+  inputList.forEach((fact, idx) => {
+    // If this isn't the first or last fact
+    if (idx > 0 && idx < inputList.length - 1) {
+      const lastFact = inputList[idx - 1];
+      if (fact[0] === lastFact[0] && fact[1] === lastFact[1]) {
+        inputList[idx] = inputList[idx + 1];
+        inputList[idx + 1] = fact;
+      }
+    }
+  });
+
+
   return {
     inputList: inputList,
     spacer: spacer + 1,
