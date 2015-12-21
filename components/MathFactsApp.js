@@ -13,6 +13,9 @@ import StateFromStoreMixin from '../lib/state-from-store-mixin.js';
 import Navigation from './Navigation';
 
 const MathFactsApp = React.createClass({
+  // TODO: get state changes lower down so scenes update before they're
+  // rendered (Navigator currently blocks state changes for hidden scenes
+  // while it's animating them in).
   mixins: [
     StateFromStoreMixin({
       data: {
