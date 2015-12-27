@@ -7,7 +7,7 @@ import Firebase from 'firebase';
 import React from 'react-native';
 import UuidGenerator from 'uuid';
 
-const AsyncStorage = React.AsyncStorage;
+let AsyncStorage = React.AsyncStorage;
 
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import firebaseURL from '../firebase-url.js';
@@ -15,6 +15,14 @@ import MathFactsConstants from '../constants/MathFactsConstants';
 
 const CHANGE_EVENT = 'change';
 
+
+if (!AsyncStorage) {
+  AsyncStorage = {
+    getItem: () => Promise.resolve(null),
+    setItem: () => Promise.resolve(null),
+    removeItem: () => Promise.resolve(null),
+  };
+}
 
 /*
  * Default Data

@@ -1,5 +1,5 @@
 {
-  "whitelist": [
+  "optional": [
     "es6.modules",
     "es6.constants",
     "react.displayName",

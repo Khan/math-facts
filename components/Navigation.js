@@ -67,6 +67,18 @@ const Navigation = React.createClass({
     const quizzesData = this.props.factData[operation];
     const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
 
+    return <HomeScreen
+
+      operation={operation}
+      points={this.props.points}
+      scores={this.props.scores}
+      showSettings={() => null}
+      showStats={() => null}
+      startGame={() => null}
+      timeData={timeData}
+      userName={this.props.user.name}
+    />;
+
     const initialRoute = {name: 'home'};
     return <Navigator
       initialRoute={initialRoute}

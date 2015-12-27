@@ -27,7 +27,7 @@ const MathFactsApp = React.createClass({
     })
   ],
   componentDidMount: function() {
-    if (Platform.OS === 'ios') {
+    if (Platform && Platform.OS === 'ios') {
       // TODO: add support for CodePush on Android
       const CodePush = require('react-native-code-push');
       CodePush.sync({rollbackTimeout: 3000});

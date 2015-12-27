@@ -31,7 +31,7 @@ const Icon = React.createClass({
     };
   },
   render: function() {
-    if (Platform.OS === 'ios') {
+    if (!Platform || Platform.OS === 'ios') {
       const ArtIcon = require('./ArtIcon');
       return <ArtIcon {...this.props} />
     }

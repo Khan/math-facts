@@ -6,9 +6,10 @@ import React from 'react-native';
 import {
   StyleSheet,
   TextInput,
-  TouchableHighlight,
   View,
 } from 'react-native';
+
+import MyTouchableHighlight from '../core-components/touchable-highlight';
 
 import { AppText, AppTextBold, AppTextThin } from './AppText';
 
@@ -35,8 +36,9 @@ const HomeScreenButton = React.createClass({
       large,
       onPress,
     } = this.props;
+
     return <View style={styles.action}>
-      <TouchableHighlight
+      <MyTouchableHighlight
         onPress={onPress}
         activeOpacity={0.5}
         underlayColor='transparent'
@@ -54,7 +56,7 @@ const HomeScreenButton = React.createClass({
             </AppTextBold>
           </View>
         </View>
-      </TouchableHighlight>
+      </MyTouchableHighlight>
     </View>;
   },
 });
@@ -218,6 +220,7 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   action: {
     flex: 1,
@@ -226,12 +229,12 @@ const styles = StyleSheet.create({
   actionCaption: {
     color: SH.colors.grey68,
     fontSize: 12,
-    lineHeight: 22,
+    margin: 5,
   },
   actionCaptionLarge: {
     color: SH.colors.active,
     fontSize: 18,
-    lineHeight: 26,
+    margin: 5,
   },
 
   eggScene: {
