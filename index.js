@@ -8,6 +8,6 @@ import Promise from 'promise';
 
 global.Promise = Promise;
 
-import MathFactsApp from './components/MathFactsApp';
+import WebAppWrapper from './components/WebAppWrapper';
 
-React.render(<MathFactsApp />, document.getElementById('content'));
+React.render(<WebAppWrapper />, document.getElementById('content'));
