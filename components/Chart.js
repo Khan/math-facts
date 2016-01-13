@@ -16,7 +16,7 @@ const {
 
 const RP = React.PropTypes;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 
 const circlePath = function(r) {
     return new Path()

@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 
 import MathFactsActions from '../actions/MathFactsActions';
 

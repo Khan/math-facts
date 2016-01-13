@@ -8,7 +8,7 @@ const {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 import Icon from '../components/Icon';
 import SH from '../helpers/style-helpers';
 

@@ -11,7 +11,7 @@ import {
 
 import MyTouchableHighlight from '../core-components/touchable-highlight';
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 
 import Grid from '../components/Grid';
 import OperationHelpers from '../helpers/operation-helpers';

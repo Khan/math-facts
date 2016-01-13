@@ -10,7 +10,7 @@ const {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 
 import Helpers from '../helpers/helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';

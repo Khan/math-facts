@@ -11,7 +11,7 @@ const {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 
 import ColorHelpers from '../helpers/color-helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';

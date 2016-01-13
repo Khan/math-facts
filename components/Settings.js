@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 
 import Button from '../components/Button';
 import CheckButton from '../components/CheckButton';

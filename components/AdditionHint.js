@@ -10,7 +10,7 @@ var {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 
 import Circle from '../components/Circle';
 

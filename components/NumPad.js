@@ -10,7 +10,7 @@ var {
   View,
 } = React;
 
-import { AppText, AppTextBold, AppTextThin } from './AppText';
+import { AppText, AppTextBold } from './AppText';
 import Keyboard from './Keyboard.js';
 
 const NumPadButton = React.createClass({

@@ -19,17 +19,7 @@ const AppTextBold = React.createClass({
   render: function() {
     const { style, ...other } = this.props;
     return (
-      <Text {...other} style={[styles.baseText, styles.boldText, style]}>
-        {this.props.children}
-      </Text>);
-  }
-});
-
-const AppTextThin = React.createClass({
-  render: function() {
-    const { style, ...other } = this.props;
-    return (
-      <Text {...other} style={[styles.baseText, styles.thinText, style]}>
+      <Text {...other} style={[styles.boldText, style]}>
         {this.props.children}
       </Text>);
   }
@@ -42,13 +32,9 @@ const styles = StyleSheet.create({
   boldText: {
     fontFamily: 'Avenir-Heavy'
   },
-  thinText: {
-    fontFamily: 'Avenir-Thin'
-  },
 });
 
 module.exports = {
   AppText: AppText,
   AppTextBold: AppTextBold,
-  AppTextThin: AppTextThin,
 };
