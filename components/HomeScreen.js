@@ -23,6 +23,8 @@ import Button from '../components/Button';
 import BackButton from '../components/BackButton';
 import SH from '../helpers/style-helpers';
 
+const Platform = React.Platform || { OS: 'web' };
+
 const HomeScreenButton = React.createClass({
   propTypes: {
     caption: React.PropTypes.string.isRequired,
@@ -216,11 +218,14 @@ const HomeScreen = React.createClass({
   },
 });
 
+const lineHeightUnits = (lineHeight) => {
+  return Platform.OS === 'web' ? lineHeight + 'px' : lineHeight;
+}
+
 const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'center',
   },
   action: {
     flex: 1,
@@ -229,12 +234,12 @@ const styles = StyleSheet.create({
   actionCaption: {
     color: SH.colors.grey68,
     fontSize: 12,
-    margin: 5,
+    lineHeight: lineHeightUnits(18),
   },
   actionCaptionLarge: {
     color: SH.colors.active,
     fontSize: 18,
-    margin: 5,
+    lineHeight: lineHeightUnits(30),
   },
 
   eggScene: {
@@ -249,7 +254,7 @@ const styles = StyleSheet.create({
   headingText: {
     color: SH.colors.grey68,
     fontSize: 18,
-    padding: 10,
+    lineHeight: lineHeightUnits(26),
     paddingTop: 0,
     textAlign: 'center',
   },
