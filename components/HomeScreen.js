@@ -22,8 +22,7 @@ import Icon from '../components/Icon';
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
 import SH from '../helpers/style-helpers';
-
-const Platform = React.Platform || { OS: 'web' };
+import { lineHeightUnits } from '../helpers/helpers';
 
 const HomeScreenButton = React.createClass({
   propTypes: {
@@ -217,10 +216,6 @@ const HomeScreen = React.createClass({
     );
   },
 });
-
-const lineHeightUnits = (lineHeight) => {
-  return Platform.OS === 'web' ? lineHeight + 'px' : lineHeight;
-}
 
 const styles = StyleSheet.create({
   actions: {

@@ -1,5 +1,9 @@
 'use strict';
 
+import React from 'react-native-web';
+
+const Platform = React.Platform || { OS: 'web' };
+
 const printTime = (time) => {
   return parseFloat(time/1000).toFixed(2).toString() + 's';
 };
@@ -34,9 +38,15 @@ const softShuffle = function(arr, blockSize, offset) {
   return newArr;
 };
 
+const lineHeightUnits = (lineHeight) => {
+  return Platform.OS === 'web' ? lineHeight + 'px' : lineHeight;
+}
+
 module.exports = {
-  printTime: printTime,
-  randomIntBetween: randomIntBetween,
-  shuffle: shuffle,
-  softShuffle: softShuffle,
+  Platform,
+  lineHeightUnits,
+  printTime,
+  randomIntBetween,
+  shuffle,
+  softShuffle,
 };
