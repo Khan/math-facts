@@ -14,6 +14,7 @@ import { AppText, AppTextBold } from './AppText';
 import MathFactsActions from '../actions/MathFactsActions';
 
 import HomeScreen from '../components/HomeScreen';
+import { Platform } from '../helpers/helpers';
 import Quizzer from '../components/Quizzer';
 import Stats from '../components/Stats';
 import Settings from '../components/Settings';
@@ -67,17 +68,19 @@ const Navigation = React.createClass({
     const quizzesData = this.props.factData[operation];
     const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
 
-    return <HomeScreen
+    if (Platform.OS === 'web') {
+      return <HomeScreen
 
-      operation={operation}
-      points={this.props.points}
-      scores={this.props.scores}
-      showSettings={() => null}
-      showStats={() => null}
-      startGame={() => null}
-      timeData={timeData}
-      userName={this.props.user.name}
-    />;
+        operation={operation}
+        points={this.props.points}
+        scores={this.props.scores}
+        showSettings={() => null}
+        showStats={() => null}
+        startGame={() => null}
+        timeData={timeData}
+        userName={this.props.user.name}
+      />;
+    }
 
     const initialRoute = {name: 'home'};
     return <Navigator
