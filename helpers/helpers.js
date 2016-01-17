@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react-native-web';
+import React from 'react-native';
 
 const Platform = React.Platform || { OS: 'web' };
 

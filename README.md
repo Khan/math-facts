@@ -11,7 +11,7 @@ This is an app being developed at Khan Academy to explore how we can help people
 ![Demo of the settings menu](https://raw.github.com/Khan/math-facts/master/screenshots/demo-settings.gif)
 
 ## Contributing
-1. Install dependencies: `npm install`
+1. Install dependencies: `npm install`, then `rm -rf node_modules/react-art/node_modules/fbjs/` (sorry, will be fixed in RN 0.19)
 2. Build iOS/main.jsbundle: `curl http://localhost:8081/index.ios.bundle\?dev\=0 -o iOS/main.jsbundle`
 3. Open MathFacts.xcodeproj
 4. Build and run app
