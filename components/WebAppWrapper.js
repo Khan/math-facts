@@ -23,10 +23,10 @@ const WebAppWrapper = React.createClass({
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
-    marginTop: 20,
+    paddingTop: 20,
   },
   content: {
-    height: 480,
+    height: 568,
     width: 320,
   },
 });
