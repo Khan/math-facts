@@ -157,7 +157,6 @@ const HomeScreen = React.createClass({
           <AppTextBold style={styles.headingTextEmphasis}>
             {this.getPointsToday()}
           </AppTextBold>
-          {' / 500'}
         </AppText>
 
         <AppText style={[styles.headingText, styles.headingTextSmall]}>
