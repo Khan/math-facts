@@ -69,11 +69,13 @@ const Stats = React.createClass({
 
         {showGrid && [<Grid
             activeCell={this.state.active}
+            key={'grid'}
             onPress={this.updateActiveCell}
             operation={operation}
             timeData={timeData}
           />,
           <StatInfo
+            key={'statinfo'}
             inputs={this.state.active}
             learnerTypingTimes={learnerTypingTimes}
             operation={operation}
