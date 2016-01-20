@@ -4,7 +4,6 @@ import _ from 'underscore';
 
 import React from 'react-native';
 import {
-  Navigator,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -16,6 +15,7 @@ import { AppText, AppTextBold } from './AppText';
 import Button from '../components/Button';
 import CheckButton from '../components/CheckButton';
 import BackButton from '../components/BackButton';
+import Navigator from '../components/Navigator';
 import RowButton from '../components/RowButton';
 import SH from '../helpers/style-helpers';
 

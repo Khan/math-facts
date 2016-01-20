@@ -4,7 +4,6 @@ import _ from 'underscore';
 
 import React from 'react-native';
 import {
-  Navigator,
   StyleSheet,
   View,
 } from 'react-native';
@@ -14,6 +13,7 @@ import { AppText, AppTextBold } from './AppText';
 import MathFactsActions from '../actions/MathFactsActions';
 
 import HomeScreen from '../components/HomeScreen';
+import Navigator from '../components/Navigator';
 import { Platform } from '../helpers/helpers';
 import Quizzer from '../components/Quizzer';
 import Stats from '../components/Stats';
@@ -67,20 +67,6 @@ const Navigation = React.createClass({
     const operation = this.props.user.operation;
     const quizzesData = this.props.factData[operation];
     const timeData = this.parseQuizzesDataIntoTimeData(quizzesData);
-
-    if (Platform.OS === 'web') {
-      return <HomeScreen
-
-        operation={operation}
-        points={this.props.points}
-        scores={this.props.scores}
-        showSettings={() => null}
-        showStats={() => null}
-        startGame={() => null}
-        timeData={timeData}
-        userName={this.props.user.name}
-      />;
-    }
 
     const initialRoute = {name: 'home'};
     return <Navigator
