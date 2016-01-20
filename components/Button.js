@@ -3,12 +3,12 @@
 import React from 'react-native';
 const {
   StyleSheet,
-  TouchableHighlight,
   Text,
   View,
 } = React;
 
 import { AppText, AppTextBold } from './AppText';
+import MyTouchableHighlight from '../core-components/touchable-highlight';
 
 const Button = React.createClass({
   propTypes: {
@@ -29,7 +29,7 @@ const Button = React.createClass({
     } = this.props;
 
     return (
-      <TouchableHighlight
+      <MyTouchableHighlight
         onPress={onPress}
         underlayColor='transparent'
         style={styles.wrapperStyle}
@@ -50,7 +50,7 @@ const Button = React.createClass({
             {text}
           </AppText>
         </View>
-      </TouchableHighlight>
+      </MyTouchableHighlight>
     );
   }
 });

@@ -3,16 +3,16 @@
 import React from 'react-native';
 const {
   StyleSheet,
-  TouchableHighlight,
   Text,
   View,
 } = React;
 
 import { AppText } from './AppText';
 import Icon from '../components/Icon'
+import MyTouchableHighlight from '../core-components/touchable-highlight';
 import SH from '../helpers/style-helpers';
 
-const Button = React.createClass({
+const RowButton = React.createClass({
   propTypes: {
     onPress: React.PropTypes.func.isRequired,
     text: React.PropTypes.string,
@@ -24,7 +24,7 @@ const Button = React.createClass({
     } = this.props;
 
     return (
-      <TouchableHighlight
+      <MyTouchableHighlight
         onPress={onPress}
         underlayColor={SH.colors.grey90}
         style={styles.buttonWrapper}
@@ -43,7 +43,7 @@ const Button = React.createClass({
               type='angleBracketRight' />
           </View>
         </View>
-      </TouchableHighlight>
+      </MyTouchableHighlight>
     );
   }
 });
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = Button;
+module.exports = RowButton;

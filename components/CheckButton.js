@@ -3,16 +3,16 @@
 import React from 'react-native';
 const {
   StyleSheet,
-  TouchableHighlight,
   Text,
   View,
 } = React;
 
 import { AppText, AppTextBold } from './AppText';
 import Icon from '../components/Icon';
+import MyTouchableHighlight from '../core-components/touchable-highlight';
 import SH from '../helpers/style-helpers';
 
-const Button = React.createClass({
+const CheckButton = React.createClass({
   propTypes: {
     active: React.PropTypes.bool,
     last: React.PropTypes.bool,
@@ -28,7 +28,7 @@ const Button = React.createClass({
     } = this.props;
 
     return (
-      <TouchableHighlight
+      <MyTouchableHighlight
         onPress={onPress}
         underlayColor={SH.colors.grey85}
         style={styles.buttonWrapper}
@@ -48,7 +48,7 @@ const Button = React.createClass({
             {text}
           </AppText>
         </View>
-      </TouchableHighlight>
+      </MyTouchableHighlight>
     );
   }
 });
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = Button;
+module.exports = CheckButton;

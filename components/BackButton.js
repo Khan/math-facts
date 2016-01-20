@@ -3,10 +3,10 @@
 import React from 'react-native';
 const {
   StyleSheet,
-  TouchableHighlight,
   View,
 } = React;
 
+import MyTouchableHighlight from '../core-components/touchable-highlight';
 import { AppText } from './AppText';
 import Icon from './Icon';
 
@@ -22,7 +22,7 @@ const BackButton = React.createClass({
   },
   render: function() {
     return (
-      <TouchableHighlight
+      <MyTouchableHighlight
           underlayColor='transparent'
           activeOpacity={0.4}
           onPress={this.props.onPress}
@@ -39,7 +39,7 @@ const BackButton = React.createClass({
             {this.props.text}
           </AppText>
         </View>
-      </TouchableHighlight>
+      </MyTouchableHighlight>
     );
   }
 });
