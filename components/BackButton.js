@@ -47,6 +47,7 @@ const BackButton = React.createClass({
 const styles = StyleSheet.create({
   backButton: {
     alignSelf: 'flex-start',
+    backgroundColor: 'transparent',
     padding: 15,
   },
   buttonContents: {
