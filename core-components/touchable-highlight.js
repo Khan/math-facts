@@ -7,7 +7,17 @@ const MyTouchableHighlight = React.createClass({
         if (TouchableHighlight) {
             return <TouchableHighlight {...this.props} />;
         } else if (Touchable) {
-            return <Touchable {...this.props} />;
+            const {
+                activeUnderlayColor,
+                ...other,
+            } = this.props;
+            return <Touchable
+                activeUnderlayColor={
+                    this.props.underlayColor && !activeUnderlayColor ?
+                    this.props.underlayColor : activeUnderlayColor
+                }
+                {...this.props}
+            />;
         }
     },
 });

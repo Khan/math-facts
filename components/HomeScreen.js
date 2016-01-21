@@ -41,8 +41,7 @@ const HomeScreenButton = React.createClass({
     return <View style={styles.action}>
       <MyTouchableHighlight
         onPress={onPress}
-        activeOpacity={0.5}
-        activeUnderlayColor='transparent'
+        activeOpacity={0.5}a
         underlayColor='transparent'
       >
         <View style={styles.action}>
