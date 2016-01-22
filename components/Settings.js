@@ -18,6 +18,7 @@ import BackButton from '../components/BackButton';
 import Navigator from '../components/Navigator';
 import RowButton from '../components/RowButton';
 import SH from '../helpers/style-helpers';
+import { lineHeightUnits } from '../helpers/helpers';
 
 const SettingsWrapper = React.createClass({
   propTypes: {
@@ -426,6 +427,7 @@ const styles = StyleSheet.create({
   headingText: {
     color: SH.colors.grey68,
     fontSize: 20,
+    lineHeight: lineHeightUnits(26),
     marginBottom: 20,
     paddingLeft: 10,
     paddingRight: 10,

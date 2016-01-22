@@ -9,6 +9,7 @@ const {
 import MyTouchableHighlight from '../core-components/touchable-highlight';
 import { AppText } from './AppText';
 import Icon from './Icon';
+import { lineHeightUnits } from '../helpers/helpers';
 
 const BackButton = React.createClass({
   propTypes: {
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
   backButtonText: {
     color: 'rgba(0, 0, 0, 0.4)',
     fontSize: 20,
+    lineHeight: lineHeightUnits(28)
   },
   icon: {
     marginTop: 3,
