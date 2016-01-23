@@ -11,7 +11,7 @@ var {
 } = React;
 
 import { AppText, AppTextBold } from './AppText';
-import Keyboard from './Keyboard.js';
+import Keyboard from './Keyboard';
 
 const NumPadButton = React.createClass({
   propTypes: {

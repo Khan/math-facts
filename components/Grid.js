@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { AppText, AppTextBold } from './AppText';
-import Keyboard from './Keyboard.js';
+import Keyboard from './Keyboard';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 import SH from '../helpers/style-helpers';

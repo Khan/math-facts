@@ -14,7 +14,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['', '.js', '.jsx'],
+        extensions: ['', '.web.js', '.js', '.jsx'],
         alias: {
           "react-native": "react-native-web",
           "ReactNativeART": "react-art"
