@@ -4,12 +4,12 @@ import _ from 'underscore';
 
 import React from 'react-native';
 const {
-  Animated,
   StyleSheet,
-  TouchableHighlight,
   Text,
   View,
 } = React;
+
+import Animated from '../core-components/Animated';
 
 import { AppText, AppTextBold } from './AppText';
 
