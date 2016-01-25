@@ -661,12 +661,12 @@ const styles = StyleSheet.create({
   questionContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: 85,
   },
   question: {
     color: SH.colors.white,
     fontSize: 50,
-    height: 65,
   },
   responseContainer: {
     flex: 1,
@@ -675,7 +675,7 @@ const styles = StyleSheet.create({
   },
   response: {
     fontSize: 75,
-    height: 90,
+    height: 100,
     color: SH.colors.white,
     marginBottom: 20,
   },
