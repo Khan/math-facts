@@ -10,8 +10,16 @@ if (Animated) {
     MyAnimated = Animated;
 } else {
     MyAnimated = {
-        Value: function() {},
-        spring: function() {},
+        Value: function() {
+            return {
+                setValue: function() {},
+            };
+        },
+        spring: function() {
+            return {
+                start: function() {},
+            };
+        },
         View: View,
     };
 }
