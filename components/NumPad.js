@@ -21,24 +21,26 @@ const NumPadButton = React.createClass({
   },
   render: function() {
     return (
-      <Keyboard.Key
-          style={[
-            styles.button,
-            this.props.control && styles.controlButton,
-          ]}
-          highlightStyle={styles.highlightedButton}
-          onPress={this.props.onPress}>
-        <View>
-          <AppText
+      <View style={styles.buttonWrapper}>
+        <Keyboard.Key
             style={[
-              styles.buttonText,
-              this.props.control && styles.controlButtonText,
+              styles.button,
+              this.props.control && styles.controlButton,
             ]}
-          >
-            {this.props.content}
-          </AppText>
-        </View>
-      </Keyboard.Key>
+            highlightStyle={styles.highlightedButton}
+            onPress={this.props.onPress}>
+          <View>
+            <AppText
+              style={[
+                styles.buttonText,
+                this.props.control && styles.controlButtonText,
+              ]}
+            >
+              {this.props.content}
+            </AppText>
+          </View>
+        </Keyboard.Key>
+      </View>
     );
   }
 });
@@ -117,13 +119,20 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
   },
+  buttonWrapper: {
+    flex: 1,
+    // This is a hack to make them all have the same flexBasis because of the
+    // different implementation in react-native-web (and flexBasis isn't
+    // supported by React Native)
+    width: 0,
+  },
   button: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     flexDirection: 'column',
-    height: 60,
     flex: 1,
+    height: 60,
     justifyContent: 'center',
-    margin: 2
+    margin: 2,
   },
   controlButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
