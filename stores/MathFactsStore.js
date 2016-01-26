@@ -7,22 +7,61 @@ import Firebase from 'firebase';
 import React from 'react-native';
 import UuidGenerator from 'uuid';
 
-let AsyncStorage = React.AsyncStorage;
-
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import firebaseURL from '../firebase-url.js';
 import MathFactsConstants from '../constants/MathFactsConstants';
+import { Platform } from '../helpers/helpers';
 
-const CHANGE_EVENT = 'change';
+let AsyncStorage = null;
 
-
-if (!AsyncStorage) {
-  AsyncStorage = {
+if (React.AsyncStorage) {
+  AsyncStorage = React.AsyncStorage;
+} else if (window && window.localStorage) {
+   AsyncStorage = {
+    getItem: (key) => {
+      return new Promise(function(resolve, reject) {
+        let item = null;
+        try {
+          item = localStorage.getItem(key);
+        }
+        catch (err) {
+          reject(Error(`Could not get item ${key}: ${err}`));
+        }
+        resolve(item);
+      });
+    },
+    setItem: (key, value) => {
+      return new Promise(function(resolve, reject) {
+        try {
+          localStorage.setItem(key, value);
+        }
+        catch (err) {
+          reject(Error(`Could not set item ${key}: ${err}`));
+        }
+        resolve();
+      });
+    },
+    removeItem: (key) => {
+      return new Promise(function(resolve, reject) {
+        try {
+          localStorage.removeItem(key);
+        }
+        catch (err) {
+          reject(Error(`Could not remove item ${key}: ${err}`));
+        }
+        resolve();
+      });
+    },
+  };
+} else {
+   AsyncStorage = {
     getItem: () => Promise.resolve(null),
     setItem: () => Promise.resolve(null),
     removeItem: () => Promise.resolve(null),
   };
 }
+
+const CHANGE_EVENT = 'change';
 
 /*
  * Default Data
