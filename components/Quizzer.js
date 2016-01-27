@@ -18,6 +18,7 @@ import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 import Helpers from '../helpers/helpers';
 import SH from '../helpers/style-helpers';
+import { lineHeightUnits } from '../helpers/helpers';
 
 import NumPad from '../components/NumPad';
 import Button from '../components/Button';
@@ -725,6 +726,7 @@ const styles = StyleSheet.create({
   summaryPoints: {
     fontSize: 40,
     color: SH.colors.white,
+    lineHeight: lineHeightUnits(70),
   },
   summaryButton: {
     backgroundColor: 'rgba(0, 0, 0, 0.20)',
