@@ -11,6 +11,7 @@ import { AppText, AppTextBold } from './AppText';
 import Icon from '../components/Icon';
 import MyTouchableHighlight from '../core-components/touchable-highlight';
 import SH from '../helpers/style-helpers';
+import { lineHeightUnits } from '../helpers/helpers';
 
 const CheckButton = React.createClass({
   propTypes: {
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
     color: '#555',
     flex: 1,
     fontSize: 18,
+    lineHeight: lineHeightUnits(26),
     paddingTop: 2,
   },
   buttonWrapper: {

@@ -11,6 +11,7 @@ import { AppText } from './AppText';
 import Icon from '../components/Icon'
 import MyTouchableHighlight from '../core-components/touchable-highlight';
 import SH from '../helpers/style-helpers';
+import { lineHeightUnits } from '../helpers/helpers';
 
 const RowButton = React.createClass({
   propTypes: {
@@ -64,12 +65,13 @@ const styles = StyleSheet.create({
     color: SH.colors.grey25,
     flex: 1,
     fontSize: 18,
+    lineHeight: lineHeightUnits(23),
   },
   buttonWrapper: {
     marginBottom: 20,
   },
   icon: {
-    paddingTop: 3,
+    paddingTop: 2,
   }
 });
 

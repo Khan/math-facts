@@ -12,7 +12,7 @@ const {
 
 import { AppText, AppTextBold } from './AppText';
 
-import Helpers from '../helpers/helpers';
+import Helpers, { lineHeightUnits } from '../helpers/helpers';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 import SH from '../helpers/style-helpers';
@@ -125,9 +125,11 @@ const StatInfo = React.createClass({
     const statInfo = (
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.infoContainer}>
-          <AppText style={styles.infoQuestion}>
-            {expression}
-          </AppText>
+          <View style={styles.infoQuestion}>
+            <AppText style={styles.infoQuestionText}>
+              {expression}
+            </AppText>
+          </View>
           <View style={styles.infoDescription}>
             <View style={[
                 styles.infoDescriptionTitle,
@@ -151,7 +153,7 @@ const StatInfo = React.createClass({
 
           {numTimesCounted > 0 && <View style={styles.totalStats}>
             <AppText style={styles.totalStatsText}>
-              {'Last '}
+              {'Last'}
             </AppText>
             <View style={styles.totalEm}>
               <AppText style={styles.totalStatsText}>
@@ -159,7 +161,7 @@ const StatInfo = React.createClass({
               </AppText>
             </View>
             <AppText style={styles.totalStatsText}>
-              {' tries: '}
+              {'tries: '}
             </AppText>
             <View style={[styles.totalEm,
               { backgroundColor: MasteryHelpers.masteryColors.mastered }]}
@@ -171,12 +173,9 @@ const StatInfo = React.createClass({
               </AppText>
             </View>
             <AppText style={styles.totalStatsText}>
-              {' fast'}
+              {'fast'}
             </AppText>
             {totalStatuses.slow > 0 && <View style={styles.totalStats}>
-              <AppText style={styles.totalStatsText}>
-                {' '}
-              </AppText>
               <View style={[styles.totalEm,
                 { backgroundColor: MasteryHelpers.masteryColors.struggling }]}
               >
@@ -187,7 +186,7 @@ const StatInfo = React.createClass({
                 </AppText>
               </View>
               <AppText style={styles.totalStatsText}>
-                {' slow'}
+                {'slow'}
               </AppText>
             </View>}
             {totalStatuses.hint > 0 && <View style={styles.totalStats}>
@@ -246,10 +245,13 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   infoQuestion: {
-    textAlign: 'center',
+    justifyContent: 'center',
+    height: 50,
+  },
+  infoQuestionText: {
     color: SH.colors.blueDarker,
     fontSize: 40,
-    height: 50,
+    textAlign: 'center',
   },
   infoStatsGroup: {
     flexDirection: 'row',
@@ -292,10 +294,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   infoDescriptionTitle: {
+    justifyContent: 'center',
     borderRadius: 3,
+    height: 22,
     marginBottom: 5,
-    paddingTop: 3,
-    paddingBottom: 2,
     paddingLeft: 10,
     paddingRight: 10,
   },
@@ -322,12 +324,15 @@ const styles = StyleSheet.create({
   },
   totalStatsText: {
     color: SH.colors.blueDarker,
+    lineHeight: lineHeightUnits(20),
   },
   totalEm: {
     backgroundColor: SH.colors.grey90,
     borderRadius: 3,
     paddingLeft: 5,
     paddingRight: 5,
+    marginLeft: 5,
+    marginRight: 5,
   },
   timeGoalText: {
     color: SH.colors.grey68,
