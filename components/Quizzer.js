@@ -318,12 +318,11 @@ const Quizzer = React.createClass({
 
       count: 0,
       hintUsed: false,
-      time: 0,
       data: [],
       response: '',
       colorHue: 0,
-      totalTimeElapsed: 0,
       points: 0,
+      totalTimeElapsed: 0, // in seconds
 
       correctAnswer: false,
 
@@ -331,6 +330,8 @@ const Quizzer = React.createClass({
       newQuestionBounceValue: new Animated.Value(1),
     };
   },
+  time: 0, // in ms
+
   getInputs: function() {
     // Get the next question's inputs
     return this.state.inputList[this.state.count];
@@ -407,12 +408,12 @@ const Quizzer = React.createClass({
     clearInterval(this.interval);
   },
   tick: function() {
-    const timeLimit = this.props.seconds * 1000;
-
-    this.setState({
-      time: this.state.time + 50,
-      totalTimeElapsed: this.state.totalTimeElapsed + 50
-    });
+    this.time += 50;
+    if (this.time % 1000 === 0) {
+      this.setState({
+        totalTimeElapsed: this.state.totalTimeElapsed + 1
+      });
+    }
   },
   countdown: function() {
     const countdown = this.state.countdown;
@@ -448,7 +449,7 @@ const Quizzer = React.createClass({
         correctAnswer: true,
       });
 
-      const time = this.state.time;
+      const time = this.time;
       const hintUsed = this.state.hintUsed;
       let inputList = this.state.inputList.slice();
 
@@ -480,7 +481,7 @@ const Quizzer = React.createClass({
           },
         ];
 
-        const timeUp = this.state.totalTimeElapsed > this.props.seconds * 1000;
+        const timeUp = this.state.totalTimeElapsed > this.props.seconds;
         const finished = this.props.mode === 'time' ? timeUp :
                        (this.state.count >= this.props.count - 1);
         if (finished) {
@@ -522,7 +523,7 @@ const Quizzer = React.createClass({
   },
 
   _renderProgressBar: function() {
-    let elapsedSeconds = Math.ceil(this.state.totalTimeElapsed / 1000);
+    let elapsedSeconds = this.state.totalTimeElapsed;
     const totalSeconds = this.props.seconds;
     if (elapsedSeconds > totalSeconds) {
       elapsedSeconds = totalSeconds;
