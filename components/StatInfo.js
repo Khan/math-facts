@@ -241,7 +241,8 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    padding: 8,
+    paddingTop: 8,
+    paddingBottom: 16,
     marginTop: 1,
   },
   infoQuestion: {
