@@ -29,7 +29,7 @@ const NumPadButton = React.createClass({
             ]}
             highlightStyle={styles.highlightedButton}
             onPress={this.props.onPress}>
-          <View>
+          <View style={styles.flexFix}>
             <AppText
               style={[
                 styles.buttonText,
@@ -133,6 +133,13 @@ var styles = StyleSheet.create({
     height: 60,
     justifyContent: 'center',
     margin: 2,
+  },
+  flexFix: {
+    // Fix for Safari to make button text centered vertically because buttons
+    // don't handle display: flex well in Safari.
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
   },
   controlButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
