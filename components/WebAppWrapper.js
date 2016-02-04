@@ -12,8 +12,10 @@ const WebAppWrapper = React.createClass({
   render: function() {
     return (
       <View style={styles.wrapper}>
-        <View style={styles.content}>
-          <MathFactsApp />
+        <View style={styles.innerWrapper}>
+          <View style={styles.content}>
+            <MathFactsApp />
+          </View>
         </View>
       </View>
     );
@@ -22,11 +24,20 @@ const WebAppWrapper = React.createClass({
 
 const styles = StyleSheet.create({
   wrapper: {
-    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+  },
+  innerWrapper: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    minHeight: 480,
+    maxHeight: 700,
   },
   content: {
-    height: 568,
-    width: 320,
+    flex: 1,
+    minWidth: 320,
+    maxWidth: 500,
   },
 });
 
