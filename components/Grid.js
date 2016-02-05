@@ -77,7 +77,7 @@ const GridCell = React.createClass({
           onPress={onPress}
           highlightStyle={activeStyle}
         >
-          <View>
+          <View style={styles.flexFix}>
             {cellContent}
           </View>
         </Keyboard.Key>
@@ -256,7 +256,14 @@ const styles = StyleSheet.create({
   gridCellText: {
     fontSize: 14, // 16 for iPhone 6
     fontWeight: '400',
-  }
+  },
+  flexFix: {
+    // Fix for Safari to make button text centered vertically because buttons
+    // don't handle display: flex well in Safari.
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'center',
+  },
 });
 
 module.exports = Grid;
