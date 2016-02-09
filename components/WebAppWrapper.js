@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    minHeight: 480,
+    minHeight: 568,
     maxHeight: 700,
   },
   content: {
