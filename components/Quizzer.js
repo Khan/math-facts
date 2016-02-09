@@ -506,13 +506,13 @@ const Quizzer = React.createClass({
 
           count: this.state.count + 1,
           hintUsed: false,
-          time: 0,
           data: data,
           response: '',
           colorHue: this.state.colorHue + 1,
           points: newPoints,
           finished: finished,
         });
+        this.time = 0;
       }, 150);
     }
   },
