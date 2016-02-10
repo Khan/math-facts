@@ -141,13 +141,15 @@ const HomeScreen = React.createClass({
     return (
       <View style={styles.container}>
 
-        <AppText style={[styles.headingText, styles.name]}>
-          {'Hi '}
-          <AppTextBold style={styles.headingTextEmphasis}>
-            {userName}
-          </AppTextBold>
-          {'!'}
-        </AppText>
+        <View style={styles.section}>
+          <AppText style={[styles.headingText, styles.name]}>
+            {'Hi '}
+            <AppTextBold style={styles.headingTextEmphasis}>
+              {userName}
+            </AppTextBold>
+            {'!'}
+          </AppText>
+        </View>
 
         <View style={styles.divider} />
 
@@ -243,6 +245,11 @@ const styles = StyleSheet.create({
 
   gridWrapper: {
     margin: 3,
+  },
+
+  section: {
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 
   headingText: {
