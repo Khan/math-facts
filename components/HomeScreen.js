@@ -153,16 +153,18 @@ const HomeScreen = React.createClass({
 
         <View style={styles.divider} />
 
-        <AppText style={[styles.headingText, {paddingBottom: 0}]}>
-          {'Points today: '}
-          <AppTextBold style={styles.headingTextEmphasis}>
-            {this.getPointsToday()}
-          </AppTextBold>
-        </AppText>
+        <View style={styles.innerSection}>
+          <AppText style={[styles.headingText, {paddingBottom: 0}]}>
+            {'Points today: '}
+            <AppTextBold style={styles.headingTextEmphasis}>
+              {this.getPointsToday()}
+            </AppTextBold>
+          </AppText>
 
-        <AppText style={[styles.headingText, styles.headingTextSmall]}>
-          (You have {points} points in total)
-        </AppText>
+          <AppText style={[styles.headingText, styles.headingTextSmall]}>
+            (You have {points} points in total)
+          </AppText>
+        </View>
 
         <AppText style={[styles.headingText, {paddingBottom: 0}]}>
           {'Current streak: '}
@@ -250,6 +252,10 @@ const styles = StyleSheet.create({
   section: {
     paddingLeft: 20,
     paddingRight: 20,
+  },
+
+  innerSection: {
+    paddingBottom: 10,
   },
 
   headingText: {
