@@ -162,7 +162,11 @@ const HomeScreen = React.createClass({
           </AppText>
 
           <AppText style={[styles.headingText, styles.headingTextSmall]}>
-            (You have {points} points in total)
+            (You have
+            <AppTextBold style={styles.headingTextEmphasis}>
+              {` ${points} `}
+            </AppTextBold>
+            points in total)
           </AppText>
         </View>
 
