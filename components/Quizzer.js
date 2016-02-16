@@ -14,6 +14,7 @@ import Animated from '../core-components/Animated';
 import { AppText, AppTextBold } from './AppText';
 
 import ColorHelpers from '../helpers/color-helpers';
+import Icon from '../components/Icon';
 import MasteryHelpers from '../helpers/mastery-helpers';
 import OperationHelpers from '../helpers/operation-helpers';
 import Helpers from '../helpers/helpers';
@@ -111,11 +112,13 @@ const Countdown = React.createClass({
 
 const ProgressBar = React.createClass({
   propTypes: {
+    color: React.PropTypes.string.isRequired,
     elapsedTime: React.PropTypes.number.isRequired,
     totalTime: React.PropTypes.number.isRequired,
   },
   render: function() {
     const {
+      color,
       elapsedTime,
       totalTime,
     } = this.props;
@@ -126,10 +129,23 @@ const ProgressBar = React.createClass({
           flex: elapsedTime / totalTime,
           backgroundColor: 'rgba(255, 255, 255, 1)',
         }]} />
-        <View style={[styles.progressBarSegment, {
-          flex: 1 - elapsedTime / totalTime,
-          backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        }]} />
+        <View style={[
+            styles.progressBarSegment,
+            {
+              flex: 1 - elapsedTime / totalTime,
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            }
+        ]}/>
+        <View style={styles.progressBarClock}>
+          <Icon
+            type="clock"
+            scale={1.3}
+            size={30}
+            color="#fff"
+            backgroundColor={color}
+            backgroundType="circle"
+          />
+        </View>
       </View>
     );
   },
@@ -529,6 +545,7 @@ const Quizzer = React.createClass({
       elapsedSeconds = totalSeconds;
     }
     return <ProgressBar
+      color={ColorHelpers.rgbToHex(this.getColor())}
       elapsedTime={elapsedSeconds}
       totalTime={totalSeconds}
     />;
@@ -651,6 +668,11 @@ const styles = StyleSheet.create({
   },
   progressBarSegment: {
     height: 7
+  },
+
+  progressBarClock: {
+    backgroundColor: "transparent",
+    marginTop: -10,
   },
 
   progressDots: {

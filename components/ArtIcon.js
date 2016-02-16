@@ -61,6 +61,13 @@ const paths = {
   check: `M10,3.3c0,0.2-0.1,0.3-0.2,0.4L5.2,8.4L4.3,9.3C4.2,9.4,4,9.4,3.8,9.4S3.5,9.4,3.4,9.3L2.5,8.4L0.2,6C0.1,5.9,0,5.8,0,5.6
     c0-0.2,0.1-0.3,0.2-0.4l0.9-0.9c0.1-0.1,0.3-0.2,0.4-0.2c0.2,0,0.3,0.1,0.4,0.2l1.9,1.9l4.2-4.2c0.1-0.1,0.3-0.2,0.4-0.2
     c0.2,0,0.3,0.1,0.4,0.2l0.9,0.9C9.9,2.9,10,3.1,10,3.3z`,
+  clock: `M9.2,2.6C9.6,3.3,9.8,4.1,9.8,5S9.6,6.7,9.2,7.4c-0.4,0.7-1,1.3-1.8,1.8C6.7,9.6,5.9,9.8,5,9.8c-0.9,0-1.7-0.2-2.4-0.7
+    c-0.7-0.4-1.3-1-1.8-1.8C0.4,6.7,0.1,5.9,0.1,5s0.2-1.7,0.7-2.4c0.4-0.7,1-1.3,1.8-1.8C3.3,0.4,4.1,0.1,5,0.1
+    c0.9,0,1.7,0.2,2.4,0.7C8.2,1.2,8.8,1.8,9.2,2.6z M8,6.7C8.3,6.2,8.4,5.6,8.4,5S8.3,3.8,8,3.3C7.7,2.7,7.2,2.3,6.7,2
+    C6.2,1.7,5.6,1.6,5,1.6C4.4,1.6,3.8,1.7,3.3,2C2.7,2.3,2.3,2.7,2,3.3S1.6,4.4,1.6,5S1.7,6.2,2,6.7S2.7,7.7,3.3,8
+    C3.8,8.3,4.4,8.4,5,8.4c0.6,0,1.2-0.2,1.7-0.5C7.2,7.7,7.7,7.2,8,6.7z M5.8,2.8v2.8c0,0.1,0,0.1-0.1,0.1c0,0-0.1,0.1-0.1,0.1h-2
+    c-0.1,0-0.1,0-0.1-0.1c0,0-0.1-0.1-0.1-0.1V5.2c0-0.1,0-0.1,0.1-0.1C3.5,5,3.5,5,3.6,5H5V2.8c0-0.1,0-0.1,0.1-0.1
+    c0,0,0.1-0.1,0.1-0.1h0.4c0.1,0,0.1,0,0.1,0.1C5.8,2.7,5.8,2.7,5.8,2.8z`,
   none: ``,
 };
 
@@ -69,6 +76,7 @@ const Icon = React.createClass({
     backgroundColor: React.PropTypes.string,
     backgroundType: React.PropTypes.oneOf(['circle', 'square',]),
     color: React.PropTypes.string,
+    scale: React.PropTypes.number,
     size: React.PropTypes.number,
     type: React.PropTypes.oneOf([
       'none',
@@ -77,6 +85,7 @@ const Icon = React.createClass({
       'angleBracketRight',
       'check',
       'chevronRight',
+      'clock',
       'cog',
       'play',
     ]).isRequired,
@@ -96,10 +105,11 @@ const Icon = React.createClass({
       type,
     } = this.props;
     const padding = 1;
+    const scale = this.props.scale ? this.props.scale : 2;
     const innerSize = (size - padding * 2);
     const radius = innerSize / 2;
     const iconScale = backgroundType ?
-      (innerSize / BASE_ICON_SIZE) / 2 :
+      (innerSize / BASE_ICON_SIZE) / scale :
       (innerSize / BASE_ICON_SIZE);
     const offset = backgroundType ?
       (innerSize - BASE_ICON_SIZE * iconScale) / 2 : 0;

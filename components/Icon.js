@@ -20,6 +20,7 @@ const Icon = React.createClass({
       'angleBracketRight',
       'check',
       'chevronRight',
+      'clock',
       'cog',
       'play',
     ]).isRequired,
