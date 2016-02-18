@@ -123,17 +123,25 @@ const ProgressBar = React.createClass({
       totalTime,
     } = this.props;
 
+    const hslColor = ColorHelpers.rgbToHsl(ColorHelpers.hexToRgb(color));
+    hslColor[2] *= 1.2;
+    const lighterColor = ColorHelpers.printRgb(
+      ColorHelpers.hslToRgb(hslColor)
+    );
+
+    const done = elapsedTime === totalTime;
+
     return (
       <View style={styles.progressBar}>
         <View style={[styles.progressBarSegment, {
           flex: elapsedTime / totalTime,
-          backgroundColor: 'rgba(255, 255, 255, 1)',
+          backgroundColor: "#fff",
         }]} />
         <View style={[
             styles.progressBarSegment,
             {
               flex: 1 - elapsedTime / totalTime,
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              backgroundColor: lighterColor,
             }
         ]}/>
         <View style={styles.progressBarClock}>
@@ -141,8 +149,8 @@ const ProgressBar = React.createClass({
             type="clock"
             scale={1.3}
             size={30}
-            color="#fff"
-            backgroundColor={color}
+            color={done ? lighterColor : "#fff"}
+            backgroundColor={done ? "#fff" : lighterColor}
             backgroundType="circle"
           />
         </View>
@@ -673,6 +681,7 @@ const styles = StyleSheet.create({
   progressBarClock: {
     backgroundColor: "transparent",
     marginTop: -10,
+    marginLeft: -2,
   },
 
   progressDots: {
