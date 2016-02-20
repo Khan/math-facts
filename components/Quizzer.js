@@ -29,13 +29,16 @@ import BackButton from '../components/BackButton';
 
 const QuizzerScreen = React.createClass({
   propTypes: {
+    back: React.PropTypes.func.isRequired,
     color: React.PropTypes.arrayOf(React.PropTypes.number),
     points: React.PropTypes.number,
+    timeBonus: React.PropTypes.bool,
   },
   render: function() {
     const {
       color,
       points,
+      timeBonus,
       children,
     } = this.props;
     const rgb = color;
@@ -46,6 +49,7 @@ const QuizzerScreen = React.createClass({
         <View style={styles.topRow}>
           <BackButton onPress={this.props.back} />
           {points != null && <View style={styles.points}>
+            {timeBonus && <TimeBonus key={points} />}
             <AppText style={styles.pointsText}>
               <AppTextBold style={styles.pointsTextBold}>
                 {points}
@@ -56,6 +60,58 @@ const QuizzerScreen = React.createClass({
         {children}
       </View>
     );
+  },
+});
+
+
+const TimeBonus = React.createClass({
+  getInitialState: function() {
+    return {
+      fadeAnim: new Animated.Value(0),
+      moveAnim: new Animated.Value(10),
+    };
+  },
+  componentDidMount: function() {
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(
+          this.state.fadeAnim,
+          { toValue: 1, duration: 300, },
+        ),
+        Animated.timing(
+          this.state.moveAnim,
+          { toValue: 0, duration: 300, },
+        ),
+      ]),
+      Animated.timing(
+        this.state.fadeAnim,
+        { toValue: 1, duration: 800, },
+      ),
+      Animated.parallel([
+        Animated.timing(
+          this.state.fadeAnim,
+          { toValue: 0, duration: 400, },
+        ),
+        Animated.timing(
+          this.state.moveAnim,
+          { toValue: -10, duration: 400, },
+        ),
+      ]),
+    ]).start();
+  },
+  render: function() {
+    return <View>
+      <Animated.View
+        style={[styles.timeBonus, {
+          flex: 1,
+          transform: [{
+            translateY: this.state.moveAnim,
+          }],
+          opacity: this.state.fadeAnim,
+        }]}>
+          <AppText style={styles.timeBonusText}>Fast! +20</AppText>
+      </Animated.View>
+    </View>;
   },
 });
 
@@ -249,6 +305,7 @@ const Game = React.createClass({
       React.PropTypes.number,
       React.PropTypes.string,
     ]).isRequired,
+    timeBonus: React.PropTypes.bool,
   },
   componentDidMount: function() {
     if (this.props.bounce) {
@@ -271,6 +328,7 @@ const Game = React.createClass({
       ProgressComponent,
       question,
       response,
+      timeBonus,
     } = this.props;
 
     return (
@@ -278,6 +336,7 @@ const Game = React.createClass({
           color={color}
           points={points}
           back={back}
+          timeBonus={timeBonus}
         >
 
         {ProgressComponent}
@@ -352,6 +411,8 @@ const Quizzer = React.createClass({
 
       digitBounceValue: new Animated.Value(1),
       newQuestionBounceValue: new Animated.Value(1),
+
+      timeBonus: false,
     };
   },
   time: 0, // in ms
@@ -535,6 +596,8 @@ const Quizzer = React.createClass({
           colorHue: this.state.colorHue + 1,
           points: newPoints,
           finished: finished,
+
+          timeBonus: timeBonus === 20,
         });
         this.time = 0;
       }, 150);
@@ -552,28 +615,32 @@ const Quizzer = React.createClass({
     if (elapsedSeconds > totalSeconds) {
       elapsedSeconds = totalSeconds;
     }
-    return <ProgressBar
-      color={ColorHelpers.rgbToHex(this.getColor())}
-      elapsedTime={elapsedSeconds}
-      totalTime={totalSeconds}
-    />;
+    return <View>
+        <ProgressBar
+          color={ColorHelpers.rgbToHex(this.getColor())}
+          elapsedTime={elapsedSeconds}
+          totalTime={totalSeconds}
+        />
+    </View>;
   },
 
   _renderProgressDots: function() {
     return (
-      <View style={styles.progressDots}>
-        {_.map(_.range(0, this.props.count), (value) => {
-          const opacity = value < this.state.count ? 1 : 0.2;
-          const color = 'rgba(255, 255, 255, ' + opacity + ')';
-          return (
-            <Circle
-              key={'notch-' + value}
-              size={7}
-              color={color}>
-            </Circle>
-          );
-        })
-      }
+      <View>
+        <View style={styles.progressDots}>
+          {_.map(_.range(0, this.props.count), (value) => {
+            const opacity = value < this.state.count ? 1 : 0.2;
+            const color = 'rgba(255, 255, 255, ' + opacity + ')';
+            return (
+              <Circle
+                key={'notch-' + value}
+                size={7}
+                color={color}>
+              </Circle>
+            );
+          })
+        }
+        </View>
       </View>
     );
   },
@@ -623,6 +690,7 @@ const Quizzer = React.createClass({
         ProgressComponent={this._renderProgress()}
         question={question}
         response={this.state.response}
+        timeBonus={this.state.timeBonus}
       />;
     }
 
@@ -658,7 +726,8 @@ const styles = StyleSheet.create({
 
   points: {
     flex: 1,
-    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
     paddingRight: 20,
     paddingTop: 18,
   },
@@ -689,6 +758,22 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     margin: 10
+  },
+
+  timeBonus: {
+    alignItems: 'flex-start',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    borderRadius: 3,
+    justifyContent: 'center',
+    marginRight: 8,
+    marginTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 2,
+  },
+  timeBonusText: {
+    color: '#fff',
   },
 
   questionContainer: {
