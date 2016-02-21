@@ -32,7 +32,7 @@ const QuizzerScreen = React.createClass({
     back: React.PropTypes.func.isRequired,
     color: React.PropTypes.arrayOf(React.PropTypes.number),
     points: React.PropTypes.number,
-    timeBonus: React.PropTypes.bool,
+    timeBonus: React.PropTypes.number,
   },
   render: function() {
     const {
@@ -49,7 +49,7 @@ const QuizzerScreen = React.createClass({
         <View style={styles.topRow}>
           <BackButton onPress={this.props.back} />
           {points != null && <View style={styles.points}>
-            {timeBonus && <TimeBonus key={points} />}
+            {timeBonus > 1 && <TimeBonus key={points} points={timeBonus} />}
             <AppText style={styles.pointsText}>
               <AppTextBold style={styles.pointsTextBold}>
                 {points}
@@ -65,6 +65,9 @@ const QuizzerScreen = React.createClass({
 
 
 const TimeBonus = React.createClass({
+  propTypes: {
+    points: React.PropTypes.number,
+  },
   getInitialState: function() {
     return {
       fadeAnim: new Animated.Value(0),
@@ -100,6 +103,8 @@ const TimeBonus = React.createClass({
     ]).start();
   },
   render: function() {
+    const { points } = this.props;
+    const opacity = points > 10 ? 0.4 : 0.2;
     return <View>
       <Animated.View
         style={[styles.timeBonus, {
@@ -108,8 +113,11 @@ const TimeBonus = React.createClass({
             translateY: this.state.moveAnim,
           }],
           opacity: this.state.fadeAnim,
+          backgroundColor: `rgba(0, 0, 0, ${opacity})`,
         }]}>
-          <AppText style={styles.timeBonusText}>Fast! +20</AppText>
+          <AppText style={styles.timeBonusText}>
+            Fast! +{points}
+          </AppText>
       </Animated.View>
     </View>;
   },
@@ -305,7 +313,7 @@ const Game = React.createClass({
       React.PropTypes.number,
       React.PropTypes.string,
     ]).isRequired,
-    timeBonus: React.PropTypes.bool,
+    timeBonus: React.PropTypes.number,
   },
   componentDidMount: function() {
     if (this.props.bounce) {
@@ -412,7 +420,7 @@ const Quizzer = React.createClass({
       digitBounceValue: new Animated.Value(1),
       newQuestionBounceValue: new Animated.Value(1),
 
-      timeBonus: false,
+      timeBonus: 0,
     };
   },
   time: 0, // in ms
@@ -597,7 +605,7 @@ const Quizzer = React.createClass({
           points: newPoints,
           finished: finished,
 
-          timeBonus: timeBonus === 20,
+          timeBonus: timeBonus,
         });
         this.time = 0;
       }, 150);
@@ -762,7 +770,6 @@ const styles = StyleSheet.create({
 
   timeBonus: {
     alignItems: 'flex-start',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     borderRadius: 3,
     justifyContent: 'center',
     marginRight: 8,
