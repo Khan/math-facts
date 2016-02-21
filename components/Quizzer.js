@@ -49,7 +49,9 @@ const QuizzerScreen = React.createClass({
         <View style={styles.topRow}>
           <BackButton onPress={this.props.back} />
           {points != null && <View style={styles.points}>
-            {timeBonus > 1 && <TimeBonus key={points} points={timeBonus} />}
+            {timeBonus > 1 && Helpers.Platform.OS !== "web" &&
+              <TimeBonus key={points} points={timeBonus} />
+            }
             <AppText style={styles.pointsText}>
               <AppTextBold style={styles.pointsTextBold}>
                 {points}
