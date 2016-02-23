@@ -72,50 +72,36 @@ const TimeBonus = React.createClass({
   },
   getInitialState: function() {
     return {
-      fadeAnim: new Animated.Value(0),
-      moveAnim: new Animated.Value(10),
+      anim: new Animated.Value(0),
     };
   },
   componentDidMount: function() {
     Animated.sequence([
-      Animated.parallel([
-        Animated.timing(
-          this.state.fadeAnim,
-          { toValue: 1, duration: 300, },
-        ),
-        Animated.timing(
-          this.state.moveAnim,
-          { toValue: 0, duration: 300, },
-        ),
-      ]),
-      Animated.timing(
-        this.state.fadeAnim,
-        { toValue: 1, duration: 800, },
-      ),
-      Animated.parallel([
-        Animated.timing(
-          this.state.fadeAnim,
-          { toValue: 0, duration: 400, },
-        ),
-        Animated.timing(
-          this.state.moveAnim,
-          { toValue: -10, duration: 400, },
-        ),
-      ]),
+      Animated.timing(this.state.anim, {toValue: 1, duration: 300}),
+      Animated.delay(800),
+      Animated.timing(this.state.anim, {toValue: 2, duration: 400}),
     ]).start();
   },
   render: function() {
     const { points } = this.props;
-    const opacity = points > 10 ? 0.4 : 0.2;
+    const backgroundOpacity = points > 10 ? 0.4 : 0.2;
+    const y = this.state.anim.interpolate({
+      inputRange: [0, 1, 2],
+      outputRange: [10, 0, -10],
+    });
+    const opacity = this.state.anim.interpolate({
+      inputRange: [0, 1, 2],
+      outputRange: [0, 1, 0],
+    });
     return <View>
       <Animated.View
         style={[styles.timeBonus, {
           flex: 1,
           transform: [{
-            translateY: this.state.moveAnim,
+            translateY: y,
           }],
-          opacity: this.state.fadeAnim,
-          backgroundColor: `rgba(0, 0, 0, ${opacity})`,
+          opacity: opacity,
+          backgroundColor: `rgba(0, 0, 0, ${backgroundOpacity})`,
         }]}>
           <AppText style={styles.timeBonusText}>
             Fast! +{points}
