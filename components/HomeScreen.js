@@ -124,6 +124,13 @@ const HomeScreen = React.createClass({
     }
     return currentStreak;
   },
+  getMostRecentDay: function() {
+    const scores = this.props.scores.slice().reverse();
+    if (!scores.length) {
+      return null;
+    }
+    return moment(scores[0].date).format("MMM Do YYYY");
+  },
   render: function() {
     const {
       operation,
@@ -135,6 +142,7 @@ const HomeScreen = React.createClass({
       userName,
     } = this.props;
     const currentStreak = this.getCurrentStreak();
+    const lastPlayed = this.getMostRecentDay();
 
     const showGrid = OperationHelpers[operation].showGrid;
 
@@ -170,13 +178,22 @@ const HomeScreen = React.createClass({
           </AppText>
         </View>
 
-        <AppText style={[styles.headingText, {paddingBottom: 0}]}>
-          {'Current streak: '}
-          <AppTextBold style={styles.headingTextEmphasis}>
-            {currentStreak}
-          </AppTextBold>
-          {` day${currentStreak === 1 ? '' : 's'}`}
-        </AppText>
+        <View style={styles.innerSection}>
+          <AppText style={[styles.headingText, {paddingBottom: 0}]}>
+            {'Current streak: '}
+            <AppTextBold style={styles.headingTextEmphasis}>
+              {currentStreak}
+            </AppTextBold>
+            {` day${currentStreak === 1 ? '' : 's'}`}
+          </AppText>
+          {lastPlayed && <AppText style={[styles.headingText, styles.headingTextSmall]}>
+            (You last played on
+            <AppTextBold style={styles.headingTextEmphasis}>
+              {` ${lastPlayed}`}
+            </AppTextBold>
+            )
+          </AppText>}
+        </View>
 
         <AppText style={styles.headingText}>
           {'You\'re learning '}
