@@ -129,7 +129,9 @@ const HomeScreen = React.createClass({
     if (!scores.length) {
       return null;
     }
-    return moment(scores[0].date).format("MMM Do YYYY");
+    const date = moment(scores[0].date);
+    const format = moment().year() === date.year() ? "MMM Do" : "MMM Do YYYY";
+    return date.format(format);
   },
   render: function() {
     const {
