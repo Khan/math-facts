@@ -12,6 +12,10 @@ const randomIntBetween = function(min, max) {
   return Math.floor(Math.random()*(max - min + 1)) + min;
 };
 
+const capitalize = function(word) {
+  return word.slice(0, 1).toUpperCase() + word.slice(1);
+};
+
 const shuffle = function(arr) {
   // Modified from: http://stackoverflow.com/a/6274381
   for (let j, x, i = arr.length; i; i--) {
@@ -44,6 +48,7 @@ const lineHeightUnits = (lineHeight) => {
 
 module.exports = {
   Platform,
+  capitalize,
   lineHeightUnits,
   printTime,
   randomIntBetween,

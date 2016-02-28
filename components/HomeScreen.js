@@ -15,6 +15,7 @@ import { AppText, AppTextBold } from './AppText';
 
 import Grid from '../components/Grid';
 import OperationHelpers from '../helpers/operation-helpers';
+import Helpers from '../helpers/helpers';
 
 import EggScene from '../components/EggScene';
 import Icon from '../components/Icon';
@@ -197,15 +198,12 @@ const HomeScreen = React.createClass({
           </AppText>}
         </View>
 
-        <AppText style={styles.headingText}>
-          {'You\'re learning '}
-          <AppTextBold style={styles.headingTextEmphasis}>
-            {operation}
+        <View style={styles.operationCallout}>
+          <AppTextBold style={styles.operationCalloutText}>
+            {Helpers.capitalize(operation)}
           </AppTextBold>
-          {'!'}
-        </AppText>
+        </View>
 
-        <View style={styles.divider} />
 
         <View style={styles.actions}>
           <HomeScreenButton caption="My Progress" onPress={showStats}>
@@ -309,6 +307,18 @@ const styles = StyleSheet.create({
     height: 1.5,
     marginBottom: 25,
     marginTop: 15,
+  },
+
+  operationCallout: {
+    backgroundColor: SH.colors.active,
+    alignItems: "center",
+    padding: 15,
+    marginTop: 15,
+    marginBottom: 20,
+  },
+  operationCalloutText: {
+    color: '#fff',
+    fontSize: 20,
   },
 
 });
